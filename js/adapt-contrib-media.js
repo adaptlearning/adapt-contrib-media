@@ -29,9 +29,10 @@ define(function(require) {
 		},
 		
 		updateRatio: function() {
-			var width = this.$('.widget').width();
-			this.$('.widget object').width(width).height((width/16)*9);
-			this.$('.widget video').width(width).height((width/16)*9);
+			var width = this.$('.widget').css('width');
+			
+			//this.$('.widget object').width(width).height((width/16)*9);
+			//this.$('.widget video').width(width).height((width/16)*9);
 		},
 		
 		showTranscript: function(event) {

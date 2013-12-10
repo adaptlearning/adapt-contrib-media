@@ -19,12 +19,16 @@
             <source src="{{media.ogv}}"  type="video/ogg" />
             <source src="{{media.mp3}}"  type="audio/mpeg" />
             <source src="{{media.ogg}}"  type="audio/ogg" />
-            <object type="application/x-shockwave-flash" data="player.swf">
-                <param name="movie" value="player.swf" />
-                <param name="wmode" value="transparent" />
-                <param name="flashvars" value="controlbar=over&amp;image={{poster}}&amp;file={{#if media.mp4}}{{media.mp4}}{{else}}{{media.mp3}}{{/if}}" />
+			
+			<object id="flowplayer" data="flowplayer-3.2.16.swf" width="100%" height="100%" type="application/x-shockwave-flash">
+				<param name="movie" value="flowplayer-3.2.16.swf" />
+				<param name="flashVars" value="config={'clip':'{{#if media.mp4}}{{media.mp4}}{{else}}{{media.mp3}}{{/if}}'}" />
+				<param name="allowFullScreen" value="true" />
+				<param name="allowScriptAccess" value="always"/>
+                <param name="wmode" value="opaque" />
             </object>
         </video>
+		
         <a href="#" class="show-transcript">show transcript</a>
     
     </div>
