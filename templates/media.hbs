@@ -1,27 +1,27 @@
-<div class="component-inner">
+<div class="media-inner component-inner">
     {{#if title}}
-    <div class="component-title">
-        <h4 class="component-title-inner">
+    <div class="media-title component-title">
+        <h4 class="media-title-inner component-title-inner">
             {{{title}}}
         </h4>
     </div>
     {{/if}}
     {{#if body}}
-    <div class="component-body">
-        <p class="component-body-inner">
+    <div class="media-body component-body">
+        <p class="media-body-inner component-body-inner">
             {{{body}}}
         </p>
     </div>
     {{/if}}
-    <div class="widget">
+    <div class="media-widget widget">
         <video controls poster="{{poster}}">
             <source src="{{media.mp4}}"  type="video/mp4" />
             <source src="{{media.ogv}}"  type="video/ogg" />
             <source src="{{media.mp3}}"  type="audio/mpeg" />
             <source src="{{media.ogg}}"  type="audio/ogg" />
 			
-			<object id="flowplayer" data="flowplayer-3.2.16.swf" width="100%" height="100%" type="application/x-shockwave-flash">
-				<param name="movie" value="flowplayer-3.2.16.swf" />
+			<object id="flowplayer" data="assets/flowplayer-3.2.16.swf" width="100%" height="100%" type="application/x-shockwave-flash">
+				<param name="movie" value="assets/flowplayer-3.2.16.swf" />
 				<param name="flashVars" value="config={'clip':'{{#if media.mp4}}{{media.mp4}}{{else}}{{media.mp3}}{{/if}}'}" />
 				<param name="allowFullScreen" value="true" />
 				<param name="allowScriptAccess" value="always"/>
@@ -29,7 +29,7 @@
             </object>
         </video>
 		
-        <a href="#" class="show-transcript">show transcript</a>
+        <a href="#" class="media-show-transcript">show transcript</a>
     
     </div>
 </div>
