@@ -12,19 +12,18 @@ define(function(require) {
 		}),
 		
 		events: {
-			'inview':'inview'
+			'inview':'inview',
+			'click a.media-show-transcript':'showTranscript'
 		},
 		
         postRender: function() {
             console.log("rendering");
 			this.updateRatio();
             this.setReadyStatus();
-            this.setCompletionStatus();
-			this.$('a.show-transcript').on('click', _.bind(this.showTranscript, this));
         },
 		
 		inview: function(event, visible) {
-			if (visible) this.model.set('_isComplete',true);
+			if (visible) this.setCompletionStatus();
 			this.$el.off('inview');
 		},
 		
