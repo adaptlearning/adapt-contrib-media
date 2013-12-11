@@ -8,7 +8,7 @@ define(function(require) {
     var Media = ComponentView.extend({
         
 		popUp: Popup.extend({
-			template: Handlebars.templates.transcript
+			template: Handlebars.templates["media-transcript"]
 		}),
 		
 		events: {
@@ -24,13 +24,12 @@ define(function(require) {
         },
 		
 		inview: function(event, visible) {
-			if (visible) this.model.set('complete',true);
+			if (visible) this.model.set('_isComplete',true);
 			this.$el.off('inview');
 		},
 		
 		updateRatio: function() {
-			var width = this.$('.widget').css('width');
-			
+			//var width = this.$('.widget').css('width');
 			//this.$('.widget object').width(width).height((width/16)*9);
 			//this.$('.widget video').width(width).height((width/16)*9);
 		},
