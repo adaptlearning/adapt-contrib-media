@@ -1,5 +1,6 @@
 define(function(require) {
 
+	var FlowPlayer = require("components/adapt-contrib-media/js/flowplayer");
 	var Popup = require("components/adapt-contrib-media/js/popup");
 	var Adapt = require("coreJS/adapt");
 	var ComponentView = require("coreViews/componentView");
@@ -20,6 +21,7 @@ define(function(require) {
             console.log("rendering");
 			this.updateRatio();
             this.setReadyStatus();
+			this.$('.player').flowplayer();
         },
 		
 		inview: function(event, visible) {
