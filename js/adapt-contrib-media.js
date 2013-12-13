@@ -9,7 +9,7 @@ define(function(require) {
     var Media = ComponentView.extend({
         
 		popUp: Popup.extend({
-			template: Handlebars.templates.transcript
+			template: Handlebars.templates["media-transcript"]
 		}),
 		
 		events: {
@@ -20,14 +20,13 @@ define(function(require) {
             console.log("rendering");
 			this.updateRatio();
             this.setReadyStatus();
-            this.setCompletionStatus();
+           
 			this.$('a.show-transcript').on('click', _.bind(this.showTranscript, this));
-			
-			this.$('video').mediaelementplayer();
+			this.$('audio, video').mediaelementplayer({'pluginPath':'assets/'});
         },
 		
 		inview: function(event, visible) {
-			if (visible) this.model.set('complete',true);
+			if (visible) this.setCompletionStatus();
 			this.$el.off('inview');
 		},
 		

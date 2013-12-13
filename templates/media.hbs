@@ -14,10 +14,15 @@
     </div>
     {{/if}}
     <div class="widget">
-        <video controls poster="{{poster}}">
-            <source src="{{media.mp4}}" type="video/mp4" />
-            <source src="{{media.ogv}}" type="video/ogg" />
-        </video>
+	
+		{{#if media.mp3}}
+			<audio src="{{media.mp3}}" type="audio/mp3"/>
+		{{else}}
+			<video>
+				<source src="{{media.mp4}}" type="video/mp4"/>
+				<source src="{{media.ogv}}" type="video/ogv"/>
+			</video>
+        {{/if}}
 		
         <a href="#" class="show-transcript">show transcript</a>
     
