@@ -8,12 +8,29 @@ The component uses [MediaElement.js](http://mediaelementjs.com/) (v2.13.1) which
 Installation
 ------------
 
-First, be sure to install the [Adapt Command Line Interface](https://github.com/cajones/adapt-cli), then from the command line run:-
+First, be sure to install the [Adapt Command Line Interface](https://github.com/cajones/adapt-cli), then from the command line run:
 
 		adapt install adapt-contrib-media
 
-For example JSON format, see [example.json](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json)
-	
+Usage
+-----
+
+For example JSON format, see [example.json](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json).
+
+Audio example
+
+	"media": {
+		"mp3": "course/assets/audio.mp3",
+		"ogg": "course/assets/audio.ogg"
+	},
+
+Video example
+
+	"media": {
+		"mp4": "course/assets/video.mp4",
+		"ogv": "course/assets/video.ogv"
+	},
+
 Important
 ---------
 
