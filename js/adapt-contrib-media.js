@@ -1,5 +1,6 @@
 define(function(require) {
 
+	var mep = require("components/adapt-contrib-media/js/mep");
 	var Popup = require("components/adapt-contrib-media/js/popup");
 	var Adapt = require("coreJS/adapt");
 	var ComponentView = require("coreViews/componentView");
@@ -8,18 +9,21 @@ define(function(require) {
     var Media = ComponentView.extend({
         
 		popUp: Popup.extend({
-			template: Handlebars.templates["media-transcript"]
+			template: Handlebars.templates["media-transcript"],
+			className: "media-component-transcript"
 		}),
 		
 		events: {
-			'inview':'inview',
-			'click a.media-show-transcript':'showTranscript'
+			'inview':'inview'
 		},
 		
         postRender: function() {
             console.log("rendering");
 			this.updateRatio();
             this.setReadyStatus();
+           
+			this.$('a.media-show-transcript').on('click', _.bind(this.showTranscript, this));
+			this.$('audio, video').mediaelementplayer({'pluginPath':'assets/'});
         },
 		
 		inview: function(event, visible) {

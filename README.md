@@ -1,4 +1,37 @@
 adapt-contrib-media
 ===================
 
-A basic media componet that displays video and audio. This component uses the HTML5 video and audio specification and has a flash fallback for browsers that don't support HTML5
+A basic media component that plays audio and video. This component uses the HTML5 audio and video specification and has a Flash/Silverlight alternative for browsers that don't support HTML5.
+
+The component uses [MediaElement.js](http://mediaelementjs.com/) (v2.13.1) which enables users, amongst other things, to offer subtitles and accessible, skinnable (with CSS) controls. MediaElement.js carries an MIT license and is therefore compatible with Adapt.
+
+Installation
+------------
+
+First, be sure to install the [Adapt Command Line Interface](https://github.com/cajones/adapt-cli), then from the command line run:
+
+		adapt install adapt-contrib-media
+
+Usage
+-----
+
+For example JSON format, see [example.json](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json).
+
+Audio example
+
+	"media": {
+		"mp3": "course/assets/audio.mp3",
+		"ogg": "course/assets/audio.ogg"
+	},
+
+Video example
+
+	"media": {
+		"mp4": "course/assets/video.mp4",
+		"ogv": "course/assets/video.ogv"
+	},
+
+Important
+---------
+
+MediaElement.js v2.13.1 requires a small patch to enable it to work in IE8 when used in conjunction with Adapt.
