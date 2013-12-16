@@ -1,19 +1,19 @@
-<div class="component-inner">
+<div class="media-inner component-inner">
     {{#if title}}
-    <div class="component-title">
-        <h4 class="component-title-inner">
+    <div class="media-title component-title">
+        <h4 class="media-title-inner component-title-inner">
             {{{title}}}
         </h4>
     </div>
     {{/if}}
     {{#if body}}
-    <div class="component-body">
-        <p class="component-body-inner">
+    <div class="media-body component-body">
+        <p class="media-body-inner component-body-inner">
             {{{body}}}
         </p>
     </div>
     {{/if}}
-    <div class="widget">
+    <div class="media-widget component-widget">
 	
 		{{#if media.mp3}}
 			<audio src="{{media.mp3}}" type="audio/mp3"/>
@@ -28,7 +28,7 @@
 			{{/if}}
         {{/if}}
 		
-        <a href="#" class="show-transcript">show transcript</a>
+        <a href="#" class="media-show-transcript">show transcript</a>
     
     </div>
 </div>
