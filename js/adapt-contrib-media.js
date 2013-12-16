@@ -9,7 +9,8 @@ define(function(require) {
     var Media = ComponentView.extend({
         
 		popUp: Popup.extend({
-			template: Handlebars.templates["media-transcript"]
+			template: Handlebars.templates["media-transcript"],
+			className: "media-component-transcript"
 		}),
 		
 		events: {
@@ -21,7 +22,7 @@ define(function(require) {
 			this.updateRatio();
             this.setReadyStatus();
            
-			this.$('a.show-transcript').on('click', _.bind(this.showTranscript, this));
+			this.$('a.media-show-transcript').on('click', _.bind(this.showTranscript, this));
 			this.$('audio, video').mediaelementplayer({'pluginPath':'assets/'});
         },
 		

@@ -37,8 +37,8 @@ define(function(require) {
 		},
 		
 		baseEvents: {
-			"click a.close":"close",
-			"mousedown .header":"mousedown"
+			"click .media-component-transcript-close":"close",
+			"mousedown .media-component-transcript-title":"mousedown"
 		},
 		
 		addEvents: {
