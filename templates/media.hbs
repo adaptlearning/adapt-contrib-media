@@ -13,21 +13,20 @@
         </p>
     </div>
     {{/if}}
-    <div class="media-widget widget">
-        <video controls poster="{{poster}}">
-            <source src="{{media.mp4}}"  type="video/mp4" />
-            <source src="{{media.ogv}}"  type="video/ogg" />
-            <source src="{{media.mp3}}"  type="audio/mpeg" />
-            <source src="{{media.ogg}}"  type="audio/ogg" />
-			
-			<object id="flowplayer" data="assets/flowplayer-3.2.16.swf" width="100%" height="100%" type="application/x-shockwave-flash">
-				<param name="movie" value="assets/flowplayer-3.2.16.swf" />
-				<param name="flashVars" value="config={'clip':'{{#if media.mp4}}{{media.mp4}}{{else}}{{media.mp3}}{{/if}}'}" />
-				<param name="allowFullScreen" value="true" />
-				<param name="allowScriptAccess" value="always"/>
-                <param name="wmode" value="opaque" />
-            </object>
-        </video>
+    <div class="media-widget component-widget">
+	
+		{{#if media.mp3}}
+			<audio src="{{media.mp3}}" type="audio/mp3"/>
+		{{else}}
+			{{#if media.ogg}}
+				<audio src="{{media.ogg}}" type="audio/ogg"/>			
+			{{else}}
+				<video width="100%" height="100%">
+					<source src="{{media.mp4}}" type="video/mp4"/>
+					<source src="{{media.ogv}}" type="video/ogv"/>
+				</video>
+			{{/if}}
+        {{/if}}
 		
         <a href="#" class="media-show-transcript">show transcript</a>
     
