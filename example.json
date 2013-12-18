@@ -1,15 +1,14 @@
 {
-        "_id":"c-15",
-        "_parentId":"b-10",
-        "_type":"component",
-        "_component":"media",
-        "_classes":"",
-        "_layout":"left",
-		"title":"Title of the media component",
-		"media": {
-			"mp4": "course/assets/big_buck_bunny.mp4",
-			"ogv": "course/assets/big_buck_bunny.ogv"
-		},
-        "body": "This is optional body text. Select the play button to start the video.",
-		"transcript": "trans transcript text goes here.... transcript text goes here transscript text goes here... transcript text.. transcript text.. transcript text.. transcript text.. transcript text.. transcript text.. transcript text.."
-    }
+	"_id":"c-15",
+	"_parentId":"b-10",
+	"_type":"component",
+	"_component":"media",
+	"_classes":"",
+	"_layout":"left",
+	"title":"Title of the media component",
+	"media": {
+		"mp4": "course/assets/big_buck_bunny.mp4",
+		"ogv": "course/assets/big_buck_bunny.ogv"
+	},
+	"body": "This is optional body text. Select the play button to start the video."
+}
