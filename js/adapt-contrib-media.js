@@ -12,8 +12,12 @@ define(function(require) {
 		},
 		
         postRender: function() {
-            this.setReadyStatus();
-			this.$('audio, video').mediaelementplayer({'pluginPath':'assets/'});
+			this.mediaElement = this.$('audio, video').mediaelementplayer({
+				pluginPath:'assets/', 
+				success: _.bind(function (mediaElement, domObject) {
+					this.setReadyStatus();
+				}, this)
+			});
         },
 		
 		inview: function(event, visible) {
