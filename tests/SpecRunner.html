@@ -53,8 +53,9 @@
         mocha.checkLeaks();
         mocha.globals(['jQuery']);
         // Require test specs here
+        // Change componentName to your test file
         require([
-            'spec/accordion'
+            'spec/componentName'
         ], function(capitalize){
             mocha.run();
         });
