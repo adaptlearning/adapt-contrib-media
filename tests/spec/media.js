@@ -1,4 +1,4 @@
-define(['coreJS/adapt'],function(Adapt) {
+define(function(require) {
 
     describe('My fake test', function() {
         
