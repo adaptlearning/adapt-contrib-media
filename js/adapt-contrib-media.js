@@ -1,3 +1,8 @@
+/*
+* adapt-contrib-media
+* License - http://github.com/adaptlearning/adapt_framework/LICENSE
+* Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>
+*/
 define(function(require) {
 
 	var mep = require("components/adapt-contrib-media/js/mep");
@@ -10,13 +15,22 @@ define(function(require) {
 		events: {
 			'inview':'inview'
 		},
+
+		preRender: function() {
+			this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
+		},
+
+		onScreenSizeChanged: function() {
+			this.$('audio, video').width(this.$('.component-widget').width());
+		},
 		
         postRender: function() {
 			this.mediaElement = this.$('audio, video').mediaelementplayer({
 				pluginPath:'assets/', 
 				success: _.bind(function (mediaElement, domObject) {
 					this.setReadyStatus();
-				}, this)
+				}, this),
+				features: ['playpause','progress','current','duration']
 			});
         },
 		
