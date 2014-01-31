@@ -35,8 +35,9 @@ define(function(require) {
         },
 		
 		inview: function(event, visible) {
-			if (visible) this.setCompletionStatus();
-			this.$el.off('inview');
+			if (visible) {
+                this.setCompletionStatus();
+            }
 		}
     });
     
