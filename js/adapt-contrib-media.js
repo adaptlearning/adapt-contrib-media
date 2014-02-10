@@ -11,10 +11,10 @@ define(function(require) {
 	var Handlebars = require('handlebars');
 
     var Media = ComponentView.extend({
-        
-		events: {
-			'inview':'inview'
-		},
+
+    	events: {
+    		'inview':'inview'
+    	},
 
 		preRender: function() {
 			this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
@@ -29,16 +29,22 @@ define(function(require) {
 				pluginPath:'assets/', 
 				success: _.bind(function (mediaElement, domObject) {
 					this.setReadyStatus();
+			        mediaElement.addEventListener('ended', _.bind(function() {
+			            this.setCompletionStatus(); 
+			        }, this), false);
 				}, this),
 				features: ['playpause','progress','current','duration']
 			});
         },
-		
-		inview: function(event, visible) {
-			if (visible) {
-                this.setCompletionStatus();
-            }
-		}
+
+        inview: function(event, visible) {
+        	if (this.model.get('media')._allowCompletionOnInview) {
+        		if (visible) {
+        			this.setCompletionStatus();
+        		}
+        	}
+        }
+
     });
     
     Adapt.register("media", Media);

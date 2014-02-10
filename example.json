@@ -6,9 +6,11 @@
 	"_classes":"",
 	"_layout":"left",
 	"title":"Title of the media component",
+	"body": "This is optional body text. Select the play button to start the video.",
 	"media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
-		"ogv": "course/assets/big_buck_bunny.ogv"
-	},
-	"body": "This is optional body text. Select the play button to start the video."
+		"ogv": "course/assets/big_buck_bunny.ogv",
+		"_allowCompletionOnInview":false
+	}
+	
 }
