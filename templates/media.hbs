@@ -1,18 +1,5 @@
 <div class="media-inner component-inner">
-    {{#if title}}
-    <div class="media-title component-title">
-        <h4 class="media-title-inner component-title-inner">
-            {{{title}}}
-        </h4>
-    </div>
-    {{/if}}
-    {{#if body}}
-    <div class="media-body component-body">
-        <p class="media-body-inner component-body-inner">
-            {{{body}}}
-        </p>
-    </div>
-    {{/if}}
+    {{> component this}}
     <div class="media-widget component-widget">
 	
 		{{#if media.mp3}}
