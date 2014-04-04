@@ -1,0 +1,28 @@
+{
+  "type":"object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://jsonschema.net",
+  "$ref": "http://localhost/plugins/content/component/model.schema",
+  "properties":{
+    "media": {
+      "type":"object",
+      "properties":{
+        "mp4": {
+            "type":"string",
+            "required":true
+        },
+        "ogv": {
+            "type":"string",
+            "required":true
+        },
+        "poster": {
+            "type":"string"
+        },
+        "_allowCompletionOnInview": {
+            "type":"boolean",
+            "required":true
+        }
+      }
+    }
+  }
+}
