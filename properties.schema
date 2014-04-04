@@ -9,18 +9,19 @@
       "properties":{
         "mp4": {
             "type":"string",
-            "required":true
+            "required":false
         },
         "ogv": {
             "type":"string",
-            "required":true
+            "required":false
         },
-        "poster": {
-            "type":"string"
+        "mp3": {
+            "type":"string",
+            "required":false
         },
-        "_allowCompletionOnInview": {
-            "type":"boolean",
-            "required":true
+        "ogg": {
+            "type":"string",
+            "required":false
         }
       }
     }
