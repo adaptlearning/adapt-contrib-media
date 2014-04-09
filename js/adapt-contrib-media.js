@@ -5,7 +5,7 @@
 */
 define(function(require) {
 
-	var mep = require("components/adapt-contrib-media/js/mep");
+	var mep = require("components/adapt-contrib-media/js/mediaelement-and-player.min.js");
 	var Adapt = require("coreJS/adapt");
 	var ComponentView = require("coreViews/componentView");
 	var Handlebars = require('handlebars');
