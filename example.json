@@ -7,7 +7,7 @@
 	"_layout":"left",
 	"title":"Title of the media component",
 	"body": "This is optional body text. Select the play button to start the video.",
-	"media": {
+	"_media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
 		"ogv": "course/assets/big_buck_bunny.ogv",
 		"poster": "course/assets/big-buck-bunny.jpg",

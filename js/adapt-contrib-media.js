@@ -38,7 +38,7 @@ define(function(require) {
         },
 
         inview: function(event, visible) {
-        	if (this.model.get('media')._allowCompletionOnInview) {
+        	if (this.model.get('_media')._allowCompletionOnInview) {
         		if (visible) {
         			this.setCompletionStatus();
         		}
@@ -48,5 +48,7 @@ define(function(require) {
     });
     
     Adapt.register("media", Media);
+    
+    return Media;
     
 });

@@ -2,15 +2,15 @@
     {{> component this}}
     <div class="media-widget component-widget">
 	
-		{{#if media.mp3}}
-			<audio src="{{media.mp3}}" type="audio/mp3"/>
+		{{#if _media.mp3}}
+			<audio src="{{_media.mp3}}" type="audio/mp3"/>
 		{{else}}
-			{{#if media.ogg}}
-				<audio src="{{media.ogg}}" type="audio/ogg"/>			
+			{{#if _media.ogg}}
+				<audio src="{{_media.ogg}}" type="audio/ogg"/>			
 			{{else}}
-				<video preload="none" width="640px" height="360px" poster="{{media.poster}}" style="width:100%; height:100%;">
-					<source src="{{media.mp4}}" type="video/mp4"/>
-					<source src="{{media.ogv}}" type="video/ogg"/>
+				<video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
+					<source src="{{_media.mp4}}" type="video/mp4"/>
+					<source src="{{_media.ogv}}" type="video/ogg"/>
 				</video>
 			{{/if}}
         {{/if}}
