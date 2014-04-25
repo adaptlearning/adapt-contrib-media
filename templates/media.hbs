@@ -1,18 +1,22 @@
 <div class="media-inner component-inner">
     {{> component this}}
     <div class="media-widget component-widget">
-	
-		{{#if _media.mp3}}
-			<audio src="{{_media.mp3}}" type="audio/mp3"/>
-		{{else}}
-			{{#if _media.ogg}}
-				<audio src="{{_media.ogg}}" type="audio/ogg"/>			
-			{{else}}
-				<video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
-					<source src="{{_media.mp4}}" type="video/mp4"/>
-					<source src="{{_media.ogv}}" type="video/ogg"/>
-				</video>
-			{{/if}}
+
+    {{#if _media.mp3}}
+      <audio src="{{_media.mp3}}" type="audio/mp3"/>
+    {{else}}
+      {{#if _media.ogg}}
+        <audio src="{{_media.ogg}}" type="audio/ogg"/>
+      {{else}}
+        <video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
+          {{#if _media.source}}
+            <source src="{{_media.source}}" type="{{_media.type}}"/>
+          {{else}}
+            <source src="{{_media.mp4}}" type="video/mp4"/>
+            <source src="{{_media.ogv}}" type="video/ogg"/>
+          {{/if}}
+        </video>
+      {{/if}}
         {{/if}}
     </div>
 </div>

@@ -2,4 +2,22 @@
 	.me-plugin {
 		position:static;
 	}
+  .external-source {
+    .mejs-container {
+        position: relative;
+        padding-top: 35px;
+        height: 0;
+        overflow: hidden;
+    }
+    .mejs-container iframe {
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .mejs-overlay-button {
+      display: none;
+    }
+  }
 }
