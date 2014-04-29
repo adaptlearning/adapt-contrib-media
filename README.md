@@ -19,17 +19,24 @@ For example JSON format, see [example.json](https://github.com/adaptlearning/ada
 
 Audio example
 
-	"media": {
+	"_media": {
 		"mp3": "course/assets/audio.mp3",
 		"ogg": "course/assets/audio.ogg"
 	},
 
 Video example
 
-	"media": {
+	"_media": {
 		"mp4": "course/assets/video.mp4",
 		"ogv": "course/assets/video.ogv"
 	},
+
+YouTube Video example
+
+  "_media": {
+    "source": "http://www.youtube.com/watch?v=nOEw9iiopwI",
+    "type": "video/youtube"
+  },
 
 Important
 ---------
