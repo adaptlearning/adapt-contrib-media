@@ -53,6 +53,7 @@ define(function(require) {
             var completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
             if (completionEvent !== "inview") {
                 mediaElement.addEventListener(completionEvent, _.bind(function() {
+                    mediaElement.removeEventListener(completionEvent);
                     this.setCompletionStatus();
                 }, this), false);
             }
