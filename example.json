@@ -9,10 +9,12 @@
 	"displayTitle": "Title of the media component",
 	"body": "This is optional body text. Select the play button to start the video.",
 	"instruction": "",
+	"_setCompletionOn":"inview",
 	"_media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
 		"ogv": "course/assets/big_buck_bunny.ogv",
-		"poster": "course/assets/big-buck-bunny.jpg",
-		"_allowCompletionOnInview":false
+		"poster": "course/assets/big-buck-bunny.jpg"
 	}
 }
+
+//_setCompletionOn accepts 'inview', 'play' and 'ended'
