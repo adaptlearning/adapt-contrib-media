@@ -1,6 +1,6 @@
 {
   "name": "adapt-contrib-media",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An media component",
   "main": "",
   "scripts": {
@@ -16,7 +16,7 @@
     "url": "https://github.com/adaptlearning/adapt-contrib-media/issues"
   },
   "devDependencies": {
-    "karma": "~0.9",
+    "karma": "~0.10",
     "karma-mocha": "*",
     "karma-expect": "*"
   }

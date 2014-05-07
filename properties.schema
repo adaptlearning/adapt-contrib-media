@@ -1,0 +1,29 @@
+{
+  "type":"object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://jsonschema.net",
+  "$ref": "http://localhost/plugins/content/component/model.schema",
+  "properties":{
+    "media": {
+      "type":"object",
+      "properties":{
+        "mp4": {
+            "type":"string",
+            "required":false
+        },
+        "ogv": {
+            "type":"string",
+            "required":false
+        },
+        "mp3": {
+            "type":"string",
+            "required":false
+        },
+        "ogg": {
+            "type":"string",
+            "required":false
+        }
+      }
+    }
+  }
+}
