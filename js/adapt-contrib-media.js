@@ -29,11 +29,12 @@ define(function(require) {
         },
 
         postRender: function() {
-            this.mediaElement = this.$('audio, video').mediaelementplayer({
+            var mediaElement = this.$('audio, video').mediaelementplayer({
                 pluginPath:'assets/',
                 success: _.bind(function (mediaElement, domObject) {
+                    this.mediaElement = mediaElement;
                     this.setReadyStatus();
-                    this.setupEventListeners(mediaElement);
+                    this.setupEventListeners();
                 }, this),
                 features: ['playpause','progress','current','duration']
             });
@@ -45,13 +46,10 @@ define(function(require) {
             }
         },
 
-        setupEventListeners: function(mediaElement) {
-            var completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
-            if (completionEvent !== "inview") {
-                mediaElement.addEventListener(completionEvent, _.bind(function() {
-                    mediaElement.removeEventListener(completionEvent);
-                    this.setCompletionStatus();
-                }, this), false);
+        setupEventListeners: function() {
+            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
+            if (this.completionEvent !== "inview") {
+                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
@@ -74,6 +72,12 @@ define(function(require) {
                 }
                 
             }
+        },
+
+        onCompletion: function() {
+            this.setCompletionStatus();
+            // removeEventListener needs to pass in the method to remove the event in firefox and IE10
+            this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
         }
 
     });
