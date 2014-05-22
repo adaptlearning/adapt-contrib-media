@@ -10,15 +10,15 @@
       "properties":{
         "mp4": {
           "type":"string",
-          "required":true
+          "required":false
         },
         "ogv": {
           "type":"string",
-          "required":true
+          "required":false
         },
         "poster": {
           "type":"string",
-          "required":true
+          "required":false
         }
       }
     },
