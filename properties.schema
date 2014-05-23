@@ -4,25 +4,28 @@
   "id": "http://jsonschema.net",
   "$ref": "http://localhost/plugins/content/component/model.schema",
   "properties":{
-    "media": {
+    "_media": {
       "type":"object",
+      "required":false,
       "properties":{
         "mp4": {
-            "type":"string",
-            "required":true
+          "type":"string",
+          "required":false
         },
         "ogv": {
-            "type":"string",
-            "required":true
+          "type":"string",
+          "required":false
         },
         "poster": {
-            "type":"string"
-        },
-        "_allowCompletionOnInview": {
-            "type":"boolean",
-            "required":true
+          "type":"string",
+          "required":false
         }
       }
+    },
+    "_setCompletionOn": {
+      "type":"string",
+      "required":true,
+      "enum": ["inview", "play", "ended"]
     }
   }
 }
