@@ -1,8 +1,8 @@
 /*
 * adapt-contrib-media
 * License - http://github.com/adaptlearning/adapt_framework/LICENSE
-* Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>,
-*               Kevin Corry <kevinc@learningpool.com>
+* Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@gmail.com>,
+*               Kevin Corry <kevinc@learningpool.com>, Kirsty Hames <kirstyjhames@gmail.com>
 */
 define(function(require) {
 
