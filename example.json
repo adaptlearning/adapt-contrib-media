@@ -13,7 +13,8 @@
 	"_media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
 		"ogv": "course/assets/big_buck_bunny.ogv",
-		"poster": "course/assets/big-buck-bunny.jpg"
+		"poster": "course/assets/big-buck-bunny.jpg",
+		"transcript": "assets/transcript.pdf"
 	}
 }
 
