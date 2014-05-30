@@ -18,6 +18,15 @@
         </video>
       {{/if}}
     {{/if}}
-    <div class="media-transcript-container"><a href="assets/transcript.pdf" class="media-transcript">Transcript (pdf 4kb)</a></div>
+
+    {{#if _media.transcriptLink}}
+      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript">
+        {{#if _media.transcriptText}}
+          {{_media.transcriptText}}
+        {{else}}
+          {{_media.transcriptLink}}
+        {{/if}}
+      </a>
+    {{/if}}
     </div>
 </div>

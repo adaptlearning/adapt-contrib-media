@@ -22,13 +22,14 @@
   }
   
   .media-transcript {
-    padding: 10px 15px;
+    padding: @item-padding;
     display: block;
     color: @item-text-color;
-    background-color: @primary-color;
+    background-color: @item-color;
     text-decoration: none;
     &:hover {
-      text-decoration: underline;
+      color: @item-text-hover-color;
+      background-color: @item-hover-color;
     }
   }
 }
