@@ -2,6 +2,10 @@
 	.me-plugin {
     position:static;
 	}
+  .mejs-container .mejs-controls .mejs-time {
+    padding-right:1px;
+    padding-left:1px;
+  }
   .external-source {
     .mejs-container {
         position: relative;
@@ -18,6 +22,18 @@
     }
     .mejs-overlay-button {
       display: none;
+    }
+  }
+  
+  .media-transcript {
+    padding: @item-padding;
+    display: block;
+    color: @item-text-color;
+    background-color: @item-color;
+    text-decoration: none;
+    &:hover {
+      color: @item-text-hover-color;
+      background-color: @item-hover-color;
     }
   }
 }
