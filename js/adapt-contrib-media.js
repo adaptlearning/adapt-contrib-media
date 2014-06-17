@@ -16,6 +16,10 @@ define(function(require) {
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
+            // if accessibility is enabled show media controls
+            if (Adapt.config.get('_accessibility')._isEnabled) {
+                $('.mejs-controls').show();
+            }
         },
 
         onScreenSizeChanged: function() {
