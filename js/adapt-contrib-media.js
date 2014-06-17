@@ -21,7 +21,6 @@ define(function(require) {
         },
 
         showMediaControls: function() {
-            console.log('controls');
             $('.mejs-controls').show();
         },
 
