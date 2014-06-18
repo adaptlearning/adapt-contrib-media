@@ -16,12 +16,11 @@ define(function(require) {
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
-            // listen to accessibility to be toggled and show media controls
-            this.listenTo(Adapt, 'accessibility:toggle', this.showMediaControls);
-        },
 
-        showMediaControls: function() {
-            $('.mejs-controls').show();
+            // If accessibility is enabled call toggleMediaControls
+            if (Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled) {
+                toggleMediaControls();
+            }
         },
 
         onScreenSizeChanged: function() {
@@ -49,6 +48,18 @@ define(function(require) {
             if (this.model.get('_media').source) {
                 this.$('.media-widget').addClass('external-source');
                 this.setReadyStatus();
+            }
+            // This listen to 'accessibility:toggle', call toggleMediaControls when triggered
+            this.listenTo(Adapt, 'accessibility:toggle', this.toggleMediaControls);
+        },
+
+        toggleMediaControls: function() {
+            // If accessibility is enabled show media controls
+            if (Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled) {
+                this.$('.mejs-controls').show();
+                // Otherwise hide media controls
+            } else {
+                this.$('.mejs-controls').hide();
             }
         },
 
