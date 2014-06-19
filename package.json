@@ -1,7 +1,7 @@
 {
   "name": "adapt-contrib-media",
-  "version": "0.0.1",
-  "description": "An media component",
+  "version": "0.0.2",
+  "description": "A media component",
   "main": "",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
