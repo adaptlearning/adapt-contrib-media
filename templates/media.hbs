@@ -1,4 +1,4 @@
-<div class="media-inner component-inner">
+<div class="media-inner component-inner" role="region" aria-label="{{_accessibility._ariaRegions.media}}">
     {{> component this}}
     <div class="media-widget component-widget">
 
@@ -19,6 +19,7 @@
       {{/if}}
     {{/if}}
     {{#if _media.transcriptLink}}
+    <div class="media-transcript-container" role="document">
       <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript">
         {{#if _media.transcriptText}}
           {{_media.transcriptText}}
@@ -26,6 +27,7 @@
           {{_media.transcriptLink}}
         {{/if}}
       </a>
+    </div>
     {{/if}}
     </div>
 </div>

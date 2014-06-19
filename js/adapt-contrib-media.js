@@ -44,6 +44,19 @@ define(function(require) {
                 this.$('.media-widget').addClass('external-source');
                 this.setReadyStatus();
             }
+            // This listen to 'accessibility:toggle', call toggleMediaControls when triggered
+            this.listenTo(Adapt, 'accessibility:toggle', this.toggleMediaControls);
+            this.toggleMediaControls();
+        },
+
+        toggleMediaControls: function() {
+            // If accessibility is enabled show media controls
+            if (Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled) {
+                this.$('.mejs-controls').show();
+                // Otherwise hide media controls
+            } else {
+                this.$('.mejs-controls').hide();
+            }
         },
 
         setupEventListeners: function() {

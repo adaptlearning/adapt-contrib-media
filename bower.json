@@ -1,12 +1,10 @@
 {
   "name": "adapt-contrib-media",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
   "authors": [
     "Chris Steele <chris.steele@kineo.com>"
   ],
-  "displayName" : "Media",
-  "component" : "media",
   "description": "Playback of video and audio with a Flash Player fallback for IE8+",
   "main": "/js/adapt-contrib-media.js",
   "keywords": [
