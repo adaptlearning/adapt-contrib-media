@@ -20,12 +20,14 @@
     {{/if}}
     {{#if _media.transcriptLink}}
     <div class="media-transcript-container" role="document">
-      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript">
-        {{#if _media.transcriptText}}
-          {{_media.transcriptText}}
-        {{else}}
-          {{_media.transcriptLink}}
-        {{/if}}
+      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript button">
+        <div class="transcript-text-container">
+          {{#if _media.transcriptText}}
+            {{_media.transcriptText}}
+          {{else}}
+            {{_media.transcriptLink}}
+          {{/if}}
+        </div>
       </a>
     </div>
     {{/if}}
