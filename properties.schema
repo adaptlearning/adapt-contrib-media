@@ -7,25 +7,30 @@
     "_media": {
       "type":"object",
       "required":false,
+      "title": "Media options",
       "properties":{
         "mp4": {
           "type":"string",
-          "required":false
+          "required":false,
+          "title": "Video in mp4 format"
         },
         "ogv": {
           "type":"string",
-          "required":false
+          "required":false,
+          "title": "Video in ogv format"
         },
         "poster": {
           "type":"string",
-          "required":false
+          "required":false,
+          "title": "Poster graphic"
         }
       }
     },
     "_setCompletionOn": {
       "type":"string",
       "required":true,
-      "enum": ["inview", "play", "ended"]
+      "enum": ["inview", "play", "ended"],
+      "title": "Set completion status"
     }
   }
 }
