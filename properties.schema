@@ -4,25 +4,45 @@
   "id": "http://jsonschema.net",
   "$ref": "http://localhost/plugins/content/component/model.schema",
   "properties":{
+    "instruction": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "help": "This is the instruction text"
+    },
     "_media": {
       "type":"object",
-      "required":false,
-      "title": "Media options",
+      "required":true,
+      "title": "Media",
       "properties":{
         "mp4": {
           "type":"string",
-          "required":false,
-          "title": "Video in mp4 format"
+          "required":true,
+          "default": "",
+          "title": "MP4 Link",
+          "inputType": "Asset:video",
+          "validators": ["required"],
+          "help": "Link to an MP4 video"
         },
         "ogv": {
           "type":"string",
           "required":false,
-          "title": "Video in ogv format"
+          "default": "",
+          "title": "OGV Link",
+          "inputType": "Asset:video",
+          "validators": ["required"],
+          "help": "Link to an OGV video"
         },
         "poster": {
           "type":"string",
           "required":false,
-          "title": "Poster graphic"
+          "default": "",
+          "title": "Poster Link",
+          "inputType": "Asset:image",
+          "validators": [],
+          "help": "Image displayed before the video is played"
         }
       }
     },
@@ -30,7 +50,11 @@
       "type":"string",
       "required":true,
       "enum": ["inview", "play", "ended"],
-      "title": "Set completion status"
+      "default": "inview",
+      "title": "Set completion of Video on",
+      "inputType": {"type": "Select", "options":["inview", "play", "ended"]},
+      "validators": ["required"],
+      "help": "This tells Adapt when to set this video to complete"
     }
   }
 }
