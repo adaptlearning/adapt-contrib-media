@@ -19,11 +19,11 @@
       "properties":{
         "mp4": {
           "type":"string",
-          "required":true,
+          "required":false,
           "default": "",
           "title": "MP4 Link",
           "inputType": "Asset:video",
-          "validators": ["required"],
+          "validators": [],
           "help": "Link to an MP4 video"
         },
         "ogv": {
@@ -32,7 +32,7 @@
           "default": "",
           "title": "OGV Link",
           "inputType": "Asset:video",
-          "validators": ["required"],
+          "validators": [],
           "help": "Link to an OGV video"
         },
         "poster": {
