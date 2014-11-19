@@ -35,6 +35,15 @@
           "validators": [],
           "help": "Link to an OGV video"
         },
+        "mp3": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "MP3 Link",
+          "inputType": "Asset:audio",
+          "validators": [],
+          "help": "Link to an MP3 audio"
+        },
         "poster": {
           "type":"string",
           "required":false,
