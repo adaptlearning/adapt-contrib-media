@@ -21,16 +21,22 @@ define(function(require) {
         },
 
         postRender: function() {
-            var mediaElement = this.$('audio, video').mediaelementplayer({
-                pluginPath: 'assets/',
-                success: _.bind(function(mediaElement, domObject) {
-                    this.mediaElement = mediaElement;
-                    this.setReadyStatus();
-                    this.setupEventListeners();
-                }, this),
-                features: ['playpause', 'progress', 'current', 'duration']
-            });
+            this.setupPlayer();
+        },
 
+
+        setupPlayer: function() {
+            if(!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
+
+            var modelOptions = this.model.get('_playerOptions');
+
+            if(!modelOptions.pluginPath) modelOptions.pluginPath = 'assets/';
+            if(!modelOptions.features) modelOptions.features = ['playpause','progress','current','duration'];
+            modelOptions.success = _.bind(this.onPlayerReady, this);
+
+            // create the player
+            this.$('audio, video').mediaelementplayer(modelOptions);
+            
             // We're streaming - set ready now, as success won't be called above
             if (this.model.get('_media').source) {
                 this.$('.media-widget').addClass('external-source');
@@ -40,6 +46,16 @@ define(function(require) {
             // This listen to 'accessibility:toggle', call toggleMediaControls when triggered
             this.listenTo(Adapt, 'accessibility:toggle', this.toggleMediaControls);
             this.toggleMediaControls();
+        },
+
+        setupEventListeners: function() {
+            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
+
+            if (this.completionEvent !== 'inview') {
+                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
+            } else {
+                this.$('.component-widget').on('inview', _.bind(this.inview, this));
+            }
         },
 
         // Used to check if the media should reset on revisit
@@ -55,16 +71,6 @@ define(function(require) {
             }
         },
 
-        onScreenSizeChanged: function() {
-            this.$('audio, video').width(this.$('.component-widget').width());
-        },
-
-        onDeviceChanged: function() {
-            if (this.model.get('_media').source) {
-                this.$('.mejs-container').width(this.$('.component-widget').width());
-            }
-        },
-
         toggleMediaControls: function() {
             // If accessibility is enabled show media controls
             if (Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled) {
@@ -72,16 +78,6 @@ define(function(require) {
                 // Otherwise hide media controls
             } else {
                 this.$('.mejs-controls').hide();
-            }
-        },
-
-        setupEventListeners: function() {
-            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
-
-            if (this.completionEvent !== 'inview') {
-                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
-            } else {
-                this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
         },
 
@@ -108,8 +104,23 @@ define(function(require) {
 
             // removeEventListener needs to pass in the method to remove the event in firefox and IE10
             this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
-        }
+        },
 
+        onDeviceChanged: function() {
+            if (this.model.get('_media').source) {
+                this.$('.mejs-container').width(this.$('.component-widget').width());
+            }
+        },
+
+        onPlayerReady: function (mediaElement, domObject) {
+            this.mediaElement = mediaElement;
+            this.setReadyStatus();
+            this.setupEventListeners();
+        },
+
+        onScreenSizeChanged: function() {
+            this.$('audio, video').width(this.$('.component-widget').width());
+        }
     });
 
     Adapt.register('media', Media);
