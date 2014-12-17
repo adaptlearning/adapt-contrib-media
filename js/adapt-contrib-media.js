@@ -73,7 +73,10 @@ define(function(require) {
 
         toggleMediaControls: function() {
             // If accessibility is enabled show media controls
-            if (Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled) {
+            var accessEnabled = Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled;
+            var alwaysShowControls = this.model.get('_playerOptions').alwaysShowControls;
+
+            if (accessEnabled || alwaysShowControls) {
                 this.$('.mejs-controls').show();
                 // Otherwise hide media controls
             } else {
