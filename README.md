@@ -1,4 +1,4 @@
-adapt-contrib-media
+adapt-media-autoplay
 ===================
 
 A basic media component that plays audio and video. This component uses the HTML5 audio and video specification and has a Flash/Silverlight alternative for browsers that don't support HTML5.
@@ -8,14 +8,14 @@ The component uses [MediaElement.js](http://mediaelementjs.com/) (v2.13.1) which
 Installation
 ------------
 
-First, be sure to install the [Adapt Command Line Interface](https://github.com/cajones/adapt-cli), then from the command line run:
+First, be sure to install the [Adapt Command Line Interface](https://github.com/adaptlearning/adapt-cli), then from the command line run:
 
-		adapt install adapt-contrib-media
+		adapt install adapt-media-autoplay
 
 Usage
 -----
 
-For example JSON format, see [example.json](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json).
+For example JSON format, see [example.json](https://github.com/deltanet/adapt-media-autoplay/blob/master/example.json).
 
 Audio example
 

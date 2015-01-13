@@ -2,7 +2,7 @@
 	"_id":"c-15",
 	"_parentId":"b-10",
 	"_type":"component",
-	"_component":"media",
+	"_component":"media-autoplay",
 	"_classes":"",
 	"_layout":"left",
 	"title":"Title of the media component",
@@ -10,6 +10,7 @@
 	"body": "This is optional body text. Select the play button to start the video.",
 	"instruction": "",
 	"_setCompletionOn":"inview",
+	"_autoPlay":true,
 	"_media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
 		"ogv": "course/assets/big_buck_bunny.ogv",

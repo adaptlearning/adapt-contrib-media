@@ -1,17 +1,17 @@
 /*
-* adapt-contrib-media
+* adapt-media-autoplay
 * License - http://github.com/adaptlearning/adapt_framework/LICENSE
-* Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>,
+* Maintainers - Dan Gray <dan@delta-net.co.uk>, Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>,
 *               Kevin Corry <kevinc@learningpool.com>
 */
 define(function(require) {
 
-    var mep = require("components/adapt-contrib-media/js/mediaelement-and-player.min.js");
+    var mep = require("components/adapt-media-autoplay/js/mediaelement-and-player.min.js");
     var Adapt = require("coreJS/adapt");
     var ComponentView = require("coreViews/componentView");
     var Handlebars = require('handlebars');
 
-    var Media = ComponentView.extend({
+    var MediaAutoplay = ComponentView.extend({
 
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
@@ -41,7 +41,7 @@ define(function(require) {
 
             // We're streaming - set ready now, as success won't be called above
             if (this.model.get('_media').source) {
-                this.$('.media-widget').addClass('external-source');
+                this.$('.media-autoplay-widget').addClass('external-source');
                 this.setReadyStatus();
             }
         },
@@ -82,8 +82,8 @@ define(function(require) {
 
     });
 
-    Adapt.register("media", Media);
+    Adapt.register("media-autoplay", MediaAutoplay);
 
-    return Media;
+    return MediaAutoplay;
 
 });
