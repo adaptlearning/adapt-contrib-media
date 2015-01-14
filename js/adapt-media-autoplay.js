@@ -39,6 +39,8 @@ define(function(require) {
                 features: ['playpause','progress','current','duration']
             });
 
+            this.$('.component-widget').on('inview', _.bind(this.inview, this));
+
             // We're streaming - set ready now, as success won't be called above
             if (this.model.get('_media').source) {
                 this.$('.media-autoplay-widget').addClass('external-source');
@@ -67,10 +69,25 @@ define(function(require) {
                 }
 
                 if (this._isVisibleTop && this._isVisibleBottom) {
+                    // will need to check if accessibility is enabled:
+                    //if (this.model.get('_autoPlay') && (Adapt.config.get('_accessibility')._isEnabled === undefined || Adapt.config.get('_accessibility')._isEnabled === true)) {
+                    if (this.model.get('_autoPlay')) {
+                        this.playMediaElement(true);
+                    }
                     this.$('.component-inner').off('inview');
                     this.setCompletionStatus();
                 }
                 
+            } else {
+                this.playMediaElement(false);
+            }
+        },
+
+        playMediaElement: function(state) {
+            if (this.model.get('_isVisible') && state) {
+                this.mediaElement.play();
+            } else if (state === false) {
+                this.mediaElement.pause();
             }
         },
 
