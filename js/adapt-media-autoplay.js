@@ -1,17 +1,17 @@
 /*
-* adapt-contrib-media
+* adapt-media-autoplay
 * License - http://github.com/adaptlearning/adapt_framework/LICENSE
-* Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>,
+* Maintainers - Dan Gray <dan@delta-net.co.uk>, Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@hotmail.com>,
 *               Kevin Corry <kevinc@learningpool.com>
 */
 define(function(require) {
 
-    var mep = require("components/adapt-contrib-media/js/mediaelement-and-player.min.js");
+    var mep = require("components/adapt-media-autoplay/js/mediaelement-and-player.min.js");
     var Adapt = require("coreJS/adapt");
     var ComponentView = require("coreViews/componentView");
     var Handlebars = require('handlebars');
 
-    var Media = ComponentView.extend({
+    var MediaAutoplay = ComponentView.extend({
 
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
@@ -39,9 +39,11 @@ define(function(require) {
                 features: ['playpause','progress','current','duration']
             });
 
+            this.$('.component-widget').on('inview', _.bind(this.inview, this));
+
             // We're streaming - set ready now, as success won't be called above
             if (this.model.get('_media').source) {
-                this.$('.media-widget').addClass('external-source');
+                this.$('.media-autoplay-widget').addClass('external-source');
                 this.setReadyStatus();
             }
         },
@@ -67,10 +69,26 @@ define(function(require) {
                 }
 
                 if (this._isVisibleTop && this._isVisibleBottom) {
+                    // may need some more checking here
+                    // will need to check if accessibility is enabled:
+                    //if (this.model.get('_autoPlay') && (Adapt.config.get('_accessibility')._isEnabled === undefined || Adapt.config.get('_accessibility')._isEnabled === true)) {
+                    if (this.model.get('_autoPlay')) {
+                        this.playMediaElement(true);
+                    }
                     this.$('.component-inner').off('inview');
                     this.setCompletionStatus();
                 }
                 
+            } else {
+                this.playMediaElement(false);
+            }
+        },
+
+        playMediaElement: function(state) {
+            if (this.model.get('_isVisible') && state) {
+                this.mediaElement.play();
+            } else if (state === false) {
+                this.mediaElement.pause();
             }
         },
 
@@ -82,8 +100,8 @@ define(function(require) {
 
     });
 
-    Adapt.register("media", Media);
+    Adapt.register("media-autoplay", MediaAutoplay);
 
-    return Media;
+    return MediaAutoplay;
 
 });

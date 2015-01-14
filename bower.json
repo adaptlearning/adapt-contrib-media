@@ -1,19 +1,19 @@
 {
-  "name": "adapt-contrib-media",
-  "version": "1.1.2",
-  "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
+  "name": "adapt-media-autoplay",
+  "version": "1.0.0",
+  "homepage": "https://github.com/deltanet/adapt-media-autoplay",
   "authors": [
-    "Chris Steele <chris.steele@kineo.com>"
+    "Dan Gray <dan@delta-net.co.uk, Chris Steele <chris.steele@kineo.com>"
   ],
-  "displayName": "Media",
-  "component": "media",
+  "displayName": "Media Auto Play",
+  "component": "media-autoplay",
   "assetFields" : [
     "_media.ogv",
     "_media.mp4",
     "_media.poster"
   ],
-  "description": "Playback of video and audio with a Flash Player fallback for IE8+",
-  "main": "/js/adapt-contrib-media.js",
+  "description": "Playback of video and audio with a Flash Player fallback for IE8+ with the option to auto play",
+  "main": "/js/adapt-media-autoplay.js",
   "keywords": [
     "adapt-plugin",
     "adapt-component"

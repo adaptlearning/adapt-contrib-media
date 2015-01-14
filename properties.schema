@@ -64,6 +64,15 @@
       "inputType": {"type": "Select", "options":["inview", "play", "ended"]},
       "validators": ["required"],
       "help": "This tells Adapt when to set this video to complete"
+    },
+    "_autoPlay": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Set autoplay of video or audio",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "Select 'true' to auto play media"
     }
   }
 }
