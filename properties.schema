@@ -8,7 +8,7 @@
       "type": "string",
       "required": true,
       "enum": ["full-width", "half-width", "both"],
-      "default": "full-width",
+      "default": "both",
       "editorOnly": true
     },
     "instruction": {
