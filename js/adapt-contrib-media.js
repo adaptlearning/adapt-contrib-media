@@ -16,6 +16,7 @@ define(function(require) {
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
+            this.listenTo(this.model, 'change:_isCompelte', this.removeInviewListener);
         },
 
         onScreenSizeChanged: function() {
@@ -67,7 +68,6 @@ define(function(require) {
                 }
 
                 if (this._isVisibleTop && this._isVisibleBottom) {
-                    this.$('.component-inner').off('inview');
                     this.setCompletionStatus();
                 }
                 
@@ -78,6 +78,12 @@ define(function(require) {
             this.setCompletionStatus();
             // removeEventListener needs to pass in the method to remove the event in firefox and IE10
             this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
+        },
+
+        removeInviewListener: function(model, changeAttribute) {
+            if (changeAttribute && this.completionEvent === "inview") {
+                this.$('.component-widget').off('inview');
+            }
         }
 
     });
