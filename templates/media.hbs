@@ -15,6 +15,11 @@
             <source src="{{_media.mp4}}" type="video/mp4"/>
             <source src="{{_media.ogv}}" type="video/ogg"/>
           {{/if}}
+          {{#if _media.subtitles}}
+            {{#each _media.subtitles}} 
+            <track kind="subtitles" src="{{this}}" srclang="{{@key}}" />
+            {{/each}}
+          {{/if}}          
         </video>
       {{/if}}
     {{/if}}
