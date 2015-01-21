@@ -10,10 +10,15 @@
 	"body": "This is optional body text. Select the play button to start the video.",
 	"instruction": "",
 	"_setCompletionOn":"inview",
+	"_useClosedCaptions":true,	
 	"_media": {
 		"mp4": "course/assets/big_buck_bunny.mp4",
 		"ogv": "course/assets/big_buck_bunny.ogv",
-		"poster": "course/assets/big-buck-bunny.jpg"
+		"poster": "course/assets/big-buck-bunny.jpg",
+            	"cc": {
+                	"en":"course/en/video/01_01_040_sub.srt",
+                	"pl":"course/en/video/01_01_040_sub-pl.srt"
+            	}
 	}
 }
 
