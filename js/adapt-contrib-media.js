@@ -29,6 +29,10 @@ define(function(require) {
         },
 
         postRender: function() {
+            var lFeatures = ['playpause','progress','current','duration'];
+            if(this.model.get("_useClosedCaptions")){
+                lFeatures.push("tracks");
+            }
             var mediaElement = this.$('audio, video').mediaelementplayer({
                 pluginPath:'assets/',
                 success: _.bind(function (mediaElement, domObject) {
@@ -36,7 +40,7 @@ define(function(require) {
                     this.setReadyStatus();
                     this.setupEventListeners();
                 }, this),
-                features: ['playpause','progress','current','duration']
+                features: lFeatures;
             });
 
             // We're streaming - set ready now, as success won't be called above
