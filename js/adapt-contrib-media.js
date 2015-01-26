@@ -29,9 +29,9 @@ define(function(require) {
         },
 
         postRender: function() {
-            var lFeatures = ['playpause','progress','current','duration'];
+            var features = ['playpause','progress','current','duration'];
             if(this.model.get("_useClosedCaptions")){
-                lFeatures.push("tracks");
+                features.push("tracks");
             }
             var mediaElement = this.$('audio, video').mediaelementplayer({
                 pluginPath:'assets/',
@@ -40,7 +40,7 @@ define(function(require) {
                     this.setReadyStatus();
                     this.setupEventListeners();
                 }, this),
-                features: lFeatures;
+                features: features;
             });
 
             // We're streaming - set ready now, as success won't be called above
