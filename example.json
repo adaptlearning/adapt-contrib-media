@@ -12,13 +12,19 @@
 	"_setCompletionOn":"inview",
 	"_useClosedCaptions":true,	
 	"_media": {
-		"mp4": "course/assets/big_buck_bunny.mp4",
-		"ogv": "course/assets/big_buck_bunny.ogv",
-		"poster": "course/assets/big-buck-bunny.jpg",
-            	"cc": {
-                	"en":"course/en/video/01_01_040_sub.srt",
-                	"pl":"course/en/video/01_01_040_sub-pl.srt"
-            	}
+		"mp4": "course/en/video/big_buck_bunny.mp4",
+		"ogv": "course/en/video/big_buck_bunny.ogv",
+		"poster": "course/en/video/big-buck-bunny.jpg",
+            	"cc": [
+		        {
+		            "srclang": "en",
+		            "src": "course/en/video/big_buck_bunny_sub.srt"
+		        },
+		        {
+		            "srclang": "pl",
+		            "src": "course/en/video/big_buck_bunny_sub-pl.srt"
+		        }
+		]
 	}
 }
 
