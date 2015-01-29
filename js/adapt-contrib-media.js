@@ -84,6 +84,11 @@ define(function(require) {
             if (changeAttribute && this.completionEvent === "inview") {
                 this.$('.component-widget').off('inview');
             }
+        },
+
+        remove: function() {
+            this.$('.component-widget').off('inview');
+            Backbone.View.prototype.remove.apply(this, arguments);
         }
 
     });
