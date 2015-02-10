@@ -10,6 +10,7 @@
 	"body": "This is optional body text. Select the play button to start the video.",
 	"instruction": "",
 	"_setCompletionOn":"inview",
+        "_forceBlockCompletion":true,
 	"_useClosedCaptions":true,	
 	"_media": {
 		"mp4": "course/en/video/big_buck_bunny.mp4",
