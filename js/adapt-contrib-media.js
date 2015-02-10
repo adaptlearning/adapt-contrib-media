@@ -28,7 +28,17 @@ define(function(require) {
                 this.$('.mejs-container').width(this.$('.component-widget').width());
             }
         },
-
+        
+        forceBlockCompletion: function(){
+            //
+            var siblings = this.model.getSiblings(false);
+            
+            siblings.each(function(model){
+                //set to complete
+                model.set('_isComplete', true);
+            });
+            //
+        },
         postRender: function() {
             var mediaElement = this.$('audio, video').mediaelementplayer({
                 pluginPath:'assets/',
@@ -76,6 +86,10 @@ define(function(require) {
 
         onCompletion: function() {
             this.setCompletionStatus();
+            
+            if(this.model.get('_forceBlockCompletion'))
+                this.forceBlockCompletion();
+            
             // removeEventListener needs to pass in the method to remove the event in firefox and IE10
             this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
         },
