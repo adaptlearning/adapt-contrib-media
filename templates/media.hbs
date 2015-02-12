@@ -1,4 +1,4 @@
-<div class="media-inner component-inner" role="region" aria-label="{{_globals._components._media.ariaRegion}}">
+<div class="media-inner component-inner" role="region" aria-label="{{_globals._components._media.ariaRegion}}" {{#if _globals._components._media.ariaRegion}}tabindex="0"{{/if}}>
     {{> component this}}
     <div class="media-widget component-widget">
 
@@ -19,8 +19,8 @@
       {{/if}}
     {{/if}}
     {{#if _media.transcriptLink}}
-    <div class="media-transcript-container" role="document">
-      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript button">
+    <div class="media-transcript-container">
+      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript button" role="button" aria-label="{{_globals._accessibility._ariaLabels.transcript}}">
         <div class="transcript-text-container">
           {{#if _media.transcriptText}}
             {{_media.transcriptText}}
