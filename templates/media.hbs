@@ -1,6 +1,6 @@
 <div class="media-inner component-inner" role="region" aria-label="{{_globals._components._media.ariaRegion}}" {{#if _globals._components._media.ariaRegion}}tabindex="0"{{/if}}>
     {{> component this}}
-    <div class="media-widget component-widget">
+    <div class="media-widget component-widget a11y-ignore-aria">
 
     {{#if _media.mp3}}
       <audio src="{{_media.mp3}}" type="audio/mp3"/>
