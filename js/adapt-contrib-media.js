@@ -40,7 +40,7 @@ define(function(require) {
                     this.setReadyStatus();
                     this.setupEventListeners();
                 }, this),
-                features: features;
+                features: features
             });
 
             // We're streaming - set ready now, as success won't be called above
