@@ -59,8 +59,46 @@
           "inputType": "Asset:image",
           "validators": [],
           "help": "Image displayed before the video is played"
+        },
+        "cc":{
+            "type":"array",
+            "required":false,
+            "title":"Closed Captions list",
+            "items":{
+                "type":"object",
+                "required":true,
+                "properties":{
+                    "srclang": {
+                        "type":"string",
+                        "required":true,
+                        "default": "en",
+                        "title": "Language code",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "help": "The language of the closed caption, correct values can be found here: http://www.w3schools.com/tags/ref_language_codes.asp"
+                    },
+		            "src": {
+                        "type":"string",
+                        "required":true,
+                        "default": "",
+                        "title": "Link to the closed caption VTT file",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "help": "The link to the VTT file containing closed captions for chosen language"
+                    }
+                }
+            }
         }
       }
+    },
+    "_useClosedCaption":{
+        "type":"boolean",
+        "required":false,
+        "default": false,
+        "title": "Use Closed Captions",
+        "inputType": {"type": "Boolean", "options": [true, false]},
+        "validators": [],
+        "help": "If set to 'true', video will allow for Closed Captions and _media.cc object will be required."
     },
     "_setCompletionOn": {
       "type":"string",

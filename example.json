@@ -10,11 +10,23 @@
 	"body": "This is optional body text. Select the play button to start the video.",
 	"instruction": "",
 	"_setCompletionOn":"inview",
+	"_useClosedCaptions":true,	
 	"_media": {
-		"mp4": "course/assets/big_buck_bunny.mp4",
-		"ogv": "course/assets/big_buck_bunny.ogv",
-		"poster": "course/assets/big-buck-bunny.jpg"
+		"mp4": "course/en/video/big_buck_bunny.mp4",
+		"ogv": "course/en/video/big_buck_bunny.ogv",
+		"poster": "course/en/video/big-buck-bunny.jpg",
+            	"cc": [
+		        {
+		            "srclang": "en",
+		            "src": "course/en/video/big_buck_bunny_sub.srt"
+		        },
+		        {
+		            "srclang": "pl",
+		            "src": "course/en/video/big_buck_bunny_sub-pl.srt"
+		        }
+		]
 	}
 }
 
 //_setCompletionOn accepts 'inview', 'play' and 'ended'
+//the keys for cc are used in track srclang attribute, correct values can be found here: http://www.w3schools.com/tags/ref_language_codes.asp, value is the path to closed-captions resource accepted by track tag
