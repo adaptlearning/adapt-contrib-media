@@ -44,10 +44,7 @@ define(function(require) {
 
             // If reset is enabled set defaults
             if (isResetOnRevisit) {
-                this.model.set({
-                    _isEnabled: true,
-                    _isComplete: false
-                });
+                this.model.reset(isResetOnRevisit);
             }
         },
 
