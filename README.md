@@ -18,6 +18,10 @@ See below for notes regarding the component JSON.
 
 The ```setCompletionOn``` setting controls when the component is set to complete, and accepts the following values: "```inview```", "```play```" and "```ended```".
 
+### Closed captions
+
+The correct ‘srclang’ attribute values can be found here: http://www.w3schools.com/tags/ref_language_codes.asp, `src` should be the path to closed-captions resource accepted by track tag (e.g. VTT file).
+
 ### MediaElement.js player
 
 In the interest of customisability, all of MediaElement.js's player options can be configured via the component JSON.
