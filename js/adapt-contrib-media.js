@@ -6,7 +6,7 @@
  */
 define(function(require) {
 
-    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player.min.js');
+    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player.min');
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
@@ -36,16 +36,12 @@ define(function(require) {
 
             // create the player
             this.$('audio, video').mediaelementplayer(modelOptions);
-            
+
             // We're streaming - set ready now, as success won't be called above
             if (this.model.get('_media').source) {
                 this.$('.media-widget').addClass('external-source');
                 this.setReadyStatus();
             }
-
-            // This listen to 'accessibility:toggle', call toggleMediaControls when triggered
-            this.listenTo(Adapt, 'accessibility:toggle', this.toggleMediaControls);
-            this.toggleMediaControls();
         },
 
         setupEventListeners: function() {
@@ -64,23 +60,17 @@ define(function(require) {
 
             // If reset is enabled set defaults
             if (isResetOnRevisit) {
-                this.model.set({
-                    _isEnabled: true,
-                    _isComplete: false
-                });
+                this.model.reset(isResetOnRevisit);
             }
         },
 
-        toggleMediaControls: function() {
-            // If accessibility is enabled show media controls
-            var accessEnabled = Adapt.config.get('_accessibility') && Adapt.config.get('_accessibility')._isEnabled;
-            var alwaysShowControls = this.model.get('_playerOptions').alwaysShowControls;
+        setupEventListeners: function() {
+            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
 
-            if (accessEnabled || alwaysShowControls) {
-                this.$('.mejs-controls').show();
-                // Otherwise hide media controls
+            if (this.completionEvent !== 'inview') {
+                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
             } else {
-                this.$('.mejs-controls').hide();
+                this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
         },
 
@@ -101,6 +91,12 @@ define(function(require) {
                 }
             }
         },
+
+        remove: function() {
+            ComponentView.prototype.remove.call(this);
+            this.mediaElement.stop();
+            //this.removedMediaElement
+        }
 
         onCompletion: function() {
             this.setCompletionStatus();
