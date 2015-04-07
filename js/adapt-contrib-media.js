@@ -96,7 +96,7 @@ define(function(require) {
             ComponentView.prototype.remove.call(this);
             this.mediaElement.stop();
             //this.removedMediaElement
-        }
+        },
 
         onCompletion: function() {
             this.setCompletionStatus();
