@@ -32,9 +32,9 @@ define(function(require) {
 
             var modelOptions = this.model.get('_playerOptions');
 
-            if(!modelOptions.pluginPath) modelOptions.pluginPath = 'assets/';
-            if(!modelOptions.features) modelOptions.features = ['playpause','progress','current','duration'];
-            if(!modelOptions.clickToPlayPause) modelOptions.clickToPlayPause = true;
+            if(modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
+            if(modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
+            if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             // create the player
