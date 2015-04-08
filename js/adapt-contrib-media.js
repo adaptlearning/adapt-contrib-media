@@ -1,8 +1,11 @@
 /*
  * adapt-contrib-media
  * License - http://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
- * Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@gmail.com>,
- *               Kevin Corry <kevinc@learningpool.com>, Kirsty Hames <kirstyjhames@gmail.com>
+ * Maintainers - Chris Steele <chris.steele@kineo.com>,
+ *               Daryl Hedley <darylhedley@gmail.com>,
+ *               Kevin Corry <kevinc@learningpool.com>,
+ *               Kirsty Hames <kirstyjhames@gmail.com>,
+ *               Thomas Taylor <thomas.taylor@kineo.com>
  */
 define(function(require) {
 
@@ -16,7 +19,6 @@ define(function(require) {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
 
-            // Checks to see if the media should be reset on revisit
             this.checkIfResetOnRevisit();
         },
 
@@ -54,7 +56,6 @@ define(function(require) {
             }
         },
 
-        // Used to check if the media should reset on revisit
         checkIfResetOnRevisit: function() {
             var isResetOnRevisit = this.model.get('_isResetOnRevisit');
 
