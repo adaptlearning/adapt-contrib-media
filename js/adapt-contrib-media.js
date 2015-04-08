@@ -34,6 +34,7 @@ define(function(require) {
 
             if(!modelOptions.pluginPath) modelOptions.pluginPath = 'assets/';
             if(!modelOptions.features) modelOptions.features = ['playpause','progress','current','duration'];
+            if(!modelOptions.clickToPlayPause) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             // create the player
@@ -54,6 +55,22 @@ define(function(require) {
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
+        },
+
+        // Overrides the default play/pause functionality to stop accidental playing on touch devices
+        setupPlayPauseToggle: function() {
+            this.mediaElement.player.options.clickToPlayPause = false;
+
+            // play on 'big button' click
+            $('.mejs-overlay-button',this.$el).click(_.bind(function(event) {
+                this.mediaElement.player.play();
+            }, this));
+
+            // pause on player click
+            $('.mejs-mediaelement',this.$el).click(_.bind(function(event) {
+                var isPaused = this.mediaElement.player.media.paused;
+                if(!isPaused) this.mediaElement.player.pause();
+            }, this));
         },
 
         checkIfResetOnRevisit: function() {
@@ -114,6 +131,11 @@ define(function(require) {
 
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
+
+            if(this.model.get('_playerOptions').clickToPlayPause === true) {
+                this.setupPlayPauseToggle();
+            }
+
             this.setReadyStatus();
             this.setupEventListeners();
         },
