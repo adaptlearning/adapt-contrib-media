@@ -97,7 +97,7 @@ define(function(require) {
                 var obj = this.$("object")[0];
                 obj.style.display = "none"
             }
-            this.mediaElement.remove();
+            $(this.mediaElement.pluginElement).remove();
             delete this.mediaElement;
             ComponentView.prototype.remove.call(this);
         },
