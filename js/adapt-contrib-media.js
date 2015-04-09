@@ -93,9 +93,8 @@ define(function(require) {
         },
 
         remove: function() {
+            this.mediaElement.remove();
             ComponentView.prototype.remove.call(this);
-            this.mediaElement.stop();
-            //this.removedMediaElement
         },
 
         onCompletion: function() {
