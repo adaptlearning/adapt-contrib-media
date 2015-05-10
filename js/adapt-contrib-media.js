@@ -59,17 +59,26 @@ define(function(require) {
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
         setupPlayPauseToggle: function() {
-            this.mediaElement.player.options.clickToPlayPause = false;
+            // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
+            var player = mejs.players[$('.mejs-container').attr('id')];
+
+            if(!player) {
+                console.log("Media.setupPlayPauseToggle: OOPS! there's no player reference.");
+                return;
+            }
+
+            // stop the player dealing with this, we'll do it ourselves
+            player.options.clickToPlayPause = false;
 
             // play on 'big button' click
             $('.mejs-overlay-button',this.$el).click(_.bind(function(event) {
-                this.mediaElement.player.play();
+                player.play();
             }, this));
 
             // pause on player click
             $('.mejs-mediaelement',this.$el).click(_.bind(function(event) {
-                var isPaused = this.mediaElement.player.media.paused;
-                if(!isPaused) this.mediaElement.player.pause();
+                var isPaused = player.media.paused;
+                if(!isPaused) player.pause();
             }, this));
         },
 
@@ -111,9 +120,13 @@ define(function(require) {
         },
 
         remove: function() {
+            if ($("html").is(".ie8")) {
+                var obj = this.$("object")[0];
+                obj.style.display = "none"
+            }
+            $(this.mediaElement.pluginElement).remove();
+            delete this.mediaElement;
             ComponentView.prototype.remove.call(this);
-            this.mediaElement.stop();
-            //this.removedMediaElement
         },
 
         onCompletion: function() {
@@ -132,7 +145,8 @@ define(function(require) {
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
 
-            if(this.model.get('_playerOptions').clickToPlayPause === true) {
+            var hasTouch = /*mejs && mejs.MediaFeatures &&*/ mejs.MediaFeatures.hasTouch;
+            if(hasTouch) {
                 this.setupPlayPauseToggle();
             }
 
