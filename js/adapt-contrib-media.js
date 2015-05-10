@@ -145,7 +145,7 @@ define(function(require) {
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
 
-            var hasTouch = /*mejs && mejs.MediaFeatures &&*/ mejs.MediaFeatures.hasTouch;
+            var hasTouch = mejs.MediaFeatures.hasTouch;
             if(hasTouch) {
                 this.setupPlayPauseToggle();
             }
