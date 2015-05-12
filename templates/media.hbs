@@ -3,10 +3,10 @@
     <div class="media-widget component-widget a11y-ignore-aria">
 
     {{#if _media.mp3}}
-      <audio src="{{_media.mp3}}" type="audio/mp3"/>
+      <audio src="{{_media.mp3}}" type="audio/mp3" style="width: 100%; height: 100%;"/>
     {{else}}
       {{#if _media.ogg}}
-        <audio src="{{_media.ogg}}" type="audio/ogg"/>
+        <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
       {{else}}
         <video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
           {{#if _media.source}}
