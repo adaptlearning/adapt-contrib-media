@@ -1,8 +1,11 @@
 /*
  * adapt-contrib-media
  * License - http://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
- * Maintainers - Chris Steele <chris.steele@kineo.com>, Daryl Hedley <darylhedley@gmail.com>,
- *               Kevin Corry <kevinc@learningpool.com>, Kirsty Hames <kirstyjhames@gmail.com>
+ * Maintainers - Chris Steele <chris.steele@kineo.com>,
+ *               Daryl Hedley <darylhedley@gmail.com>,
+ *               Kevin Corry <kevinc@learningpool.com>,
+ *               Kirsty Hames <kirstyjhames@gmail.com>,
+ *               Thomas Taylor <thomas.taylor@kineo.com>
  */
 define(function(require) {
 
@@ -16,7 +19,6 @@ define(function(require) {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
 
-            // Checks to see if the media should be reset on revisit
             this.checkIfResetOnRevisit();
         },
 
@@ -30,8 +32,9 @@ define(function(require) {
 
             var modelOptions = this.model.get('_playerOptions');
 
-            if(!modelOptions.pluginPath) modelOptions.pluginPath = 'assets/';
-            if(!modelOptions.features) modelOptions.features = ['playpause','progress','current','duration'];
+            if(modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
+            if(modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
+            if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             // create the player
@@ -54,7 +57,31 @@ define(function(require) {
             }
         },
 
-        // Used to check if the media should reset on revisit
+        // Overrides the default play/pause functionality to stop accidental playing on touch devices
+        setupPlayPauseToggle: function() {
+            // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
+            var player = mejs.players[$('.mejs-container').attr('id')];
+
+            if(!player) {
+                console.log("Media.setupPlayPauseToggle: OOPS! there's no player reference.");
+                return;
+            }
+
+            // stop the player dealing with this, we'll do it ourselves
+            player.options.clickToPlayPause = false;
+
+            // play on 'big button' click
+            $('.mejs-overlay-button',this.$el).click(_.bind(function(event) {
+                player.play();
+            }, this));
+
+            // pause on player click
+            $('.mejs-mediaelement',this.$el).click(_.bind(function(event) {
+                var isPaused = player.media.paused;
+                if(!isPaused) player.pause();
+            }, this));
+        },
+
         checkIfResetOnRevisit: function() {
             var isResetOnRevisit = this.model.get('_isResetOnRevisit');
 
@@ -117,6 +144,12 @@ define(function(require) {
 
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
+
+            var hasTouch = mejs.MediaFeatures.hasTouch;
+            if(hasTouch) {
+                this.setupPlayPauseToggle();
+            }
+
             this.setReadyStatus();
             this.setupEventListeners();
         },
