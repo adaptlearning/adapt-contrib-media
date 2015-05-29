@@ -39,8 +39,7 @@ define(function(require) {
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
-            var isIE8 = $('html').is(".ie8");
-            if (hasAccessibility || isIE8) modelOptions.alwaysShowControls = true;
+            if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
             // create the player
             this.$('audio, video').mediaelementplayer(modelOptions);
@@ -177,7 +176,7 @@ define(function(require) {
             var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
             if (hasAccessibility) {
                 if (!this.mediaElement.player) return;
-                
+
                 var player = this.mediaElement.player;
 
                 player.options.alwaysShowControls = true;
