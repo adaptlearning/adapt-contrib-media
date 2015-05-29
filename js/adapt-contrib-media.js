@@ -39,7 +39,8 @@ define(function(require) {
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
-            if (hasAccessibility) modelOptions.alwaysShowControls = true;
+            var isIE8 = $('html').is(".ie8");
+            if (hasAccessibility || isIE8) modelOptions.alwaysShowControls = true;
 
             // create the player
             this.$('audio, video').mediaelementplayer(modelOptions);
@@ -64,7 +65,7 @@ define(function(require) {
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
         setupPlayPauseToggle: function() {
             // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
-            var player = mejs.players[$('.mejs-container').attr('id')];
+            var player = this.mediaElement.player;
 
             if(!player) {
                 console.log("Media.setupPlayPauseToggle: OOPS! there's no player reference.");
@@ -149,6 +150,10 @@ define(function(require) {
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
 
+            if (!this.mediaElement.player) {
+                this.mediaElement.player =  mejs.players[$('.mejs-container').attr('id')];
+            }
+
             this.showControls();
 
             var hasTouch = mejs.MediaFeatures.hasTouch;
@@ -171,7 +176,10 @@ define(function(require) {
         showControls: function() {
             var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
             if (hasAccessibility) {
+                if (!this.mediaElement.player) return;
+                
                 var player = this.mediaElement.player;
+
                 player.options.alwaysShowControls = true;
                 player.enableControls();
                 player.showControls();
