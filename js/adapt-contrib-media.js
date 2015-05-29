@@ -18,6 +18,7 @@ define(function(require) {
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
+            this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
             this.checkIfResetOnRevisit();
         },
@@ -36,6 +37,9 @@ define(function(require) {
             if(modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
+
+            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
             // create the player
             this.$('audio, video').mediaelementplayer(modelOptions);
@@ -145,6 +149,8 @@ define(function(require) {
         onPlayerReady: function (mediaElement, domObject) {
             this.mediaElement = mediaElement;
 
+            this.showControls();
+
             var hasTouch = mejs.MediaFeatures.hasTouch;
             if(hasTouch) {
                 this.setupPlayPauseToggle();
@@ -156,6 +162,20 @@ define(function(require) {
 
         onScreenSizeChanged: function() {
             this.$('audio, video').width(this.$('.component-widget').width());
+        },
+
+        onAccessibilityToggle: function() {
+           this.showControls();
+        },
+
+        showControls: function() {
+            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            if (hasAccessibility) {
+                var player = this.mediaElement.player;
+                player.options.alwaysShowControls = true;
+                player.enableControls();
+                player.showControls();
+            }
         }
     });
 
