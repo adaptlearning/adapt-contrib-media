@@ -182,6 +182,7 @@ define(function(require) {
                 player.options.alwaysShowControls = true;
                 player.enableControls();
                 player.showControls();
+                this.$('.mejs-playpause-button button').attr("role", "region");
             }
         }
     });
