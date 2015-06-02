@@ -91,16 +91,6 @@ define(function(require) {
             }
         },
 
-        setupEventListeners: function() {
-            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
-
-            if (this.completionEvent !== 'inview') {
-                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
-            } else {
-                this.$('.component-widget').on('inview', _.bind(this.inview, this));
-            }
-        },
-
         inview: function(event, visible, visiblePartX, visiblePartY) {
             if (visible) {
                 if (visiblePartY === 'top') {
