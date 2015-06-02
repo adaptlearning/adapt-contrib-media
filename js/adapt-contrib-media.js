@@ -34,7 +34,7 @@ define(function(require) {
             var modelOptions = this.model.get('_playerOptions');
 
             if(modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
-            if(modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
+            if(modelOptions.features === undefined) modelOptions.features = ['playpause','mute','progress','current','duration'];
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
@@ -182,7 +182,13 @@ define(function(require) {
                 player.options.alwaysShowControls = true;
                 player.enableControls();
                 player.showControls();
-                this.$('.mejs-playpause-button button').attr("role", "region");
+
+                this.$('.mejs-playpause-button button').attr({
+                    "role": "button"
+                });
+                var screenReaderVideoTagFix = $("<div role='region' aria-label='.'>");
+                this.$('.mejs-playpause-button').prepend(screenReaderVideoTagFix);
+                
             }
         }
     });
