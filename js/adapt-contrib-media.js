@@ -179,6 +179,9 @@ define(function(require) {
                 var screenReaderVideoTagFix = $("<div role='region' aria-label='.'>");
                 this.$('.mejs-playpause-button').prepend(screenReaderVideoTagFix);
 
+                this.$('.mejs-time, .mejs-time-rail').attr({
+                    "aria-hidden": "true"
+                });
             }
         }
     });
