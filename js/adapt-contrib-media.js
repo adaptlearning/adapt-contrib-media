@@ -15,6 +15,10 @@ define(function(require) {
 
     var Media = ComponentView.extend({
 
+        events: {
+            "click .media-inline-transcript-button": "onToggleInlineTranscript"
+        },
+
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
@@ -160,6 +164,22 @@ define(function(require) {
 
         onAccessibilityToggle: function() {
            this.showControls();
+        },
+
+        onToggleInlineTranscript: function(event) {
+            if (event) event.preventDefault();
+            var $transcriptBodyContainer = $(".media-inline-transcript-body-container");
+            var $button = $(".media-inline-transcript-button");
+
+            if  ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
+                $transcriptBodyContainer.slideUp();
+                $transcriptBodyContainer.removeClass("inline-transcript-open");
+                $button.html(this.model.get("_transcript").inlineTranscriptButton);
+            } else {
+                $transcriptBodyContainer.slideDown().a11y_focus();
+                $transcriptBodyContainer.addClass("inline-transcript-open");
+                $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+            }
         },
 
         showControls: function() {
