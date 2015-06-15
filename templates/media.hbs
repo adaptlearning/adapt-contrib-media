@@ -23,17 +23,42 @@
         </video>
       {{/if}}
     {{/if}}
-    {{#if _media.transcriptLink}}
+    {{#if _transcript}}
     <div class="media-transcript-container">
-      <a href="{{_media.transcriptLink}}" target="_blank" class="media-transcript button" role="button" aria-label="{{_globals._accessibility._ariaLabels.transcript}}">
-        <div class="transcript-text-container">
-          {{#if _media.transcriptText}}
-            {{_media.transcriptText}}
-          {{else}}
-            {{_media.transcriptLink}}
-          {{/if}}
+
+      <div class="media-transcript-button-container">
+        {{#if _transcript._inlineTranscript}}
+          <a href="#" class="media-inline-transcript-button button" role="button">
+            <div class="transcript-text-container">
+              {{#if _transcript.inlineTranscriptButton}}
+                {{_transcript.inlineTranscriptButton}}
+              {{else}}
+                {{_transcript.transcriptLink}}
+              {{/if}}
+            </div>
+          </a>
+        {{/if}}
+        {{#if _transcript._externalTranscript}}
+          <a href="{{_transcript.transcriptLink}}" target="_blank" class="media-external-transcript-button button" role="button">
+            <div class="transcript-text-container">
+              {{#if _transcript.transcriptLinkButton}}
+                {{_transcript.transcriptLinkButton}}
+              {{else}}
+                {{_transcript.transcriptLink}}
+              {{/if}}
+            </div>
+          </a>
+        {{/if}}
         </div>
-      </a>
+
+        {{#if _transcript._inlineTranscript}}
+          <div class="media-inline-transcript-body-container">
+            <div class="media-inline-transcript-body">
+            {{{a11y_text _transcript.inlineTranscriptBody}}}
+            </div>
+          </div>
+        {{/if}}
+
     </div>
     {{/if}}
     </div>
