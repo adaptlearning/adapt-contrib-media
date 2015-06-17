@@ -120,10 +120,14 @@ define(function(require) {
         remove: function() {
             if ($("html").is(".ie8")) {
                 var obj = this.$("object")[0];
-                obj.style.display = "none"
+                if(obj) {
+                    obj.style.display = "none";
+                }
             }
-            $(this.mediaElement.pluginElement).remove();
-            delete this.mediaElement;
+            if(this.mediaElement) {
+                $(this.mediaElement.pluginElement).remove();
+                delete this.mediaElement;
+            }
             ComponentView.prototype.remove.call(this);
         },
 
