@@ -6,6 +6,7 @@
  *               Kevin Corry <kevinc@learningpool.com>,
  *               Kirsty Hames <kirstyjhames@gmail.com>,
  *               Thomas Taylor <thomas.taylor@kineo.com>
+ *               Brian Quinn <brian@learningpool.com>
  */
 define(function(require) {
 
@@ -42,7 +43,10 @@ define(function(require) {
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
-            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+                ? true
+                : false;
+                
             if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
             // create the player
@@ -187,7 +191,10 @@ define(function(require) {
         },
 
         showControls: function() {
-            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+                ? true
+                : false;
+                
             if (hasAccessibility) {
                 if (!this.mediaElement.player) return;
 
