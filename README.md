@@ -6,11 +6,21 @@ The component uses [MediaElement.js (v2.13.2)](http://mediaelementjs.com/), a pl
 
 ## Installation
 
-First, be sure to install the [Adapt Command Line Interface](https://github.com/cajones/adapt-cli), then from the command line run:
+First, be sure to install the [Adapt Command Line Interface](https://github.com/adaptlearning/adapt-cli), then from the command line run:-
 
-		adapt install adapt-contrib-media
+        adapt install adapt-contrib-media
 
-# Configuration
+This component can also be installed by adding the component to the adapt.json file before running `adapt install`:
+ 
+        "adapt-contrib-media": "*"
+
+##Usage
+
+To be completed.
+
+##Settings overview
+
+For example JSON format, see [example.json](example.json). A description of the core settings can be found at: [Core model attributes](https://github.com/adaptlearning/adapt_framework/wiki/Core-model-attributes)
 
 See below for notes regarding the component JSON.
 
@@ -61,3 +71,11 @@ For example JSON format, see [example.json](https://github.com/adaptlearning/ada
 ## MediaElement.js
 
 For more information about the MediaElement.js player, visit [its GitHub page](https://github.com/johndyer/mediaelement).
+
+##Limitations
+ 
+To be completed.
+
+##Browser spec
+
+This component has been tested to the standard Adapt browser specification.
