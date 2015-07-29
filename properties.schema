@@ -67,6 +67,24 @@
           "validators": [],
           "help": "Link to an MP3 audio"
         },
+        "source": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Source URL",
+          "inputType": "Text",
+          "validators": [],
+          "help": "Enter an external link, such as a YouTube URL"
+        },
+        "type": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Type",
+          "inputType": "Text",
+          "validators": [],
+          "help": "Enter the 'Source URL' type, for a YouTube link this would be video/youtube"
+        },
         "poster": {
           "type":"string",
           "required":false,
@@ -194,8 +212,8 @@
       "required":false,
       "default": "",
       "title": "Player Options",
-      "inputType": "TextArea",
-      "validators": ["required"],
+      "inputType": "Text",
+      "validators": [],
       "help": "Optional object that can be used to customize the player"
     }
   }
