@@ -15,7 +15,7 @@ The component uses [MediaElement.js (v2.13.2)](http://mediaelementjs.com/), a pl
 As one of Adapt's *[core components](https://github.com/adaptlearning/adapt_framework/wiki/Core-Plug-ins-in-the-Adapt-Learning-Framework#components),* **Media** is included with the [installation of the Adapt framework](https://github.com/adaptlearning/adapt_framework/wiki/Manual-installation-of-the-Adapt-framework#installation) and the [installation of the Adapt authoring tool](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-Adapt-Origin).
 
 * If **Media** has been uninstalled from the Adapt framework, it may be reinstalled.
-With the [Adapt CLI](https://github.com/cajones/adapt-cli) installed, run the following from the command line:  
+With the [Adapt CLI](https://github.com/adaptlearning/adapt-cli) installed, run the following from the command line:  
 `adapt install adapt-contrib-media`
 
     Alternatively, this component can also be installed by adding the following line of code to the *adapt.json* file:  
