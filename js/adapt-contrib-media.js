@@ -1,13 +1,3 @@
-/*
- * adapt-contrib-media
- * License - http://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
- * Maintainers - Chris Steele <chris.steele@kineo.com>,
- *               Daryl Hedley <darylhedley@gmail.com>,
- *               Kevin Corry <kevinc@learningpool.com>,
- *               Kirsty Hames <kirstyjhames@gmail.com>,
- *               Thomas Taylor <thomas.taylor@kineo.com>
- *               Brian Quinn <brian@learningpool.com>
- */
 define(function(require) {
 
     var mep = require('components/adapt-contrib-media/js/mediaelement-and-player.min');
