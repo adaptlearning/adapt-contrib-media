@@ -36,7 +36,7 @@ define(function(require) {
             var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
                 ? true
                 : false;
-                
+
             if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
             // create the player
@@ -166,8 +166,8 @@ define(function(require) {
 
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
-            var $transcriptBodyContainer = $(".media-inline-transcript-body-container");
-            var $button = $(".media-inline-transcript-button");
+            var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
+            var $button = this.$(".media-inline-transcript-button");
 
             if  ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
                 $transcriptBodyContainer.slideUp();
@@ -184,7 +184,7 @@ define(function(require) {
             var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
                 ? true
                 : false;
-                
+
             if (hasAccessibility) {
                 if (!this.mediaElement.player) return;
 
