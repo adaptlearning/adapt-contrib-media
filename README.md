@@ -126,7 +126,9 @@ The attributes described above focus on the component's use with standard video.
 
 ## Limitations
  
-Flash Player 10 is required to play media on IE8.  
+Users of Internet Explorer v8  will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback, due to that browser's lack of support for HTML audio/video.
+
+As [MediaElement.js (v2.13.2)](http://mediaelementjs.com/) doesn't support events when the media source is Vimeo, the only value for **_setCompletionOn** that will work is `inview`.
 
 ----------------------------
 **Version number:**  2.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
