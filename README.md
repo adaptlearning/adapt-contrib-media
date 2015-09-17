@@ -5,6 +5,16 @@ A basic media component that plays audio and video. This component uses the HTML
 
 The component uses [MediaElement.js](http://mediaelementjs.com/) (v2.13.1) which enables users, amongst other things, to offer subtitles and accessible, skinnable (with CSS) controls. MediaElement.js carries an MIT license and is therefore compatible with Adapt.
 
+----------------------------
+**Version number:**  1.0.1     
+**Framework versions supported:**  1.1.5     
+**Author / maintainer:** DeltaNet with [contributors](https://github.com/deltanet/adapt-media-autoplay/graphs/contributors)     
+**Accessibility support:** no  
+**RTL support:** no     
+**Authoring tool support:** yes
+
+----------------------------
+
 Installation
 ------------
 
