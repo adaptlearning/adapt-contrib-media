@@ -1,48 +1,65 @@
 .media-component {
-	.me-plugin {
-    position:static;
-	}
-  .mejs-container {
-    background-color: transparent;
-    .mejs-controls .mejs-time {
-      padding-right:1px;
-      padding-left:1px;
+    .me-plugin {
+        position:static;
     }
-  }
-  .external-source {
     .mejs-container {
-        position: relative;
-        padding-top: 35px;
-        height: 0;
-        overflow: hidden;
+        background-color: transparent;
+        .mejs-controls .mejs-time {
+            padding-right:1px;
+            padding-left:1px;
+        }
     }
-    .mejs-container iframe {
-      position: absolute;
-      top:0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .external-source {
+        .mejs-container {
+            position: relative;
+            padding-top: 35px;
+            height: 0;
+            overflow: hidden;
+        }
+        .mejs-container iframe {
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .mejs-overlay-button {
+            display: none;
+        }
     }
-    .mejs-overlay-button {
-      display: none;
+
+    .media-transcript {
+        padding: @button-padding;
+        display: block;
+        color: @button-text-color;
+        background-color: @button-color;
+        text-decoration: none;
+        &:hover {
+            color: @button-text-color-hover;
+            background-color: @button-color-hover;
+        }
     }
-  }
-  
-  .media-transcript {
-    padding: @button-padding;
-    display: block;
-    color: @button-text-color;
-    background-color: @button-color;
-    text-decoration: none;
-    &:hover {
-      color: @button-text-hover-color;
-      background-color: @button-hover-color;
+
+    .media-inline-transcript-body-container {
+        margin-top: 10px;
+        display: none;
     }
-  }
+
+    .media-inline-transcript-body {
+        padding: @component-padding;
+    }
+
+    .media-transcript-button-container {
+        padding:1px;
+    }
+
+    .media-external-transcript-button, .media-inline-transcript-button {
+        display:block;
+    }
 }
 
 
 //for use when no title or body or instruction is available
 .media-top-padding {
-  padding-top: 4em;
+    padding-top: 4em;
 }

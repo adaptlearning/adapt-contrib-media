@@ -1,12 +1,3 @@
-/*
- * adapt-contrib-media
- * License - http://github.com/adaptlearning/adapt_framework/blob/master/LICENSE
- * Maintainers - Chris Steele <chris.steele@kineo.com>,
- *               Daryl Hedley <darylhedley@gmail.com>,
- *               Kevin Corry <kevinc@learningpool.com>,
- *               Kirsty Hames <kirstyjhames@gmail.com>,
- *               Thomas Taylor <thomas.taylor@kineo.com>
- */
 define(function(require) {
 
     var mep = require('components/adapt-contrib-media/js/mediaelement-and-player.min');
@@ -14,6 +5,10 @@ define(function(require) {
     var Adapt = require('coreJS/adapt');
 
     var Media = ComponentView.extend({
+
+        events: {
+            "click .media-inline-transcript-button": "onToggleInlineTranscript"
+        },
 
         preRender: function() {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
@@ -38,7 +33,10 @@ define(function(require) {
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
-            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+                ? true
+                : false;
+
             if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
             // create the player
@@ -116,10 +114,14 @@ define(function(require) {
         remove: function() {
             if ($("html").is(".ie8")) {
                 var obj = this.$("object")[0];
-                obj.style.display = "none"
+                if(obj) {
+                    obj.style.display = "none";
+                }
             }
-            $(this.mediaElement.pluginElement).remove();
-            delete this.mediaElement;
+            if(this.mediaElement) {
+                $(this.mediaElement.pluginElement).remove();
+                delete this.mediaElement;
+            }
             ComponentView.prototype.remove.call(this);
         },
 
@@ -162,8 +164,27 @@ define(function(require) {
            this.showControls();
         },
 
+        onToggleInlineTranscript: function(event) {
+            if (event) event.preventDefault();
+            var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
+            var $button = this.$(".media-inline-transcript-button");
+
+            if  ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
+                $transcriptBodyContainer.slideUp();
+                $transcriptBodyContainer.removeClass("inline-transcript-open");
+                $button.html(this.model.get("_transcript").inlineTranscriptButton);
+            } else {
+                $transcriptBodyContainer.slideDown().a11y_focus();
+                $transcriptBodyContainer.addClass("inline-transcript-open");
+                $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+            }
+        },
+
         showControls: function() {
-            var hasAccessibility = Adapt.config.get('_accessibility')._isEnabled;
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+                ? true
+                : false;
+
             if (hasAccessibility) {
                 if (!this.mediaElement.player) return;
 
