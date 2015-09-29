@@ -8,7 +8,7 @@
       {{#if _media.ogg}}
         <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
       {{else}}
-        <video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
+        <video preload="none" poster="{{_media.poster}}" style="width:100%; height:100%;">
           {{#if _media.source}}
             <source src="{{_media.source}}" type="{{_media.type}}"/>
           {{else}}
