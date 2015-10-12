@@ -39,7 +39,7 @@ define(function(require) {
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             if (this.model.get('_useClosedCaptions')) {
-                modelOptions.startLanguage = this.model.get('_startLanguage') || 'en';
+                modelOptions.startLanguage = this.model.get('_startLanguage') == undefined ? 'en' : this.model.get('_startLanguage');
             }
 
             var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
