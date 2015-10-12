@@ -4,6 +4,8 @@ define(function(require) {
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
+    var froogaloopAdded = false;
+
     var Media = ComponentView.extend({
 
         events: {
@@ -50,14 +52,16 @@ define(function(require) {
 
             this.addMediaTypeClass();
 
-            // create the player
-            this.$('audio, video').mediaelementplayer(modelOptions);
+            this.addThirdPartyFixes(modelOptions, _.bind(function createPlayer() {
+                // create the player
+                this.$('audio, video').mediaelementplayer(modelOptions);
 
-            // We're streaming - set ready now, as success won't be called above
-            if (this.model.get('_media').source) {
-                this.$('.media-widget').addClass('external-source');
-                this.setReadyStatus();
-            }
+                // We're streaming - set ready now, as success won't be called above
+                if (this.model.get('_media').source) {
+                    this.$('.media-widget').addClass('external-source');
+                    this.setReadyStatus();
+                }
+            }, this));
         },
 
         addMediaTypeClass: function() {
@@ -65,6 +69,28 @@ define(function(require) {
             if (media.type) {
                 var typeClass = media.type.replace(/\//, "-");
                 this.$(".media-widget").addClass(typeClass);
+            }
+        },
+
+        addThirdPartyFixes: function(modelOptions, callback) {
+            var media = this.model.get("_media");
+            switch (media.type) {
+            case "video/vimeo":
+                modelOptions.alwaysShowControls = false;
+                modelOptions.hideVideoControlsOnLoad = true;
+                modelOptions.features = [];
+                if (froogaloopAdded) return callback();
+                Modernizr.load({
+                    load: "assets/froogaloop.js", 
+                    complete: function() {
+                        console.log("vimeo loaded");
+                        froogaloopAdded = true;
+                        callback();
+                    }
+                }); 
+                break;
+            default:
+                callback();
             }
         },
 

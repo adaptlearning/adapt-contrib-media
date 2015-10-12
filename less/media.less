@@ -3,7 +3,7 @@
     .me-plugin {
         position:relative;
         width:100%;
-        height:100%;
+        height:100% !important;
         object {
             height: 100% !important;
             width: 100% !important;
@@ -16,6 +16,10 @@
 
     .media-widget.video-vimeo {
         .mejs-controls {
+            display: none !important;
+            height: 0px !important;
+        }
+        .mejs-overlay-play {
             display: none !important;
         }
     }
