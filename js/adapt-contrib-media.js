@@ -29,9 +29,18 @@ define(function(require) {
             var modelOptions = this.model.get('_playerOptions');
 
             if(modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
-            if(modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
+            if(modelOptions.features === undefined) {
+                modelOptions.features = ['playpause','progress','current','duration'];
+                if (this.model.get('_useClosedCaptions')) {
+                    modelOptions.features = ['playpause','progress','current','tracks','duration'];
+                }
+            }
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
             modelOptions.success = _.bind(this.onPlayerReady, this);
+
+            if (this.model.get('_useClosedCaptions')) {
+                modelOptions.startLanguage = this.model.get('_startLanguage') || 'en';
+            }
 
             var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
                 ? true

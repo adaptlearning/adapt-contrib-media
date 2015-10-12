@@ -11,6 +11,7 @@
     "instruction": "",
     "_setCompletionOn":"inview",
     "_useClosedCaptions":true,
+    "_startLanguage":"en",
     "_media": {
         "mp4": "course/assets/big_buck_bunny.mp4",
         "ogv": "course/assets/big_buck_bunny.ogv",
