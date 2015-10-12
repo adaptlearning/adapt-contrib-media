@@ -48,6 +48,8 @@ define(function(require) {
 
             if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
+            this.addMediaTypeClass();
+
             // create the player
             this.$('audio, video').mediaelementplayer(modelOptions);
 
@@ -55,6 +57,14 @@ define(function(require) {
             if (this.model.get('_media').source) {
                 this.$('.media-widget').addClass('external-source');
                 this.setReadyStatus();
+            }
+        },
+
+        addMediaTypeClass: function() {
+            var media = this.model.get("_media");
+            if (media.type) {
+                var typeClass = media.type.replace(/\//, "-");
+                this.$(".media-widget").addClass(typeClass);
             }
         },
 
