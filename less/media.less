@@ -1,7 +1,19 @@
 .media-component {
+
     .me-plugin {
-        position:static;
+        position:relative;
+        width:100%;
+        height:100%;
+        object {
+            height: 100% !important;
+            width: 100% !important;
+        }
+        embed {
+            height: 100% !important;
+            width: 100% !important;
+        }
     }
+
     .mejs-container {
         background-color: transparent;
         .mejs-controls .mejs-time {
@@ -9,6 +21,7 @@
             padding-left:1px;
         }
     }
+
     .external-source {
         .mejs-container {
             position: relative;
@@ -56,6 +69,7 @@
     .media-external-transcript-button, .media-inline-transcript-button {
         display:block;
     }
+
 }
 
 

@@ -157,6 +157,8 @@ define(function(require) {
         },
 
         onScreenSizeChanged: function() {
+            var widgetWidth = this.$('.component-widget').width();
+            var videoWidth = this.$('audio, video').width();
             this.$('audio, video').width(this.$('.component-widget').width());
         },
 
