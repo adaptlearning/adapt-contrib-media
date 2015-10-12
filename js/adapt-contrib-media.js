@@ -32,7 +32,7 @@ define(function(require) {
             if(modelOptions.features === undefined) {
                 modelOptions.features = ['playpause','progress','current','duration'];
                 if (this.model.get('_useClosedCaptions')) {
-                    modelOptions.features = ['playpause','progress','current','tracks','duration'];
+                    modelOptions.features = ['playpause','progress','tracks','current','duration'];
                 }
             }
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
