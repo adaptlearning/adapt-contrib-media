@@ -83,7 +83,6 @@ define(function(require) {
                 Modernizr.load({
                     load: "assets/froogaloop.js", 
                     complete: function() {
-                        console.log("vimeo loaded");
                         froogaloopAdded = true;
                         callback();
                     }
