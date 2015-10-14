@@ -142,6 +142,15 @@
       "validators": [],
       "help": "If set to 'true', closed captions will be used."
     },
+    "_startLanguage": {
+      "type":"string",
+      "required":true,
+      "default": "en",
+      "title": "Initial Closed Captions Language",
+      "inputType": "Text",
+      "validators": [],
+      "help": "Select which closed caption track to use."
+    },
     "_transcript": {
       "type":"object",
       "required":true,
