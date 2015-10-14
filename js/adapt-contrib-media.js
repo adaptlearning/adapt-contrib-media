@@ -26,11 +26,11 @@ define(function(require) {
 
 
         setupPlayer: function() {
-            if(!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
+            if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
             var modelOptions = this.model.get('_playerOptions');
 
-            if(modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
+            if (modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
             if(modelOptions.features === undefined) {
                 modelOptions.features = ['playpause','progress','current','duration'];
                 if (this.model.get('_useClosedCaptions')) {
@@ -38,6 +38,7 @@ define(function(require) {
                 }
             }
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
+
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             if (this.model.get('_useClosedCaptions')) {
@@ -108,7 +109,7 @@ define(function(require) {
             // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
             var player = this.mediaElement.player;
 
-            if(!player) {
+            if (!player) {
                 console.log("Media.setupPlayPauseToggle: OOPS! there's no player reference.");
                 return;
             }
@@ -158,11 +159,11 @@ define(function(require) {
         remove: function() {
             if ($("html").is(".ie8")) {
                 var obj = this.$("object")[0];
-                if(obj) {
+                if (obj) {
                     obj.style.display = "none";
                 }
             }
-            if(this.mediaElement) {
+            if (this.mediaElement) {
                 $(this.mediaElement.pluginElement).remove();
                 delete this.mediaElement;
             }
@@ -186,13 +187,13 @@ define(function(require) {
             this.mediaElement = mediaElement;
 
             if (!this.mediaElement.player) {
-                this.mediaElement.player =  mejs.players[$('.mejs-container').attr('id')];
+                this.mediaElement.player =  mejs.players[this.$('.mejs-container').attr('id')];
             }
 
             this.showControls();
 
             var hasTouch = mejs.MediaFeatures.hasTouch;
-            if(hasTouch) {
+            if (hasTouch) {
                 this.setupPlayPauseToggle();
             }
 
@@ -213,7 +214,7 @@ define(function(require) {
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
             var $button = this.$(".media-inline-transcript-button");
 
-            if  ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
+            if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
                 $transcriptBodyContainer.slideUp();
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptButton);
