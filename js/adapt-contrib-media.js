@@ -36,7 +36,7 @@ define(function(require) {
             }
             //at this point features will not be undefined
             var ccFeature = "tracks";
-            if (this.model.get("_useClosedCaptions") && modelOptions.features.indexOf(ccFeature) == -1) {
+            if (this.model.get("_useClosedCaptions") && _.indexOf(modelOptions.features, ccFeature) == -1) {
                 modelOptions.features.push(ccFeature);
             }
             
