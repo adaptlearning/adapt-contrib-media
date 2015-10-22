@@ -37,7 +37,11 @@ define(function(require) {
             //at this point features will not be undefined
             var ccFeature = "tracks";
             if (this.model.get("_useClosedCaptions") && _.indexOf(modelOptions.features, ccFeature) == -1) {
-                modelOptions.features.push(ccFeature);
+                var position = _.indexOf(modelOptions.features,'progress');
+                if(position!=-1)
+                    modelOptions.features.splice(position+1, 0, ccFeature);
+                else
+                    modelOptions.features.push(ccFeature);
             }
             
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
