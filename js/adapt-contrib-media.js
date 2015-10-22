@@ -31,12 +31,19 @@ define(function(require) {
             var modelOptions = this.model.get('_playerOptions');
 
             if (modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
-            if(modelOptions.features === undefined) {
-                modelOptions.features = ['playpause','progress','current','duration'];
-                if (this.model.get('_useClosedCaptions')) {
-                    modelOptions.features = ['playpause','progress','tracks','current','duration'];
-                }
+            if (modelOptions.features === undefined) {
+                modelOptions.features = ['playpause', 'progress', 'current', 'duration'];
             }
+            //at this point features will not be undefined
+            var ccFeature = "tracks";
+            if (this.model.get("_useClosedCaptions") && _.indexOf(modelOptions.features, ccFeature) == -1) {
+                var position = _.indexOf(modelOptions.features,'progress');
+                if(position!=-1)
+                    modelOptions.features.splice(position+1, 0, ccFeature);
+                else
+                    modelOptions.features.push(ccFeature);
+            }
+            
             if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
 
             modelOptions.success = _.bind(this.onPlayerReady, this);
