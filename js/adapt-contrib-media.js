@@ -4,6 +4,8 @@ define(function(require) {
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
+    var froogaloopAdded = false;
+
     var Media = ComponentView.extend({
 
         events: {
@@ -29,9 +31,18 @@ define(function(require) {
             var modelOptions = this.model.get('_playerOptions');
 
             if (modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
-            if (modelOptions.features === undefined) modelOptions.features = ['playpause','progress','current','duration'];
-            if (modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
+            if(modelOptions.features === undefined) {
+                modelOptions.features = ['playpause','progress','current','duration'];
+                if (this.model.get('_useClosedCaptions')) {
+                    modelOptions.features = ['playpause','progress','tracks','current','duration'];
+                }
+            }
+
             modelOptions.success = _.bind(this.onPlayerReady, this);
+
+            if (this.model.get('_useClosedCaptions')) {
+                modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
+            }
 
             var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
                 ? true
@@ -39,13 +50,46 @@ define(function(require) {
 
             if (hasAccessibility) modelOptions.alwaysShowControls = true;
 
-            // create the player
-            this.$('audio, video').mediaelementplayer(modelOptions);
+            this.addMediaTypeClass();
 
-            // We're streaming - set ready now, as success won't be called above
-            if (this.model.get('_media').source) {
-                this.$('.media-widget').addClass('external-source');
-                this.setReadyStatus();
+            this.addThirdPartyFixes(modelOptions, _.bind(function createPlayer() {
+                // create the player
+                this.$('audio, video').mediaelementplayer(modelOptions);
+
+                // We're streaming - set ready now, as success won't be called above
+                if (this.model.get('_media').source) {
+                    this.$('.media-widget').addClass('external-source');
+                    this.setReadyStatus();
+                }
+            }, this));
+        },
+
+        addMediaTypeClass: function() {
+            var media = this.model.get("_media");
+            if (media.type) {
+                var typeClass = media.type.replace(/\//, "-");
+                this.$(".media-widget").addClass(typeClass);
+            }
+        },
+
+        addThirdPartyFixes: function(modelOptions, callback) {
+            var media = this.model.get("_media");
+            switch (media.type) {
+            case "video/vimeo":
+                modelOptions.alwaysShowControls = false;
+                modelOptions.hideVideoControlsOnLoad = true;
+                modelOptions.features = [];
+                if (froogaloopAdded) return callback();
+                Modernizr.load({
+                    load: "assets/froogaloop.js", 
+                    complete: function() {
+                        froogaloopAdded = true;
+                        callback();
+                    }
+                }); 
+                break;
+            default:
+                callback();
             }
         },
 

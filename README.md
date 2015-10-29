@@ -6,7 +6,7 @@
  
 It is a media playback component for audio and video. It uses HTML5 audio and video for browsers that support it and Flash/Silverlight fallbacks for browsers that don't.  
 
-The component uses [MediaElement.js (v2.13.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
+The component uses [MediaElement.js (v2.18.1)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
 
 [Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.  
 
@@ -47,6 +47,8 @@ guide the learner’s interaction with the component.
 **_setCompletionOn** (string): This determines when Adapt will register this component as having been completed by the user. Acceptable values are `inview` (triggered when the component is fully displayed within the viewport), `play` (triggered when playback is initiated), or `ended` (triggered when the video has reached the end of playback). 
 
 **_useClosedCaptions** (boolean): If set to `true`, video will allow for Closed Captions and the **cc** object will be required. The default is `false`.  
+
+**_startLanguage** (string): If using closed captions with multiple languages, use this property to specify which language should be shown by default. The value of this property must match one of the **srclang** values.  
 
 **_media** (object): The media attributes group will contain different values depending on the type of media: video or audio.  
 For video it contains values for **mp4**, **ogv**, **poster**, and **cc**. Both **mp4** and **ogv** are optional, but at least one is required (see below for alternate properties for YouTube video).  
@@ -107,8 +109,16 @@ The attributes described above focus on the component's use with standard video.
 **YouTube video example:**
 ```json
 "_media": {
-	"source": "http://www.youtube.com/watch?v=nOEw9iiopwI",
+	"source": "//www.youtube.com/watch?v=RT-KmgAgxuo",
 	"type": "video/youtube"
+},
+```  
+
+**Vimeo video example:**
+```json
+"_media": {
+	"source": "//player.vimeo.com/video/96961553",
+	"type": "video/vimeo"
 },
 ```  
 
@@ -127,8 +137,6 @@ The attributes described above focus on the component's use with standard video.
 ## Limitations
  
 Users of Internet Explorer v8  will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback, due to that browser's lack of support for HTML audio/video.
-
-As [MediaElement.js (v2.13.2)](http://mediaelementjs.com/) doesn't support events when the media source is Vimeo, the only value for **_setCompletionOn** that will work is `inview`.
 
 ----------------------------
 **Version number:**  2.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 

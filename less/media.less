@@ -1,7 +1,29 @@
 .media-component {
+
     .me-plugin {
-        position:static;
+        position:relative;
+        width:100%;
+        height:100% !important;
+        object {
+            height: 100% !important;
+            width: 100% !important;
+        }
+        embed {
+            height: 100% !important;
+            width: 100% !important;
+        }
     }
+
+    .media-widget.video-vimeo {
+        .mejs-controls {
+            display: none !important;
+            height: 0px !important;
+        }
+        .mejs-overlay-play {
+            display: none !important;
+        }
+    }
+
     .mejs-container {
         background-color: transparent;
         .mejs-controls .mejs-time {
@@ -9,6 +31,7 @@
             padding-left:1px;
         }
     }
+
     .external-source {
         .mejs-container {
             position: relative;
@@ -35,8 +58,8 @@
         background-color: @button-color;
         text-decoration: none;
         &:hover {
-            color: @button-text-hover-color;
-            background-color: @button-hover-color;
+            color: @button-text-color-hover;
+            background-color: @button-color-hover;
         }
     }
 
@@ -46,7 +69,7 @@
     }
 
     .media-inline-transcript-body {
-        padding: @component-body-padding;
+        padding: @component-padding;
     }
 
     .media-transcript-button-container {
@@ -54,8 +77,10 @@
     }
 
     .media-external-transcript-button, .media-inline-transcript-button {
+        width:100%;
         display:block;
     }
+
 }
 
 

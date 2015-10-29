@@ -13,7 +13,7 @@
     },
     "transcriptButton": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default": "Alternatively you can select the link below for the transcript.",
       "inputType": "Text",
       "validators": []
@@ -135,21 +135,30 @@
     },
     "_useClosedCaptions": {
       "type":"boolean",
-      "required":true,
+      "required":false,
       "default": false,
       "title": "Use Closed Captions",
       "inputType": {"type": "Boolean", "options": [true, false]},
       "validators": [],
       "help": "If set to 'true', closed captions will be used."
     },
+    "_startLanguage": {
+      "type":"string",
+      "required":false,
+      "default": "en",
+      "title": "Initial Closed Captions language",
+      "inputType": "Text",
+      "validators": [],
+      "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
+    },
     "_transcript": {
       "type":"object",
-      "required":true,
+      "required":false,
       "title": "Transcript Options",
       "properties":{
         "_inlineTranscript": {
           "type":"boolean",
-          "required":true,
+          "required":false,
           "default": false,
           "title": "Show Inline",
           "inputType": {"type": "Boolean", "options": [true, false]},
@@ -157,7 +166,7 @@
         },
         "_externalTranscript": {
           "type":"boolean",
-          "required":true,
+          "required":false,
           "default": false,
           "title": "Show Link",
           "inputType": {"type": "Boolean", "options": [true, false]},

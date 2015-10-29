@@ -8,7 +8,7 @@
       {{#if _media.ogg}}
         <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
       {{else}}
-        <video preload="none" width="640px" height="360px" poster="{{_media.poster}}" style="width:100%; height:100%;">
+        <video preload="none" width="640" height="360" poster="{{_media.poster}}" style="width:100%; height:100%;" controls="controls">
           {{#if _media.source}}
             <source src="{{_media.source}}" type="{{_media.type}}"/>
           {{else}}
@@ -17,18 +17,19 @@
           {{/if}}
           {{#if _useClosedCaptions}}
               {{#each _media.cc}}
-                  <track kind="subtitles" src="{{src}}" srclang="{{srclang}}" />
+                  <track kind="subtitles" src="{{src}}" type="text/vtt" srclang="{{srclang}}" />
               {{/each}}
           {{/if}}
         </video>
       {{/if}}
     {{/if}}
+    </div>
     {{#if _transcript}}
     <div class="media-transcript-container">
 
       <div class="media-transcript-button-container">
         {{#if _transcript._inlineTranscript}}
-          <a href="#" class="media-inline-transcript-button button" role="button">
+          <button class="media-inline-transcript-button button" role="button">
             <div class="transcript-text-container">
               {{#if _transcript.inlineTranscriptButton}}
                 {{_transcript.inlineTranscriptButton}}
@@ -36,10 +37,10 @@
                 {{_transcript.transcriptLink}}
               {{/if}}
             </div>
-          </a>
+          </button>
         {{/if}}
         {{#if _transcript._externalTranscript}}
-          <a href="{{_transcript.transcriptLink}}" target="_blank" class="media-external-transcript-button button" role="button">
+          <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button" role="button">
             <div class="transcript-text-container">
               {{#if _transcript.transcriptLinkButton}}
                 {{_transcript.transcriptLinkButton}}
@@ -47,7 +48,7 @@
                 {{_transcript.transcriptLink}}
               {{/if}}
             </div>
-          </a>
+          </button>
         {{/if}}
         </div>
 
@@ -61,5 +62,5 @@
 
     </div>
     {{/if}}
-    </div>
+    
 </div>
