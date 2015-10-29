@@ -37,7 +37,6 @@ define(function(require) {
                     modelOptions.features = ['playpause','progress','tracks','current','duration'];
                 }
             }
-            if(modelOptions.clickToPlayPause === undefined) modelOptions.clickToPlayPause = true;
 
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
