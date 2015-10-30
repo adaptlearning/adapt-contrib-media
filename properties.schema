@@ -3,7 +3,30 @@
   "$schema": "http://json-schema.org/draft-04/schema",
   "id": "http://jsonschema.net",
   "$ref": "http://localhost/plugins/content/component/model.schema",
+  "globals": {
+    "ariaRegion": {
+      "type": "string",
+      "required": true,
+      "default": "This is a media component which plays a video. Select the play / pause button to watch or listen.",
+      "inputType": "Text",
+      "validators": []
+    },
+    "transcriptButton": {
+      "type": "string",
+      "required": false,
+      "default": "Alternatively you can select the link below for the transcript.",
+      "inputType": "Text",
+      "validators": []
+    }
+  },
   "properties":{
+    "_supportedLayout": {
+      "type": "string",
+      "required": true,
+      "enum": ["full-width", "half-width", "both"],
+      "default": "both",
+      "editorOnly": true
+    },
     "instruction": {
       "type": "string",
       "required": false,
@@ -44,6 +67,24 @@
           "validators": [],
           "help": "Link to an MP3 audio"
         },
+        "source": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Source URL",
+          "inputType": "Text",
+          "validators": [],
+          "help": "Enter an external link, such as a YouTube URL"
+        },
+        "type": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Type",
+          "inputType": "Text",
+          "validators": [],
+          "help": "Enter the 'Source URL' type, for a YouTube link this would be video/youtube"
+        },
         "poster": {
           "type":"string",
           "required":false,
@@ -52,6 +93,33 @@
           "inputType": "Asset:image",
           "validators": [],
           "help": "Image displayed before the video is played"
+        },
+        "cc": {
+          "type":"array",
+          "required":false,
+          "title": "Closed Captions",
+          "items": {
+            "type":"object",
+            "required":false,
+            "properties":{
+              "srclang": {
+                "type":"string",
+                "required":false,
+                "default": "",
+                "title": "Language Code",
+                "inputType": "Text",
+                "validators": []
+              },
+              "src": {
+                "type":"string",
+                "required":false,
+                "default": "",
+                "title": "Caption File",
+                "inputType": "Asset:other",
+                "validators": []
+              }
+            }
+          }
         }
       }
     },
@@ -73,6 +141,98 @@
       "inputType": {"type": "Boolean", "options": [true, false]},
       "validators": [],
       "help": "Select 'true' to auto play media"
+    },
+    "_useClosedCaptions": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Use Closed Captions",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "If set to 'true', closed captions will be used."
+    },
+    "_startLanguage": {
+      "type":"string",
+      "required":false,
+      "default": "en",
+      "title": "Initial Closed Captions language",
+      "inputType": "Text",
+      "validators": [],
+      "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
+    },
+    "_transcript": {
+      "type":"object",
+      "required":false,
+      "title": "Transcript Options",
+      "properties":{
+        "_inlineTranscript": {
+          "type":"boolean",
+          "required":false,
+          "default": false,
+          "title": "Show Inline",
+          "inputType": {"type": "Boolean", "options": [true, false]},
+          "validators": []
+        },
+        "_externalTranscript": {
+          "type":"boolean",
+          "required":false,
+          "default": false,
+          "title": "Show Link",
+          "inputType": {"type": "Boolean", "options": [true, false]},
+          "validators": []
+        },
+        "inlineTranscriptButton": {
+          "type": "string",
+          "required": false,
+          "default": "",
+          "title": "Inline Open Button",
+          "inputType": "Text",
+          "validators": []
+        },
+        "inlineTranscriptCloseButton": {
+          "type": "string",
+          "required": false,
+          "default": "",
+          "title": "Inline Close Button",
+          "inputType": "Text",
+          "validators": []
+        },
+        "inlineTranscriptBody": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Inline Transcript",
+          "inputType": "TextArea",
+          "validators": [],
+          "help": "Optional text appears below the video"
+        },
+        "transcriptLinkButton": {
+          "type": "string",
+          "required": false,
+          "default": "",
+          "title": "Link Open Button",
+          "inputType": "Text",
+          "validators": []
+        },
+        "transcriptLink": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "Transcript Link",
+          "inputType": "Asset:other",
+          "validators": [],
+          "help": "Select a file for the transcript link"
+        }
+      }
+    },
+    "_playerOptions": {
+      "type":"string",
+      "required":false,
+      "default": "",
+      "title": "Player Options",
+      "inputType": "Text",
+      "validators": [],
+      "help": "Optional object that can be used to customize the player"
     }
   }
 }
