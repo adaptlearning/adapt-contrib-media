@@ -1,10 +1,8 @@
 {
   "name": "adapt-media-autoplay",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "framework": "2.0.4",
   "homepage": "https://github.com/deltanet/adapt-media-autoplay",
-  "authors": [
-    "Dan Gray <dan@delta-net.co.uk, Chris Steele <chris.steele@kineo.com>"
-  ],
   "displayName": "Media Auto Play",
   "component": "media-autoplay",
   "assetFields" : [
@@ -18,5 +16,5 @@
     "adapt-plugin",
     "adapt-component"
   ],
-  "license": "GPLv3"
+  "license": "GPL-3.0"
 }
