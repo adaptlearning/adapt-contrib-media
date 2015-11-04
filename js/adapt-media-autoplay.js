@@ -164,6 +164,14 @@ define(function(require) {
             }
         },
 
+        playMediaElement: function(state) {
+            if (this.model.get('_isVisible') && state) {
+                this.mediaElement.play();
+            } else if (state === false) {
+                this.mediaElement.pause();
+            }
+        },
+
         remove: function() {
             if ($("html").is(".ie8")) {
                 var obj = this.$("object")[0];

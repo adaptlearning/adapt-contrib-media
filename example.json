@@ -2,7 +2,7 @@
     "_id":"c-15",
     "_parentId":"b-10",
     "_type":"component",
-    "_component":"media",
+    "_component":"media-autoplay",
     "_classes":"",
     "_layout":"left",
     "title":"Title of the media component",
