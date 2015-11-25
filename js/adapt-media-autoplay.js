@@ -101,6 +101,11 @@ define(function(require) {
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
+
+            // Add listener for when the media is playing so the audio can be stopped
+            if (this.model.get('_audio') || this.model.get('_audio')._isEnabled) {
+                this.mediaElement.addEventListener('playing', _.bind(this.onPlayMedia, this));
+            }
         },
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
@@ -191,6 +196,12 @@ define(function(require) {
 
             // removeEventListener needs to pass in the method to remove the event in firefox and IE10
             this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
+        },
+
+        onPlayMedia: function() {
+            if (!Adapt.audio.audioClip[this.model.get('_audio')._channel].paused) {
+                Adapt.trigger('audio:pauseAudio', this.model.get('_audio')._channel);
+            }
         },
 
         onDeviceChanged: function() {
