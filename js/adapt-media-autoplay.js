@@ -103,7 +103,7 @@ define(function(require) {
             }
 
             // Add listener for when the media is playing so the audio can be stopped
-            if (this.model.get('_audio') || this.model.get('_audio')._isEnabled) {
+            if (this.model.get('_audio') && this.model.get('_audio')._isEnabled) {
                 this.mediaElement.addEventListener('playing', _.bind(this.onPlayMedia, this));
             }
         },
