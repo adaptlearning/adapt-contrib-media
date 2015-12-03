@@ -22,6 +22,7 @@ define(function(require) {
 
         postRender: function() {
             this.setupPlayer();
+            this.replaceText();
         },
 
 
@@ -64,6 +65,14 @@ define(function(require) {
             }, this));
         },
 
+        // Skinny text
+        replaceText: function() {
+            if (this.model.get('_skinnyText') && this.model.get('_skinnyText')._isEnabled) {
+                this.$('.component-title-inner').html(this.model.get('displayTitleSkinny')).a11y_text();
+                this.$('.component-body-inner').html(this.model.get('bodySkinny')).a11y_text();
+            }
+        },
+
         addMediaTypeClass: function() {
             var media = this.model.get("_media");
             if (media.type) {
@@ -103,6 +112,7 @@ define(function(require) {
             }
 
             // Add listener for when the media is playing so the audio can be stopped
+            
             if (this.model.get('_audio') && this.model.get('_audio')._isEnabled) {
                 this.mediaElement.addEventListener('playing', _.bind(this.onPlayMedia, this));
             }
