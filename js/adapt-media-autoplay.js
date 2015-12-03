@@ -16,13 +16,18 @@ define(function(require) {
             this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
+            // Listen for text change on audio extension
+            this.listenTo(Adapt, "audio:changeText", this.replaceText);
 
             this.checkIfResetOnRevisit();
         },
 
         postRender: function() {
             this.setupPlayer();
-            this.replaceText();
+
+            if (this.model.get('_skinnyText') && this.model.get('_skinnyText')._isEnabled) {
+                this.replaceText(Adapt.audio.textSize);
+            }
         },
 
 
@@ -66,10 +71,16 @@ define(function(require) {
         },
 
         // Skinny text
-        replaceText: function() {
+        replaceText: function(value) {
+            // If enabled
             if (this.model.get('_skinnyText') && this.model.get('_skinnyText')._isEnabled) {
-                this.$('.component-title-inner').html(this.model.get('displayTitleSkinny')).a11y_text();
-                this.$('.component-body-inner').html(this.model.get('bodySkinny')).a11y_text();
+                if(value == 0) {
+                    this.$('.component-title-inner').html(this.model.get('displayTitle')).a11y_text();
+                    this.$('.component-body-inner').html(this.model.get('body')).a11y_text();
+                } else {
+                    this.$('.component-title-inner').html(this.model.get('displayTitleSkinny')).a11y_text();
+                    this.$('.component-body-inner').html(this.model.get('bodySkinny')).a11y_text();
+                }
             }
         },
 
