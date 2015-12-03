@@ -44,11 +44,21 @@ define(function(require) {
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
             }
 
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
                 ? true
                 : false;
 
-            if (hasAccessibility) modelOptions.alwaysShowControls = true;
+            if (hasAccessibility) {
+                modelOptions.alwaysShowControls = true;
+                modelOptions.hideVideoControlsOnLoad = false;
+            }
+            
+            if (modelOptions.alwaysShowControls === undefined) {
+                modelOptions.alwaysShowControls = false;
+            }
+            if (modelOptions.hideVideoControlsOnLoad === undefined) {
+                modelOptions.hideVideoControlsOnLoad = true;
+            }
 
             this.addMediaTypeClass();
 
@@ -235,6 +245,7 @@ define(function(require) {
                 var player = this.mediaElement.player;
 
                 player.options.alwaysShowControls = true;
+                player.options.hideVideoControlsOnLoad = false;
                 player.enableControls();
                 player.showControls();
 
