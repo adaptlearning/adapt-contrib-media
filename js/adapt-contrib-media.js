@@ -199,8 +199,6 @@ define(function(require) {
                 this.mediaElement.player =  mejs.players[this.$('.mejs-container').attr('id')];
             }
 
-            this.showControls();
-
             var hasTouch = mejs.MediaFeatures.hasTouch;
             if (hasTouch) {
                 this.setupPlayPauseToggle();
@@ -235,7 +233,7 @@ define(function(require) {
         },
 
         showControls: function() {
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isEnabled
+            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
                 ? true
                 : false;
 
