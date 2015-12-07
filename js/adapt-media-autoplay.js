@@ -25,7 +25,7 @@ define(function(require) {
         postRender: function() {
             this.setupPlayer();
 
-            if (this.model.get('_skinnyText') && this.model.get('_skinnyText')._isEnabled) {
+            if (this.model.get('_reducedText') && this.model.get('_reducedText')._isEnabled) {
                 this.replaceText(Adapt.audio.textSize);
             }
         },
@@ -70,16 +70,16 @@ define(function(require) {
             }, this));
         },
 
-        // Skinny text
+        // Reduced text
         replaceText: function(value) {
             // If enabled
-            if (this.model.get('_skinnyText') && this.model.get('_skinnyText')._isEnabled) {
+            if (this.model.get('_reducedText') && this.model.get('_reducedText')._isEnabled) {
                 if(value == 0) {
                     this.$('.component-title-inner').html(this.model.get('displayTitle')).a11y_text();
                     this.$('.component-body-inner').html(this.model.get('body')).a11y_text();
                 } else {
-                    this.$('.component-title-inner').html(this.model.get('displayTitleSkinny')).a11y_text();
-                    this.$('.component-body-inner').html(this.model.get('bodySkinny')).a11y_text();
+                    this.$('.component-title-inner').html(this.model.get('displayTitleReduced')).a11y_text();
+                    this.$('.component-body-inner').html(this.model.get('bodyReduced')).a11y_text();
                 }
             }
         },
