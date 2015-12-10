@@ -5,6 +5,7 @@
     "_component":"media-autoplay",
     "_classes":"",
     "_layout":"left",
+    "_comment": "_setCompletionOn = inview | play | ended",
     "title":"Title of the media component",
     "displayTitle": "Title of the media component",
     "body": "This is optional body text. Select the play button to start the video.",
