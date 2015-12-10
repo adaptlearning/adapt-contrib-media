@@ -18,6 +18,8 @@ define(function(require) {
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
             // Listen for text change on audio extension
             this.listenTo(Adapt, "audio:changeText", this.replaceText);
+            // Listen for notify closing
+            this.listenTo(Adapt, 'popup:closed', this.notifyClosed);
 
             this.checkIfResetOnRevisit();
         },
@@ -28,10 +30,29 @@ define(function(require) {
             if (this.model.get('_reducedText') && this.model.get('_reducedText')._isEnabled) {
                 this.replaceText(Adapt.audio.textSize);
             }
+            // Check if notify is visible
+            if ($('body').children('.notify').css('visibility') == 'visible') {
+                this.notifyOpened();
+            }
         },
 
+        notifyOpened: function() {
+            this.notifyIsOpen = true;
+            this.playMediaElement(false);
+        },
+
+        notifyClosed: function() {
+            this.notifyIsOpen = false;
+
+            if (this.model.get('_autoPlay')) {
+                this.playMediaElement(true);
+            }
+        },
 
         setupPlayer: function() {
+
+            this.notifyIsOpen = false;
+
             if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
             var modelOptions = this.model.get('_playerOptions');
@@ -178,7 +199,7 @@ define(function(require) {
                     // may need some more checking here
                     // will need to check if accessibility is enabled:
                     //if (this.model.get('_autoPlay') && (Adapt.config.get('_accessibility')._isEnabled === undefined || Adapt.config.get('_accessibility')._isEnabled === true)) {
-                    if (this.model.get('_autoPlay')) {
+                    if (this.model.get('_autoPlay') && this.notifyIsOpen == false) {
                         this.playMediaElement(true);
                     }
                     this.$('.component-inner').off('inview');
