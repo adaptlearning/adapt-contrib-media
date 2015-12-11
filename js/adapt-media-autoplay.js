@@ -44,7 +44,7 @@ define(function(require) {
         notifyClosed: function() {
             this.notifyIsOpen = false;
 
-            if (this.model.get('_autoPlay')) {
+            if (this.model.get('_autoPlay') && this.videoIsInView == true) {
                 this.playMediaElement(true);
             }
         },
@@ -204,10 +204,13 @@ define(function(require) {
                     }
                     this.$('.component-inner').off('inview');
                     this.setCompletionStatus();
+
+                    this.videoIsInView = true;
                 }
                 
             } else {
                 this.playMediaElement(false);
+                this.videoIsInView = false;
             }
         },
 
