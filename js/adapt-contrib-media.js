@@ -229,6 +229,9 @@ define(function(require) {
                 $transcriptBodyContainer.slideDown().a11y_focus();
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+                if (Adapt.config.get('_accessibility')._isActive || this.model.get('_transcript')._setCompletionOnView) {
+                    this.setCompletionStatus();
+                }
             }
         },
 
