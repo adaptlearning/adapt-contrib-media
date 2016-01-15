@@ -76,6 +76,8 @@
         "toggleCaptionsButtonWhenOnlyOne": false,
         "slidesSelector": ""
     },
+    "displayTitleReduced": "Reduced title",
+    "bodyReduced": "Reduced text",
     "_reducedText": {
         "_isEnabled": true
     },

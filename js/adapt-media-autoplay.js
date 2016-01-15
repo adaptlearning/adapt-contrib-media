@@ -206,9 +206,6 @@ define(function(require) {
                 }
 
                 if (this._isVisibleTop && this._isVisibleBottom) {
-                    // may need some more checking here
-                    // will need to check if accessibility is enabled:
-                    //if (this.model.get('_autoPlay') && (Adapt.config.get('_accessibility')._isEnabled === undefined || Adapt.config.get('_accessibility')._isEnabled === true)) {
                     if (this.model.get('_autoPlay') && this.notifyIsOpen == false) {
                         this.playMediaElement(true);
                     }
