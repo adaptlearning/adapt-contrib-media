@@ -30,6 +30,7 @@
         ]
     },
     "_transcript": {
+        "_setCompletionOnView":true,
         "_inlineTranscript": true,
         "_externalTranscript": false,
         "inlineTranscriptButton": "Transcript",

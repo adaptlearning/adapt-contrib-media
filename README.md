@@ -66,6 +66,8 @@ The decision to include more than one file format is typically based on the brow
 
 **_transcript** (object):  The transcript attributes group contains values for **_inlineTranscript**, **_externalTranscript**, **inlineTranscriptButton**, **inlineTranscriptCloseButton**, **inlineTranscriptBody**, **transcriptLinkButton**, and **transcriptLink**.
 
+>**_setCompletionOnView** (boolean): This determines if Adapt will register this component as having been completed by the user when the inline transcript is opened. If accessibility is active this is automatically enabled.
+
 >**_inlineTranscript** (boolean): Determines whether the button that toggles the display of the inline transcript text will be displayed or not. 
 
 >**_externalTranscript** (boolean): Determines whether the button that links to the optional external transcript will be displayed or not.

@@ -165,6 +165,15 @@
       "required":false,
       "title": "Transcript Options",
       "properties":{
+        "_setCompletionOnView": {
+          "type":"boolean",
+          "required":false,
+          "default": false,
+          "title": "Set Completion",
+          "inputType": {"type": "Boolean", "options": [true, false]},
+          "validators": [],
+          "help": "This tells Adapt to set this video to complete when the inline transcript is shown"
+        },
         "_inlineTranscript": {
           "type":"boolean",
           "required":false,
