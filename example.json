@@ -88,8 +88,8 @@
         "_channel": 0, // channels represent the number of items defined in the course.json settings, by default there are 0, 1 and 2 available (3 _audioItems in the array)
         "_location": "", // pre-defined styles are "top-left", "top-right", "bottom-left", "bottom-right"
         "_media": {
-            "mp3": "course/en/audio/***.mp3",
-            "ogg": "course/en/audio/***.ogg"
+            "desktop": "course/en/audio/***.mp3",
+            "mobile": "course/en/audio/***.mp3"
         }
     }
 }
