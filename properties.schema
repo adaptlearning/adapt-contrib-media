@@ -159,7 +159,7 @@
         "_setCompletionOnView": {
           "type":"boolean",
           "required":false,
-          "default": false,
+          "default": true,
           "title": "Set Completion",
           "inputType": {"type": "Boolean", "options": [true, false]},
           "validators": [],
