@@ -303,6 +303,9 @@ define(function(require) {
                     this.setCompletionStatus();
                 }
             }
+            _.delay(_.bind(function() {
+                Adapt.trigger('device:resize');
+            }, this), 300);
         },
 
         showControls: function() {
