@@ -81,6 +81,49 @@
         display:block;
     }
 
+    .mejs-overlay-button {
+        background-image: url(../../assets/bigplay.svg);
+    }
+
+    .no-svg .mejs-overlay-button {
+        background-image: url(../../assets/bigplay.png);
+    }
+
+    .mejs-overlay-loading,
+    .mejs-container .mejs-controls,
+    .mejs-controls .mejs-volume-button .mejs-volume-slider,
+    .mejs-controls .mejs-captions-button .mejs-captions-selector,
+    .mejs-captions-text,
+    .mejs-controls .mejs-sourcechooser-button .mejs-sourcechooser-selector,
+    .mejs-postroll-layer,
+    .mejs-postroll-close,
+    .mejs-controls .mejs-speed-button .mejs-speed-selector {
+        background-image: url(../../assets/background.png);
+    }
+
+    .mejs-overlay-loading span {
+        background-image: url(../../assets/loading.gif);
+    }
+
+    .mejs-controls .mejs-button {
+        &.mejs-jump-forward-button {
+            background-image: url(../../assets/jumpforward.png);
+        }
+        &.mejs-skip-back-button {
+            background-image: url(../../assets/skipback.png);
+        }
+        button {
+            background-image: url(../../assets/controls.svg);
+            &:focus {
+                outline: @focus-outline;
+            }
+        }
+    }
+
+    .no-svg .mejs-controls .mejs-button button {
+        background-image: url(../../assets/controls.png);
+    }
+
 }
 
 

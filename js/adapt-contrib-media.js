@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player.min');
+    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
