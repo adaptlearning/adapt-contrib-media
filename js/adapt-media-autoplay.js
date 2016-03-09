@@ -149,6 +149,9 @@ define(function(require) {
 
             if (this.completionEvent !== 'inview') {
                 this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
+                if (this.model.get('_autoPlay')) {
+                    this.$('.component-widget').on('inview', _.bind(this.inview, this));
+                }
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
@@ -209,12 +212,12 @@ define(function(require) {
                     if (this.model.get('_autoPlay') && this.notifyIsOpen == false) {
                         this.playMediaElement(true);
                     }
+                    if (this.model.get('_setCompletionOn') == 'inview') {
+                        this.setCompletionStatus();
+                    }
                     this.$('.component-inner').off('inview');
-                    this.setCompletionStatus();
-
                     this.videoIsInView = true;
                 }
-                
             } else {
                 this.playMediaElement(false);
                 this.videoIsInView = false;
