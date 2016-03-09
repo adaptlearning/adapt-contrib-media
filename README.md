@@ -134,7 +134,7 @@ The attributes described above focus on the component's use with standard video.
 Users of Internet Explorer v8  will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback, due to that browser's lack of support for HTML audio/video.
 
 ----------------------------
-**Version number:**  2.0.2
+**Version number:**  2.0.3
 **Framework versions:** 2.0  
 **Author / maintainer:** Deltanet, plus forked code from Adapt Core Team, [contributors](https://github.com/deltanet/adapt-media-autoplay/graphs/contributors)  
 **Accessibility support:** To be reviewed.  
