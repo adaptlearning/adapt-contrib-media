@@ -38,7 +38,7 @@ define(function(require) {
                 if (this.model.get('_useClosedCaptions')) {
                     modelOptions.features.unshift('tracks');
                 }
-                if (this.model.get("_allowFullscreen")) {
+                if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
                     modelOptions.features.push('fullscreen');
                 }
             }
