@@ -53,6 +53,8 @@ define(function(require) {
 
             this.notifyIsOpen = false;
 
+            this.mediaAutoplayOnce = this.model.get('_autoPlayOnce');
+
             this.mediaCanAutoplay = this.model.get('_autoPlay');
 
             if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
@@ -199,7 +201,7 @@ define(function(require) {
             }
         },
 
-        inview: function(event, visible, visiblePartX, visiblePartY) {            
+        inview: function(event, visible, visiblePartX, visiblePartY) {
             if (visible) {
                 if (visiblePartY === 'top' || visiblePartY === 'both') {
                     this._isVisibleTop = true;
@@ -229,7 +231,9 @@ define(function(require) {
             if (this.model.get('_isVisible') && state) {
                 this.mediaElement.play();
                 // Set to false to stop autoplay when inview again
-                this.mediaCanAutoplay = false;
+                if(this.mediaAutoplayOnce) {
+                    this.mediaCanAutoplay = false;
+                }
             } else if (state === false) {
                 this.mediaElement.pause();
             }

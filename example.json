@@ -12,6 +12,7 @@
     "instruction": "",
     "_setCompletionOn":"inview",
     "_autoPlay":true,
+    "_autoPlayOnce":true,
     "_useClosedCaptions":true,
     "_startLanguage":"en",
     "_media": {
