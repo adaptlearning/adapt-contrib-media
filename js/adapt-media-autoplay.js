@@ -44,7 +44,7 @@ define(function(require) {
         notifyClosed: function() {
             this.notifyIsOpen = false;
 
-            if (this.model.get('_autoPlay') && this.videoIsInView == true) {
+            if (this.model.get('_autoPlay') && this.videoIsInView == true && this.mediaCanAutoplay) {
                 this.playMediaElement(true);
             }
         },
@@ -52,6 +52,10 @@ define(function(require) {
         setupPlayer: function() {
 
             this.notifyIsOpen = false;
+
+            this.mediaAutoplayOnce = this.model.get('_autoPlayOnce');
+
+            this.mediaCanAutoplay = this.model.get('_autoPlay');
 
             if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
@@ -199,17 +203,13 @@ define(function(require) {
 
         inview: function(event, visible, visiblePartX, visiblePartY) {
             if (visible) {
-                if (visiblePartY === 'top') {
+                if (visiblePartY === 'top' || visiblePartY === 'both') {
                     this._isVisibleTop = true;
-                } else if (visiblePartY === 'bottom') {
-                    this._isVisibleBottom = true;
                 } else {
-                    this._isVisibleTop = true;
-                    this._isVisibleBottom = true;
+                    this._isVisibleTop = false;
                 }
-
-                if (this._isVisibleTop && this._isVisibleBottom) {
-                    if (this.model.get('_autoPlay') && this.notifyIsOpen == false) {
+                if (this._isVisibleTop) {
+                    if (this.model.get('_autoPlay') && this.notifyIsOpen == false && this.mediaCanAutoplay == true) {
                         this.playMediaElement(true);
                     }
                     if (this.model.get('_setCompletionOn') == 'inview') {
@@ -217,6 +217,9 @@ define(function(require) {
                     }
                     this.$('.component-inner').off('inview');
                     this.videoIsInView = true;
+                } else {
+                    this.playMediaElement(false);
+                    this.videoIsInView = false;
                 }
             } else {
                 this.playMediaElement(false);
@@ -227,6 +230,10 @@ define(function(require) {
         playMediaElement: function(state) {
             if (this.model.get('_isVisible') && state) {
                 this.mediaElement.play();
+                // Set to false to stop autoplay when inview again
+                if(this.mediaAutoplayOnce) {
+                    this.mediaCanAutoplay = false;
+                }
             } else if (state === false) {
                 this.mediaElement.pause();
             }
