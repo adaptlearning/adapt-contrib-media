@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var mep = require('components/adapt-media-autoplay/js/mediaelement-and-player.min');
+    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
@@ -309,7 +309,7 @@ define(function(require) {
                 $transcriptBodyContainer.slideDown().a11y_focus();
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
-                if (Adapt.config.get('_accessibility')._isActive || this.model.get('_transcript')._setCompletionOnView) {
+                if (this.model.get('_transcript')._setCompletionOnView !== false) {
                     this.setCompletionStatus();
                 }
             }
