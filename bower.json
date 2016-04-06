@@ -1,18 +1,18 @@
 {
-  "name": "adapt-contrib-media",
-  "version": "2.0.3",
-  "framework": "^2.0.0",
-  "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
-  "issues": "https://adaptlearning.atlassian.net/secure/CreateIssueDetails!init.jspa?pid=10100&issuetype=1&priority=6&components=10519",
-  "displayName": "Media",
-  "component": "media",
+  "name": "adapt-media-autoplay",
+  "version": "2.0.5",
+  "framework": "2.0.4",
+  "homepage": "https://github.com/deltanet/adapt-media-autoplay",
+  "issues": "https://github.com/deltanet/adapt-media-autoplay/issues",
+  "displayName": "Media Auto Play",
+  "component": "media-autoplay",
   "assetFields" : [
     "_media.ogv",
     "_media.mp4",
     "_media.poster"
   ],
-  "description": "Playback of video and audio with a Flash Player fallback for IE8+",
-  "main": "/js/adapt-contrib-media.js",
+  "description": "Playback of video and audio with a Flash Player fallback for IE8+ with the option to auto play",
+  "main": "/js/adapt-media-autoplay.js",
   "keywords": [
     "adapt-plugin",
     "adapt-component"

@@ -2,14 +2,17 @@
     "_id":"c-15",
     "_parentId":"b-10",
     "_type":"component",
-    "_component":"media",
+    "_component":"media-autoplay",
     "_classes":"",
     "_layout":"left",
+    "_comment": "_setCompletionOn = inview | play | ended",
     "title":"Title of the media component",
     "displayTitle": "Title of the media component",
     "body": "This is optional body text. Select the play button to start the video.",
     "instruction": "",
     "_setCompletionOn":"inview",
+    "_autoPlay":true,
+    "_autoPlayOnce":true,
     "_useClosedCaptions":true,
     "_startLanguage":"en",
     "_media": {
@@ -73,5 +76,21 @@
         "hideCaptionsButtonWhenEmpty": true,
         "toggleCaptionsButtonWhenOnlyOne": false,
         "slidesSelector": ""
+    },
+    "displayTitleReduced": "Reduced title",
+    "bodyReduced": "Reduced text",
+    "_reducedText": {
+        "_isEnabled": true
+    },
+    "_audio": {
+        "_isEnabled": true,
+        "_showControls": false,
+        "_autoplay": true,
+        "_channel": 0, // channels represent the number of items defined in the course.json settings, by default there are 0, 1 and 2 available (3 _audioItems in the array)
+        "_location": "", // pre-defined styles are "top-left", "top-right", "bottom-left", "bottom-right"
+        "_media": {
+            "desktop": "course/en/audio/***.mp3",
+            "mobile": "course/en/audio/***.mp3"
+        }
     }
 }
