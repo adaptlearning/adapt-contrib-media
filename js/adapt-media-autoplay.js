@@ -20,6 +20,8 @@ define(function(require) {
             this.listenTo(Adapt, "audio:changeText", this.replaceText);
             // Listen for notify closing
             this.listenTo(Adapt, 'popup:closed', this.notifyClosed);
+            // Listen for notify opening
+            this.listenTo(Adapt, 'popup:opened', this.notifyOpened);
 
             this.checkIfResetOnRevisit();
         },
