@@ -1,6 +1,8 @@
 define(function(require) {
 
     var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
+    require('components/adapt-contrib-media/js/mediaelement-and-player-accessible-captions');
+    
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
@@ -34,7 +36,10 @@ define(function(require) {
             if(modelOptions.features === undefined) {
                 modelOptions.features = ['playpause','progress','current','duration'];
                 if (this.model.get('_useClosedCaptions')) {
-                    modelOptions.features = ['playpause','progress','tracks','current','duration'];
+                    modelOptions.features.unshift('tracks');
+                }
+                if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
+                    modelOptions.features.push('fullscreen');
                 }
             }
 

@@ -151,6 +151,15 @@
       "validators": [],
       "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
     },
+    "_allowFullScreen": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Allow Full Screen",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "If set to 'true', the full screen button will appear (excluding IE9)."
+    },
     "_transcript": {
       "type":"object",
       "required":false,
