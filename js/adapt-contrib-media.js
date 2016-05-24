@@ -89,10 +89,9 @@ define(function(require) {
 
         addThirdPartyFixes: function(modelOptions, callback) {
             var media = this.model.get("_media");
-            if (!media) {
-                callback();
-            } else {
-                switch (media.type) {
+            if (!media) return callback();
+            
+            switch (media.type) {
                 case "video/vimeo":
                     modelOptions.alwaysShowControls = false;
                     modelOptions.hideVideoControlsOnLoad = true;
@@ -108,7 +107,6 @@ define(function(require) {
                     break;
                 default:
                     callback();
-                }
             }
         },
 
