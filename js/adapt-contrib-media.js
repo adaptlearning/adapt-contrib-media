@@ -81,7 +81,7 @@ define(function(require) {
 
         addMediaTypeClass: function() {
             var media = this.model.get("_media");
-            if (media.type) {
+            if (media && media.type) {
                 var typeClass = media.type.replace(/\//, "-");
                 this.$(".media-widget").addClass(typeClass);
             }
@@ -89,21 +89,25 @@ define(function(require) {
 
         addThirdPartyFixes: function(modelOptions, callback) {
             var media = this.model.get("_media");
-            switch (media.type) {
-            case "video/vimeo":
-                modelOptions.alwaysShowControls = false;
-                modelOptions.hideVideoControlsOnLoad = true;
-                modelOptions.features = [];
-                if (froogaloopAdded) return callback();
-                Modernizr.load({
-                    load: "assets/froogaloop.js", 
-                    complete: function() {
-                        froogaloopAdded = true;
-                        callback();
-                    }
-                }); 
-                break;
-            default:
+            if (media) {
+                switch (media.type) {
+                case "video/vimeo":
+                    modelOptions.alwaysShowControls = false;
+                    modelOptions.hideVideoControlsOnLoad = true;
+                    modelOptions.features = [];
+                    if (froogaloopAdded) return callback();
+                    Modernizr.load({
+                        load: "assets/froogaloop.js", 
+                        complete: function() {
+                            froogaloopAdded = true;
+                            callback();
+                        }
+                    }); 
+                    break;
+                default:
+                    callback();
+                }
+            } else {
                 callback();
             }
         },
