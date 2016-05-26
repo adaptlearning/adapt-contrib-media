@@ -72,8 +72,14 @@ define(function(require) {
                 this.$('audio, video').mediaelementplayer(modelOptions);
 
                 // We're streaming - set ready now, as success won't be called above
-                if (this.model.get('_media').source) {
-                    this.$('.media-widget').addClass('external-source');
+                try {
+                    if (this.model.get('_media').source) {
+                        this.$('.media-widget').addClass('external-source');
+                        this.setReadyStatus();
+                    }
+                } catch (e) {
+                    console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
+                } finally {
                     this.setReadyStatus();
                 }
             }, this));
