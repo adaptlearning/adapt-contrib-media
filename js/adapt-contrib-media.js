@@ -75,7 +75,6 @@ define(function(require) {
                 try {
                     if (this.model.get('_media').source) {
                         this.$('.media-widget').addClass('external-source');
-                        this.setReadyStatus();
                     }
                 } catch (e) {
                     console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
