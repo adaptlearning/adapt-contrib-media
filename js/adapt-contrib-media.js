@@ -234,11 +234,15 @@ define(function(require) {
             var $button = this.$(".media-inline-transcript-button");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
-                $transcriptBodyContainer.slideUp();
+                $transcriptBodyContainer.slideUp(function() {
+                    $(window).resize();
+                });
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptButton);
             } else {
-                $transcriptBodyContainer.slideDown().a11y_focus();
+                $transcriptBodyContainer.slideDown(function() {
+                    $(window).resize();
+                }).a11y_focus();
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
                 if (this.model.get('_transcript')._setCompletionOnView !== false) {
