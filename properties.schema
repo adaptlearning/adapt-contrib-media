@@ -227,7 +227,8 @@
           "default": "",
           "title": "Link Open Button",
           "inputType": "Text",
-          "validators": []
+          "validators": [],
+          "translatable": true
         },
         "transcriptLink": {
           "type":"string",
