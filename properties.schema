@@ -9,14 +9,16 @@
       "required": true,
       "default": "This is a media component which plays a video. Select the play / pause button to watch or listen.",
       "inputType": "Text",
-      "validators": []
+      "validators": [],
+      "translatable": true
     },
     "transcriptButton": {
       "type": "string",
       "required": false,
       "default": "Alternatively you can select the link below for the transcript.",
       "inputType": "Text",
-      "validators": []
+      "validators": [],
+      "translatable": true
     }
   },
   "properties":{
@@ -33,7 +35,8 @@
       "default": "",
       "inputType": "Text",
       "validators": [],
-      "help": "This is the instruction text"
+      "help": "This is the instruction text",
+      "translatable": true
     },
     "_media": {
       "type":"object",
@@ -196,7 +199,8 @@
           "default": "",
           "title": "Inline Open Button",
           "inputType": "Text",
-          "validators": []
+          "validators": [],
+          "translatable": true
         },
         "inlineTranscriptCloseButton": {
           "type": "string",
@@ -204,7 +208,8 @@
           "default": "",
           "title": "Inline Close Button",
           "inputType": "Text",
-          "validators": []
+          "validators": [],
+          "translatable": true
         },
         "inlineTranscriptBody": {
           "type":"string",
@@ -213,7 +218,8 @@
           "title": "Inline Transcript",
           "inputType": "TextArea",
           "validators": [],
-          "help": "Optional text appears below the video"
+          "help": "Optional text appears below the video",
+          "translatable": true
         },
         "transcriptLinkButton": {
           "type": "string",
@@ -221,7 +227,8 @@
           "default": "",
           "title": "Link Open Button",
           "inputType": "Text",
-          "validators": []
+          "validators": [],
+          "translatable": true
         },
         "transcriptLink": {
           "type":"string",
