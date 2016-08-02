@@ -13,7 +13,12 @@
             <source src="{{_media.source}}" type="{{_media.type}}"/>
           {{else}}
             <source src="{{_media.mp4}}" type="video/mp4"/>
-            <source src="{{_media.ogv}}" type="video/ogg"/>
+            {{#if _media.ogv}}
+              <source src="{{_media.ogv}}" type="video/ogg"/>
+            {{/if}}
+            {{#if _media.webm}}
+              <source src="{{_media.webm}}" type="video/webm"/>
+            {{/if}}
           {{/if}}
           {{#if _useClosedCaptions}}
               {{#each _media.cc}}
