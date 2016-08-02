@@ -68,7 +68,7 @@
           "title": "WEBM Link",
           "inputType": "Asset:video",
           "validators": [],
-          "help": "Link to an WEBM video"
+          "help": "Link to a WEBM video"
         },
         "mp3": {
           "type":"string",
