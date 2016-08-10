@@ -111,7 +111,7 @@
                 "default": "",
                 "title": "Language Code",
                 "inputType": "Text",
-                "validators": []
+                "validators": ["required"]
               },
               "src": {
                 "type":"string",
@@ -119,7 +119,7 @@
                 "default": "",
                 "title": "Caption File",
                 "inputType": "Asset:other",
-                "validators": []
+                "validators": ["required"]
               }
             }
           }
