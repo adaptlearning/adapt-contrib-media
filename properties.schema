@@ -242,11 +242,13 @@
       }
     },
     "_playerOptions": {
-      "type":"string",
-      "required":false,
-      "default": "",
+      "type": "object",
+      "default": {},
       "title": "Player Options",
-      "inputType": "Text",
+      "inputType": {
+        "type": "CodeEditor",
+        "mode": "json"
+      },
       "validators": [],
       "help": "Optional object that can be used to customize the player"
     }

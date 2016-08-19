@@ -91,7 +91,7 @@ The decision to include more than one file format is typically based on the brow
 
 >**transcriptLink** (string): File name (including path) of the optional external transcript. Path should be relative to the *src* folder (e.g., *course/en/pdf/video01_transcript.pdf*).  
 
-**_playerOptions** (object): This optional object can be used to customize the player. Visit the [MediaElement website](http://mediaelementjs.com/#options) for a list of what options are available. Options are configured in components.json. See [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) for a suggested configuration that has been confirmed as working on the full range of Adapt's supported devices. Currently, the Adapt authoring tool does not accommodate configuring these options; courses that require **_playerOptions** must be built directly in the [Adapt framework](https://github.com/adaptlearning/adapt_framework/wiki).  
+**_playerOptions** (object): This optional object can be used to customize the player. Visit the [MediaElement website](http://mediaelementjs.com/#options) for a list of what options are available. Options are configured in components.json. See [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) for a suggested configuration that has been confirmed as working on the full range of Adapt's supported devices.
 >**Note:**  
 >The **_playerOptions** feature is experimental. As these settings are not implemented by the Adapt community, there is no guarantee that all features and combinations thereof will be compatible with your device set up.    
 
