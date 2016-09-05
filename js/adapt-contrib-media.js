@@ -2,7 +2,7 @@ define(function(require) {
 
     var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
     require('components/adapt-contrib-media/js/mediaelement-and-player-accessible-captions');
-    
+
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
@@ -57,7 +57,7 @@ define(function(require) {
                 modelOptions.alwaysShowControls = true;
                 modelOptions.hideVideoControlsOnLoad = false;
             }
-            
+
             if (modelOptions.alwaysShowControls === undefined) {
                 modelOptions.alwaysShowControls = false;
             }
@@ -95,7 +95,7 @@ define(function(require) {
         addThirdPartyFixes: function(modelOptions, callback) {
             var media = this.model.get("_media");
             if (!media) return callback();
-            
+
             switch (media.type) {
                 case "video/vimeo":
                     modelOptions.alwaysShowControls = false;
@@ -103,12 +103,12 @@ define(function(require) {
                     modelOptions.features = [];
                     if (froogaloopAdded) return callback();
                     Modernizr.load({
-                        load: "assets/froogaloop.js", 
+                        load: "assets/froogaloop.js",
                         complete: function() {
                             froogaloopAdded = true;
                             callback();
                         }
-                    }); 
+                    });
                     break;
                 default:
                     callback();
@@ -183,6 +183,9 @@ define(function(require) {
                 if (obj) {
                     obj.style.display = "none";
                 }
+            }
+            if (this.mediaElement && this.mediaElement.player) {
+                this.mediaElement.player.remove();
             }
             if (this.mediaElement) {
                 $(this.mediaElement.pluginElement).remove();
