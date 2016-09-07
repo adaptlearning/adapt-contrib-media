@@ -208,6 +208,7 @@ define(function(require) {
                 this.mediaElement.player.remove();
             }
             if (this.mediaElement) {
+                this.mediaElement.src = "";
                 $(this.mediaElement.pluginElement).remove();
                 delete this.mediaElement;
             }
