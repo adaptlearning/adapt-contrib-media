@@ -216,8 +216,18 @@ define(function(require) {
                 this.setupPlayPauseToggle();
             }
 
+            this.addThirdPartyAfterFixes();
+
             this.setReadyStatus();
             this.setupEventListeners();
+        },
+
+        addThirdPartyAfterFixes: function() {
+            var media = this.model.get("_media");
+            switch (media.type) {
+            case "video/vimeo":
+                this.$(".mejs-container").attr("tabindex", 0);
+            }
         },
 
         onScreenSizeChanged: function() {
