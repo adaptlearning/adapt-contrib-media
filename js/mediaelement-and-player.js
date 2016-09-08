@@ -1577,7 +1577,10 @@ mejs.HtmlMediaElementShim = {
 
 						player.addEvent('finish', function() {
 							playerState = 0;							
-							createEvent(player, pluginMediaElement, 'ended');
+							// HACK - Commenting out the line below as triggering the 'ended' event 
+							// in Vimeo causes a race condition which results in the scrubber going to
+							// a random seek time rather than back to the start
+							// createEvent(player, pluginMediaElement, 'ended');
 						});
 
 						player.addEvent('playProgress', function(e) {
