@@ -140,7 +140,8 @@ define(function(require) {
             this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
 
             if (this.completionEvent !== 'inview') {
-                this.mediaElement.addEventListener(this.completionEvent, _.bind(this.onCompletion, this));
+                this.onCompletion = _.bind(this.onCompletion, this);
+                this.mediaElement.addEventListener(this.completionEvent, this.onCompletion);
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
@@ -159,16 +160,29 @@ define(function(require) {
             // stop the player dealing with this, we'll do it ourselves
             player.options.clickToPlayPause = false;
 
+            this.onOverlayClick = _.bind(this.onOverlayClick, this);
+            this.onMediaElementClick = _.bind(this.onMediaElementClick, this);
+
             // play on 'big button' click
-            $('.mejs-overlay-button',this.$el).click(_.bind(function(event) {
-                player.play();
-            }, this));
+            this.$('.mejs-overlay-button').on("click", this.onOverlayClick);
 
             // pause on player click
-            $('.mejs-mediaelement',this.$el).click(_.bind(function(event) {
-                var isPaused = player.media.paused;
-                if(!isPaused) player.pause();
-            }, this));
+            this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
+        },
+
+        onOverlayClick: function() {
+            var player = this.mediaElement.player;
+            if (!player) return;
+
+            player.play();
+        },
+
+        onMediaElementClick: function(event) {
+            var player = this.mediaElement.player;
+            if (!player) return;
+
+            var isPaused = player.media.paused;
+            if(!isPaused) player.pause();
         },
 
         checkIfResetOnRevisit: function() {
@@ -199,6 +213,20 @@ define(function(require) {
         },
 
         remove: function() {
+            this.$('.mejs-overlay-button').off("click", this.onOverlayClick);
+            this.$('.mejs-mediaelement').off("click", this.onMediaElementClick);
+
+            var modelOptions = this.model.get('_playerOptions');
+            delete modelOptions.success;
+
+            var media = this.model.get("_media");
+            if (media) {
+                switch (media.type) {
+                case "video/vimeo":
+                    this.$("iframe")[0].isRemoved = true;
+                }
+            }
+
             if ($("html").is(".ie8")) {
                 var obj = this.$("object")[0];
                 if (obj) {
@@ -206,8 +234,18 @@ define(function(require) {
                 }
             }
             if (this.mediaElement && this.mediaElement.player) {
+                if (this.completionEvent !== 'inview') {
+                    this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
+                }
+
+                var player_id = this.mediaElement.player.id;
+
                 purge(this.$el[0]);
                 this.mediaElement.player.remove();
+
+                if (mejs.players[player_id]) {
+                    delete mejs.players[player_id];
+                }
             }
             if (this.mediaElement) {
                 this.mediaElement.src = "";
