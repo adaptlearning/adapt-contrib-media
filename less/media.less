@@ -114,7 +114,12 @@
         }
         button {
             background-image: url(../../assets/controls.svg);
-            &:focus {
+        }
+    }
+    
+    .accessibility.no-touch & {
+        .mejs-controls .mejs-button {
+            button:focus {
                 outline: @focus-outline;
             }
         }
