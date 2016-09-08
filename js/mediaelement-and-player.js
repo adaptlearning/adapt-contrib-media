@@ -685,14 +685,12 @@ mejs.PluginMediaElement.prototype = {
 	},
 	pause: function () {
 		if (this.pluginApi != null) {
+			// PATCH -- Prevent looping video on Vimeo and YouTube
 			if (this.pluginType == 'youtube' || this.pluginType == 'vimeo') {
-		        if( this.pluginApi.getPlayerState() == 1 ) {
-				    this.pluginApi.pauseVideo();
-                }
+					this.pluginApi.pauseVideo();
 			} else {
-				this.pluginApi.pauseMedia();
-			}			
-			
+					this.pluginApi.pauseMedia();
+			}	
 			
 			this.paused = true;
 		}
