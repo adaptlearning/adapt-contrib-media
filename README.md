@@ -6,7 +6,7 @@
  
 It is a media playback component for audio and video. It uses HTML5 audio and video for browsers that support it and Flash/Silverlight fallbacks for browsers that don't.  
 
-The component uses [MediaElement.js (v2.20.1)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
+The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
 
 [Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.  
 
@@ -145,7 +145,7 @@ The attributes described above focus on the component's use with standard video.
 Users of Internet Explorer v8  will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback, due to that browser's lack of support for HTML audio/video.
 
 ----------------------------
-**Version number:**  2.0.4   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
+**Version number:**  2.0.5   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
 **Framework versions:** 2.0  
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)  
 **Accessibility support:** WAI AA   
