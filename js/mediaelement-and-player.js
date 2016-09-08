@@ -686,6 +686,7 @@ mejs.PluginMediaElement.prototype = {
 	pause: function () {
 		if (this.pluginApi != null) {
 			// PATCH -- Prevent looping video on Vimeo and YouTube
+			// See: https://github.com/johndyer/mediaelement/issues/1795
 			if (this.pluginType == 'youtube' || this.pluginType == 'vimeo') {
 					this.pluginApi.pauseVideo();
 			} else {

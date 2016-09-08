@@ -92,7 +92,7 @@
           "title": "Poster Link",
           "inputType": "Asset:image",
           "validators": [],
-          "help": "Image displayed before the video is played (except oh Vimeo)"
+          "help": "Image displayed before the video is played (except on Vimeo)"
         },
         "cc": {
           "type":"array",
