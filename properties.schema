@@ -83,7 +83,7 @@
           "title": "Type",
           "inputType": "Text",
           "validators": [],
-          "help": "Enter the 'Source URL' type, for a YouTube link this would be video/youtube"
+          "help": "Enter the 'Source URL' type, for a YouTube link this would be video/youtube, and video/vimeo for Vimeo"
         },
         "poster": {
           "type":"string",
@@ -92,7 +92,7 @@
           "title": "Poster Link",
           "inputType": "Asset:image",
           "validators": [],
-          "help": "Image displayed before the video is played"
+          "help": "Image displayed before the video is played (except oh Vimeo)"
         },
         "cc": {
           "type":"array",
