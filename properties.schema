@@ -61,6 +61,15 @@
           "validators": [],
           "help": "Link to an OGV video"
         },
+        "webm": {
+          "type":"string",
+          "required":false,
+          "default": "",
+          "title": "WEBM Link",
+          "inputType": "Asset:video",
+          "validators": [],
+          "help": "Link to a WEBM video"
+        },
         "mp3": {
           "type":"string",
           "required":false,
