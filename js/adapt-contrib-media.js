@@ -8,6 +8,8 @@ define(function(require) {
 
     var froogaloopAdded = false;
     
+    // The following function is used to to prevent a memory leak in Internet Explorer 
+    // See: http://javascript.crockford.com/memory/leak.html
     function purge(d) {
         var a = d.attributes, i, l, n;
         if (a) {
