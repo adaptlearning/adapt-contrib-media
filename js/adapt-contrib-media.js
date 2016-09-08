@@ -2,11 +2,32 @@ define(function(require) {
 
     var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
     require('components/adapt-contrib-media/js/mediaelement-and-player-accessible-captions');
-    
+
     var ComponentView = require('coreViews/componentView');
     var Adapt = require('coreJS/adapt');
 
     var froogaloopAdded = false;
+    
+    // The following function is used to to prevent a memory leak in Internet Explorer 
+    // See: http://javascript.crockford.com/memory/leak.html
+    function purge(d) {
+        var a = d.attributes, i, l, n;
+        if (a) {
+            for (i = a.length - 1; i >= 0; i -= 1) {
+                n = a[i].name;
+                if (typeof d[n] === 'function') {
+                    d[n] = null;
+                }
+            }
+        }
+        a = d.childNodes;
+        if (a) {
+            l = a.length;
+            for (i = 0; i < l; i += 1) {
+                purge(d.childNodes[i]);
+            }
+        }
+    }
 
     var Media = ComponentView.extend({
 
@@ -57,7 +78,7 @@ define(function(require) {
                 modelOptions.alwaysShowControls = true;
                 modelOptions.hideVideoControlsOnLoad = false;
             }
-            
+
             if (modelOptions.alwaysShowControls === undefined) {
                 modelOptions.alwaysShowControls = false;
             }
@@ -95,7 +116,7 @@ define(function(require) {
         addThirdPartyFixes: function(modelOptions, callback) {
             var media = this.model.get("_media");
             if (!media) return callback();
-            
+
             switch (media.type) {
                 case "video/vimeo":
                     modelOptions.alwaysShowControls = false;
@@ -103,12 +124,12 @@ define(function(require) {
                     modelOptions.features = [];
                     if (froogaloopAdded) return callback();
                     Modernizr.load({
-                        load: "assets/froogaloop.js", 
+                        load: "assets/froogaloop.js",
                         complete: function() {
                             froogaloopAdded = true;
                             callback();
                         }
-                    }); 
+                    });
                     break;
                 default:
                     callback();
@@ -184,7 +205,12 @@ define(function(require) {
                     obj.style.display = "none";
                 }
             }
+            if (this.mediaElement && this.mediaElement.player) {
+                purge(this.$el[0]);
+                this.mediaElement.player.remove();
+            }
             if (this.mediaElement) {
+                this.mediaElement.src = "";
                 $(this.mediaElement.pluginElement).remove();
                 delete this.mediaElement;
             }
