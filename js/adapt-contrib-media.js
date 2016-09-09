@@ -45,7 +45,7 @@ define(function(require) {
                 // This prevents conflicts with HTTP/HTTPS
                 var media = this.model.get('_media');
 
-                media.source = media.source.replace(/^https?\:/, ":");
+                media.source = media.source.replace(/^https?\:/, "");
 
                 this.model.set('_media', media); 
             }
