@@ -40,6 +40,16 @@ define(function(require) {
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
+            if (this.model.get('_media').source) {
+                // Remove the protocol for streaming service.
+                // This prevents conflicts with HTTP/HTTPS
+                var media = this.model.get('_media');
+
+                media.source = media.source.replace(/^https?\:/, "");
+
+                this.model.set('_media', media); 
+            }
+
             this.checkIfResetOnRevisit();
         },
 
