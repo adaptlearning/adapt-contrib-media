@@ -32,7 +32,8 @@ define(function(require) {
     var Media = ComponentView.extend({
 
         events: {
-            "click .media-inline-transcript-button": "onToggleInlineTranscript"
+            "click .media-inline-transcript-button": "onToggleInlineTranscript",
+            "keyup .mejs-time-rail": "onTimelineKeyUp"
         },
 
         preRender: function() {
@@ -310,6 +311,18 @@ define(function(require) {
 
         onAccessibilityToggle: function() {
            this.showControls();
+        },
+
+        onTimelineKeyUp: function(event) {
+            switch (event.which) {
+            case 32:
+                var player = this.mediaElement.player;
+                if (player.media.paused) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+            }
         },
 
         onToggleInlineTranscript: function(event) {
