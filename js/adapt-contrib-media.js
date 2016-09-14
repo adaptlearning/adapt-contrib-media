@@ -123,6 +123,28 @@ define(function(require) {
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
+
+            try {
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        $(window).resize();
+                        observer.disconnect();
+                    });
+                });
+                observer.observe(this.mediaElement, {
+                    attributes: true,
+                    attributeFilter: ["height"]
+                });
+            } catch (error) {
+                // Fall back for older browsers
+                this.mediaElement.addEventListener('loadeddata', this.mediaLoadedData());
+            }
+        },
+
+        mediaLoadedData: function() {
+            setTimeout(function() {
+                $(window).resize();
+            }, 300);
         },
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
