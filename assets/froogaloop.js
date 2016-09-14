@@ -2,11 +2,32 @@
 var Froogaloop = (function(){
     // Define a local copy of Froogaloop
     function Froogaloop(iframe) {
+        startClearup();
         // The Froogaloop object is actually just the init constructor
         return new Froogaloop.fn.init(iframe);
     }
 
+    var clearupIntervalHandle = false;
+    function startClearup() {
+        if (clearupIntervalHandle) return;
+        clearupIntervalHandle = setInterval(function() {
+            var items = 0;
+            for (var k in iframes) {
+                items++;
+                if (iframes[k].isRemoved === true) {
+                    delete iframes[k];
+                    delete eventCallbacks[k];
+                }
+            }
+            if (!items) {
+                clearInterval(clearupIntervalHandle);
+                clearupIntervalHandle = false;
+            }
+        }, 200);
+    }
+
     var eventCallbacks = {},
+        iframes = {},
         hasWindowEvent = false,
         isReady = false,
         slice = Array.prototype.slice,
@@ -21,6 +42,8 @@ var Froogaloop = (function(){
             }
 
             this.element = iframe;
+
+            iframes[iframe.id] = iframe;
 
             return this;
         },
