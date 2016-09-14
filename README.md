@@ -142,7 +142,17 @@ The attributes described above focus on the component's use with standard video.
 
 ## Limitations
  
-Users of Internet Explorer v8  will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback, due to that browser's lack of support for HTML audio/video.
+Browser | Limitation | 
+--------- | :----------- | 
+Chrome   | No known issues.
+FireFox | No known issues.
+iOS/iPad | No known issues.
+Android | FireFox 33.1 with Vimeo: 'This video can't be played with your current setup'.
+Edge | No known issues.
+IE11 | No known issues.
+IE10 | No known issues.
+IE9 | Vimeo: ‘Sorry this video does not exist’.  
+IE8 | <ul><li>Due to the lack of support for HTML audio/video, users will need to have [Adobe Flash Player](https://get.adobe.com/flashplayer/) v10 (or better) or Microsoft [Silverlight](https://www.microsoft.com/getsilverlight/get-started/install/) installed to enable media playback.</li><li>YouTube: control bar missing</li><li>YouTube/Vimeo: doesn’t track play/ended events</li></ul>
 
 ----------------------------
 **Version number:**  2.0.4   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
