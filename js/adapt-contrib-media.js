@@ -137,7 +137,12 @@ define(function(require) {
                 });
             } catch (error) {
                 // Fall back for older browsers
-                this.mediaElement.addEventListener('loadeddata', this.mediaLoadedData());
+                if (document.addEventListener) {
+                    this.mediaElement.addEventListener('loadeddata', this.mediaLoadedData());
+                } else {
+                    // IE8
+                    this.mediaElement.attachEvent('loadeddata', this.mediaLoadedData());
+                }
             }
         },
 
