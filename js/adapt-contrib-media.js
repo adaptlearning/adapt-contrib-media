@@ -1,10 +1,9 @@
-define(function(require) {
-
-    var mep = require('components/adapt-contrib-media/js/mediaelement-and-player');
-    require('components/adapt-contrib-media/js/mediaelement-and-player-accessible-captions');
-
-    var ComponentView = require('coreViews/componentView');
-    var Adapt = require('coreJS/adapt');
+define([
+    'coreJS/adapt',
+    'coreViews/componentView',
+    'libraries/mediaelement-and-player',
+    'libraries/mediaelement-and-player-accessible-captions'
+], function(Adapt, ComponentView) {
 
     var froogaloopAdded = false;
     
