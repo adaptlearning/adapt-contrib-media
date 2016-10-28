@@ -1,5 +1,5 @@
 define([
-    'core/jS/adapt',
+    'core/js/adapt',
     'core/views/componentView',
     'libraries/mediaelement-and-player',
     'libraries/mediaelement-and-player-accessible-captions'
