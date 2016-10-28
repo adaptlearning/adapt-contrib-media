@@ -1,6 +1,6 @@
 define([
-    'coreJS/adapt',
-    'coreViews/componentView',
+    'core/jS/adapt',
+    'core/views/componentView',
     'libraries/mediaelement-and-player',
     'libraries/mediaelement-and-player-accessible-captions'
 ], function(Adapt, ComponentView) {
