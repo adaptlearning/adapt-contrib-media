@@ -1,7 +1,7 @@
 /*Accessible closed captions*/
-
-
-(function($) {
+define([
+    'libraries/mediaelement-and-player'
+], function() {
 
 	// add extra default options
 	$.extend(mejs.MepDefaults, {
@@ -714,4 +714,4 @@
 		};
 	}
 
-})(mejs.$);
+});
