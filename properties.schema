@@ -172,6 +172,15 @@
       "validators": [],
       "help": "If set to 'true', the full screen button will appear (excluding IE9)."
     },
+    "_playsinline": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Play videos inline on iOS",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "If set to 'true', videos will play inline on iOS 10 and above."
+    },
     "_transcript": {
       "type":"object",
       "required":false,
