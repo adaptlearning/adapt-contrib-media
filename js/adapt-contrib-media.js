@@ -39,6 +39,12 @@ define([
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
+            // set initial player state attributes
+            this.model.set({
+                '_isMediaEnded': false,
+                '_isMediaPlaying': false
+            });
+
             if (this.model.get('_media').source) {
                 // Remove the protocol for streaming service.
                 // This prevents conflicts with HTTP/HTTPS
@@ -55,7 +61,6 @@ define([
         postRender: function() {
             this.setupPlayer();
         },
-
 
         setupPlayer: function() {
             if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
@@ -154,6 +159,27 @@ define([
             } else {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
+
+            this._onMediaElementPlay = _.bind(this.onMediaElementPlay, this);
+            this._onMediaElementPause = _.bind(this.onMediaElementPause, this);
+            this._onMediaElementEnded = _.bind(this.onMediaElementEnded, this);
+
+            this.mediaElement.addEventListener('play', this._onMediaElementPlay);
+            this.mediaElement.addEventListener('pause', this._onMediaElementPause);
+            this.mediaElement.addEventListener('ended', this._onMediaElementEnded);
+        },
+
+        onMediaElementPlay: function(event) {
+            this.model.set('_isMediaPlaying', true);
+            this.model.set('_isMediaEnded', false);
+        },
+
+        onMediaElementPause: function(event) {
+            this.model.set('_isMediaPlaying', false);
+        },
+
+        onMediaElementEnded: function(event) {
+            this.model.set('_isMediaEnded', true);
         },
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
@@ -256,11 +282,17 @@ define([
                     delete mejs.players[player_id];
                 }
             }
+
+            this.mediaElement.removeEventListener('play', this._onMediaElementPlay);
+            this.mediaElement.removeEventListener('pause', this._onMediaElementPause);
+            this.mediaElement.removeEventListener('ended', this._onMediaElementEnded);
+
             if (this.mediaElement) {
                 this.mediaElement.src = "";
                 $(this.mediaElement.pluginElement).remove();
                 delete this.mediaElement;
             }
+
             ComponentView.prototype.remove.call(this);
         },
 
