@@ -170,8 +170,10 @@ define([
         },
 
         onMediaElementPlay: function(event) {
-            this.model.set('_isMediaPlaying', true);
-            this.model.set('_isMediaEnded', false);
+            this.model.set({
+                '_isMediaPlaying': true,
+                '_isMediaEnded': false
+            });
         },
 
         onMediaElementPause: function(event) {
