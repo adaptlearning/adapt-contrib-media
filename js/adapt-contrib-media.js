@@ -39,6 +39,8 @@ define([
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
+            _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded');
+
             // set initial player state attributes
             this.model.set({
                 '_isMediaEnded': false,
@@ -160,13 +162,9 @@ define([
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
 
-            this._onMediaElementPlay = _.bind(this.onMediaElementPlay, this);
-            this._onMediaElementPause = _.bind(this.onMediaElementPause, this);
-            this._onMediaElementEnded = _.bind(this.onMediaElementEnded, this);
-
-            this.mediaElement.addEventListener('play', this._onMediaElementPlay);
-            this.mediaElement.addEventListener('pause', this._onMediaElementPause);
-            this.mediaElement.addEventListener('ended', this._onMediaElementEnded);
+            this.mediaElement.addEventListener('play', this.onMediaElementPlay);
+            this.mediaElement.addEventListener('pause', this.onMediaElementPause);
+            this.mediaElement.addEventListener('ended', this.onMediaElementEnded);
         },
 
         onMediaElementPlay: function(event) {
@@ -285,9 +283,9 @@ define([
                 }
             }
 
-            this.mediaElement.removeEventListener('play', this._onMediaElementPlay);
-            this.mediaElement.removeEventListener('pause', this._onMediaElementPause);
-            this.mediaElement.removeEventListener('ended', this._onMediaElementEnded);
+            this.mediaElement.removeEventListener('play', this.onMediaElementPlay);
+            this.mediaElement.removeEventListener('pause', this.onMediaElementPause);
+            this.mediaElement.removeEventListener('ended', this.onMediaElementEnded);
 
             if (this.mediaElement) {
                 this.mediaElement.src = "";
