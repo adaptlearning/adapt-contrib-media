@@ -8,7 +8,7 @@
       {{#if _media.ogg}}
         <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
       {{else}}
-        <video preload="none" width="640" height="360" {{#if_value_equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/if_value_equals}} style="width:100%; height:100%;" controls="controls">
+        <video preload="none" width="640" height="360" {{#if _playsinline}}playsinline{{/if}} {{#if_value_equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/if_value_equals}} style="width:100%; height:100%;" controls="controls">
           {{#if _media.source}}
             <source src="{{_media.source}}" type="{{_media.type}}"/>
           {{else}}
