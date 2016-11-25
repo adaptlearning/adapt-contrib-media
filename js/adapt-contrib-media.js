@@ -155,13 +155,11 @@ define([
         setupEventListeners: function() {
             this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
 
-            if (this.completionEvent !== 'inview') {
-                this.onCompletion = _.bind(this.onCompletion, this);
-                this.mediaElement.addEventListener(this.completionEvent, this.onCompletion);
-            } else {
+            if (this.completionEvent === 'inview') {
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
 
+            // handle other completion events in the event Listeners 
             this.mediaElement.addEventListener('play', this.onMediaElementPlay);
             this.mediaElement.addEventListener('pause', this.onMediaElementPause);
             this.mediaElement.addEventListener('ended', this.onMediaElementEnded);
@@ -172,6 +170,9 @@ define([
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
             });
+            
+            if (this.completionEvent === 'play')
+                this.setCompletionStatus();
         },
 
         onMediaElementPause: function(event) {
@@ -180,6 +181,9 @@ define([
 
         onMediaElementEnded: function(event) {
             this.model.set('_isMediaEnded', true);
+
+            if (this.completionEvent === 'ended')
+                this.setCompletionStatus();
         },
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
@@ -269,10 +273,6 @@ define([
                 }
             }
             if (this.mediaElement && this.mediaElement.player) {
-                if (this.completionEvent !== 'inview') {
-                    this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
-                }
-
                 var player_id = this.mediaElement.player.id;
 
                 purge(this.$el[0]);
@@ -283,24 +283,17 @@ define([
                 }
             }
 
-            this.mediaElement.removeEventListener('play', this.onMediaElementPlay);
-            this.mediaElement.removeEventListener('pause', this.onMediaElementPause);
-            this.mediaElement.removeEventListener('ended', this.onMediaElementEnded);
-
             if (this.mediaElement) {
+                this.mediaElement.removeEventListener('play', this.onMediaElementPlay);
+                this.mediaElement.removeEventListener('pause', this.onMediaElementPause);
+                this.mediaElement.removeEventListener('ended', this.onMediaElementEnded);
+
                 this.mediaElement.src = "";
                 $(this.mediaElement.pluginElement).remove();
                 delete this.mediaElement;
             }
 
             ComponentView.prototype.remove.call(this);
-        },
-
-        onCompletion: function() {
-            this.setCompletionStatus();
-
-            // removeEventListener needs to pass in the method to remove the event in firefox and IE10
-            this.mediaElement.removeEventListener(this.completionEvent, this.onCompletion);
         },
 
         onDeviceChanged: function() {
