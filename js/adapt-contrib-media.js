@@ -160,9 +160,11 @@ define([
             }
 
             // handle other completion events in the event Listeners 
-            $(this.mediaElement).on('play', this.onMediaElementPlay);
-            $(this.mediaElement).on('pause', this.onMediaElementPause);
-            $(this.mediaElement).on('ended', this.onMediaElementEnded);
+            $(this.mediaElement).on({
+            	'play': this.onMediaElementPlay,
+            	'pause': this.onMediaElementPause,
+            	'ended': this.onMediaElementEnded
+            });
         },
 
         onMediaElementPlay: function(event) {
@@ -286,9 +288,11 @@ define([
             }
 
             if (this.mediaElement) {
-                $(this.mediaElement).off('play', this.onMediaElementPlay);
-                $(this.mediaElement).off('pause', this.onMediaElementPause);
-                $(this.mediaElement).off('ended', this.onMediaElementEnded);
+                $(this.mediaElement).off({
+                	'play': this.onMediaElementPlay,
+                	'pause': this.onMediaElementPause,
+                	'ended': this.onMediaElementEnded
+                });
 
                 this.mediaElement.src = "";
                 $(this.mediaElement.pluginElement).remove();
