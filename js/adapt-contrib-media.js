@@ -171,8 +171,9 @@ define([
                 '_isMediaEnded': false
             });
             
-            if (this.completionEvent === 'play')
+            if (this.completionEvent === 'play') {
                 this.setCompletionStatus();
+            }
         },
 
         onMediaElementPause: function(event) {
@@ -182,8 +183,9 @@ define([
         onMediaElementEnded: function(event) {
             this.model.set('_isMediaEnded', true);
 
-            if (this.completionEvent === 'ended')
+            if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
+            }
         },
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
