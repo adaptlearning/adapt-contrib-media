@@ -7,7 +7,7 @@
     "ariaRegion": {
       "type": "string",
       "required": true,
-      "default": "This is a media component which plays a video. Select the play / pause button to watch or listen.",
+      "default": "This is a media component which plays media. Select the play / pause button to watch or listen.",
       "inputType": "Text",
       "validators": [],
       "translatable": true
@@ -143,7 +143,7 @@
       "title": "Set completion of Video on",
       "inputType": {"type": "Select", "options":["inview", "play", "ended"]},
       "validators": ["required"],
-      "help": "This tells Adapt when to set this video to complete"
+      "help": "This tells Adapt when to set this media to complete"
     },
     "_useClosedCaptions": {
       "type":"boolean",
@@ -193,7 +193,7 @@
           "title": "Set Completion",
           "inputType": {"type": "Boolean", "options": [true, false]},
           "validators": [],
-          "help": "This tells Adapt to set this video to complete when the inline transcript is shown"
+          "help": "This tells Adapt to set this media to complete when the inline transcript is shown"
         },
         "_inlineTranscript": {
           "type":"boolean",
