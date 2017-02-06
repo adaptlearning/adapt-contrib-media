@@ -31,7 +31,8 @@ define([
     var Media = ComponentView.extend({
 
         events: {
-            "click .media-inline-transcript-button": "onToggleInlineTranscript"
+            "click .media-inline-transcript-button": "onToggleInlineTranscript",
+            "click .media-external-transcript-button": "onExternalTranscriptClicked"
         },
 
         preRender: function() {
@@ -359,9 +360,16 @@ define([
                 }).a11y_focus();
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+
                 if (this.model.get('_transcript')._setCompletionOnView !== false) {
                     this.setCompletionStatus();
                 }
+            }
+        },
+
+        onExternalTranscriptClicked: function(event) {
+            if (this.model.get('_transcript')._setCompletionOnView !== false) {
+                this.setCompletionStatus();
             }
         },
 
@@ -391,6 +399,7 @@ define([
                 });
             }
         }
+
     });
 
     Adapt.register('media', Media);
