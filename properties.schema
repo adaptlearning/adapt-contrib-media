@@ -7,7 +7,7 @@
     "ariaRegion": {
       "type": "string",
       "required": true,
-      "default": "This is a media component which plays a video. Select the play / pause button to watch or listen.",
+      "default": "This is a media player component. Select the play / pause button to watch or listen.",
       "inputType": "Text",
       "validators": [],
       "translatable": true
@@ -140,10 +140,10 @@
       "required":true,
       "enum": ["inview", "play", "ended"],
       "default": "inview",
-      "title": "Set completion of Video on",
+      "title": "Completion trigger",
       "inputType": {"type": "Select", "options":["inview", "play", "ended"]},
       "validators": ["required"],
-      "help": "This tells Adapt when to set this video to complete"
+      "help": "Defines what media event should trigger completion of this component."
     },
     "_useClosedCaptions": {
       "type":"boolean",
@@ -190,10 +190,10 @@
           "type":"boolean",
           "required":false,
           "default": true,
-          "title": "Set Completion",
+          "title": "Trigger completion?",
           "inputType": {"type": "Boolean", "options": [true, false]},
           "validators": [],
-          "help": "This tells Adapt to set this video to complete when the inline transcript is shown"
+          "help": "Set to 'true' to have this component mark as completed when the inline transcript is shown."
         },
         "_inlineTranscript": {
           "type":"boolean",
