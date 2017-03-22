@@ -2,7 +2,8 @@ define([
     'core/js/adapt',
     'core/js/views/componentView',
     'libraries/mediaelement-and-player',
-    'libraries/mediaelement-and-player-accessible-captions'
+    'libraries/mediaelement-and-player-accessible-captions',
+    'libraries/mediaelement-fullscreen-hook'
 ], function(Adapt, ComponentView) {
 
     var froogaloopAdded = false;
