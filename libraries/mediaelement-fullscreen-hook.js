@@ -1,36 +1,41 @@
 define([
-	'core/js/adapt',
-	'libraries/mediaelement-and-player'
+    'core/js/adapt',
+    'libraries/mediaelement-and-player'
 ], function(Adapt) {
-	
-	var rawPrototype = $.extend({}, mejs.MediaElementPlayer.prototype);
-	$.extend(mejs.MediaElementPlayer.prototype, {
+    
+    //  fixes a bug (adaptlearning/adapt_framework#1478)
+    //  where the media player going into/coming out of full-screen mode would trigger inview on 
+    //  components below it; we therefore need to switch off inview when entering full screen mode 
+    //  and switch it back on again shortly after exiting it
 
-		exitFullScreen: function() {
+    var mepPrototype = $.extend({}, mejs.MediaElementPlayer.prototype);
+    $.extend(mejs.MediaElementPlayer.prototype, {
 
-			Adapt.trigger("media:fullscreen:exit", this);
+        exitFullScreen: function() {
 
-			var returnValue = rawPrototype.exitFullScreen.apply(this, arguments);
+            Adapt.trigger("media:fullscreen:exit", this);
 
-			// Wait for browser to settle coming down from full screen.
-			_.delay(function() {
-				$.inview.unlock("mediaelement");
-			}, 500);
-			
-			return returnValue;
-			
-		},
+            var returnValue = mepPrototype.exitFullScreen.apply(this, arguments);
 
-		enterFullScreen: function() {
+            // Wait for browser to settle coming down from full screen.
+            _.delay(function() {
+                $.inview.unlock("mediaelement");
+            }, 500);
+            
+            return returnValue;
+            
+        },
 
-			Adapt.trigger("media:fullscreen:enter", this);
+        enterFullScreen: function() {
 
-			$.inview.lock("mediaelement");
+            Adapt.trigger("media:fullscreen:enter", this);
 
-			return rawPrototype.enterFullScreen.apply(this, arguments);
+            $.inview.lock("mediaelement");
 
-		}
+            return mepPrototype.enterFullScreen.apply(this, arguments);
 
-	});
+        }
+
+    });
 
 });
