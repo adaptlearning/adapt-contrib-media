@@ -10,9 +10,14 @@ define([
 
 			Adapt.trigger("media:fullscreen:exit", this);
 
-			$.inview.unlock("mediaelement");
+			var returnValue = rawPrototype.exitFullScreen.apply(this, arguments);
 
-			return rawPrototype.exitFullScreen.apply(this, arguments);
+			// Wait for browser to settle coming down from full screen.
+			_.delay(function() {
+				$.inview.unlock("mediaelement");
+			}, 500);
+			
+			return returnValue;
 			
 		},
 
