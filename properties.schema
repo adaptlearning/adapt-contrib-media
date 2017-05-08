@@ -181,6 +181,15 @@
       "validators": [],
       "help": "If set to 'true', videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
     },
+  "_preventForwardScrubbing": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Prevents user from skipping ahead in media.",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "If set to true, will not allow users to skip beyond previously viewed points in media."
+    },
     "_transcript": {
       "type":"object",
       "required":false,

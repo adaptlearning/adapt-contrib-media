@@ -160,6 +160,14 @@ define([
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
 
+            // wrapper to check if preventForwardScrubbing is turned on.
+            if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
+                $(this.mediaElement).on({
+                    'seeking': this.onMediaElementSeeking.bind(this),
+                    'timeupdate': this.onMediaElementTimeUpdate.bind(this)
+                });
+            }
+            
             // handle other completion events in the event Listeners 
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
@@ -190,6 +198,28 @@ define([
                 this.setCompletionStatus();
             }
         },
+        
+        onMediaElementSeeking: function(event) {
+            var maxViewed = this.model.get("_maxViewed");
+            if(!maxViewed){
+                maxViewed = 0;
+            }
+            if(event.target.currentTime > maxViewed){
+                event.target.currentTime = maxViewed;
+            }
+        },
+
+        onMediaElementTimeUpdate: function(event) {
+            var maxViewed = this.model.get("_maxViewed");
+            if(!maxViewed){
+                maxViewed = 0;
+            }
+            if(event.target.currentTime > maxViewed){
+                this.model.set("_maxViewed", event.target.currentTime);
+            }
+        },
+
+
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
         setupPlayPauseToggle: function() {
