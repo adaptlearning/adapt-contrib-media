@@ -200,9 +200,9 @@
           "required":false,
           "default": true,
           "title": "Trigger completion?",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "type": "Checkbox",
           "validators": [],
-          "help": "Set to 'true' to have this component mark as completed when the inline transcript is shown."
+          "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
         },
         "_inlineTranscript": {
           "type":"boolean",

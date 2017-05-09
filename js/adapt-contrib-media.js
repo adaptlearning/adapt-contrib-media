@@ -40,7 +40,7 @@ define([
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
-            _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded');
+            _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking');
 
             // set initial player state attributes
             this.model.set({
@@ -163,8 +163,8 @@ define([
             // wrapper to check if preventForwardScrubbing is turned on.
             if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
                 $(this.mediaElement).on({
-                    'seeking': this.onMediaElementSeeking.bind(this),
-                    'timeupdate': this.onMediaElementTimeUpdate.bind(this)
+                    'seeking': this.onMediaElementSeeking,
+                    'timeupdate': this.onMediaElementTimeUpdate
                 });
             }
             
@@ -201,25 +201,23 @@ define([
         
         onMediaElementSeeking: function(event) {
             var maxViewed = this.model.get("_maxViewed");
-            if(!maxViewed){
+            if(!maxViewed) {
                 maxViewed = 0;
             }
-            if(event.target.currentTime > maxViewed){
+            if (event.target.currentTime > maxViewed) {
                 event.target.currentTime = maxViewed;
             }
         },
 
         onMediaElementTimeUpdate: function(event) {
             var maxViewed = this.model.get("_maxViewed");
-            if(!maxViewed){
+            if (!maxViewed) {
                 maxViewed = 0;
             }
-            if(event.target.currentTime > maxViewed){
+            if (event.target.currentTime > maxViewed) {
                 this.model.set("_maxViewed", event.target.currentTime);
             }
         },
-
-
 
         // Overrides the default play/pause functionality to stop accidental playing on touch devices
         setupPlayPauseToggle: function() {
@@ -322,7 +320,9 @@ define([
                 $(this.mediaElement).off({
                 	'play': this.onMediaElementPlay,
                 	'pause': this.onMediaElementPause,
-                	'ended': this.onMediaElementEnded
+                	'ended': this.onMediaElementEnded,
+                    'seeking': this.onMediaElementSeeking,
+                    'timeupdate': this.onMediaElementTimeUpdate
                 });
 
                 this.mediaElement.src = "";

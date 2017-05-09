@@ -52,7 +52,7 @@ guide the learner’s interaction with the component.
 
 **_playsinline** (boolean): If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.    
 
-**_preventForwardScrubbing** (boolean): If set to 'true', users will not be able to scrub ahead in media (audio/video) unless '_isComplete' is marked as 'true'.  They can skip backwards, and back up to the maxViewed time tracked by updateTime.     
+**_preventForwardScrubbing** (boolean): If enabled, will attempt to prevent users from skipping ahead in media (audio/video) unless '_isComplete' is marked as 'true'.  Users can skip backwards, and back up to the maxViewed time tracked by updateTime.
 
 **_startLanguage** (string): If using closed captions with multiple languages, use this property to specify which language should be shown by default. The value of this property must match one of the **srclang** values.  
 
