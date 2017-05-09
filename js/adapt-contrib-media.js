@@ -318,9 +318,9 @@ define([
 
             if (this.mediaElement) {
                 $(this.mediaElement).off({
-                    'play': this.onMediaElementPlay,
-                    'pause': this.onMediaElementPause,
-                    'ended': this.onMediaElementEnded,
+                	'play': this.onMediaElementPlay,
+                	'pause': this.onMediaElementPause,
+                	'ended': this.onMediaElementEnded,
                     'seeking': this.onMediaElementSeeking,
                     'timeupdate': this.onMediaElementTimeUpdate
                 });
