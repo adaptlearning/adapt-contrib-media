@@ -150,9 +150,8 @@
       "required":false,
       "default": false,
       "title": "Use Closed Captions",
-      "inputType": {"type": "Boolean", "options": [true, false]},
-      "validators": [],
-      "help": "If set to 'true', closed captions will be used."
+      "inputType": "Checkbox",
+      "validators": []
     },
     "_startLanguage": {
       "type":"string",
@@ -168,18 +167,17 @@
       "required":false,
       "default": false,
       "title": "Allow Full Screen",
-      "inputType": {"type": "Boolean", "options": [true, false]},
-      "validators": [],
-      "help": "If set to 'true', the full screen button will appear (excluding IE9)."
+      "inputType": "Checkbox",
+      "validators": []
     },
     "_playsinline": {
       "type":"boolean",
       "required":false,
       "default": false,
       "title": "Play videos inline on iOS",
-      "inputType": {"type": "Boolean", "options": [true, false]},
+      "inputType": "Checkbox",
       "validators": [],
-      "help": "If set to 'true', videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
+      "help": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
     },
     "_transcript": {
       "type":"object",
@@ -191,16 +189,16 @@
           "required":false,
           "default": true,
           "title": "Trigger completion?",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": [],
-          "help": "Set to 'true' to have this component mark as completed when the inline transcript is shown."
+          "help": "Whether to have this component mark as completed when the transcript is shown."
         },
         "_inlineTranscript": {
           "type":"boolean",
           "required":false,
           "default": false,
           "title": "Show Inline",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": []
         },
         "_externalTranscript": {
@@ -208,7 +206,7 @@
           "required":false,
           "default": false,
           "title": "Show Link",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": []
         },
         "inlineTranscriptButton": {
