@@ -15,13 +15,13 @@ define([
             var vendorPrefix = this.getVendorPrefix();
             var fsEventName = "on" + vendorPrefix + "fullscreenchange";
 
-            if(document[fsEventName] === null) {
+            if (document[fsEventName] === null) {
                 document[fsEventName] = function fullScreenEventHandler() {
 
                     // because Firefox just HAS to be different...
                     var elementName = (vendorPrefix === "moz" ? "mozFullScreenElement" : vendorPrefix + "FullscreenElement");
 
-                    if(document[elementName] !== null) {
+                    if (document[elementName] !== null) {
                         $.inview.lock("mediaelement");
                         Adapt.trigger("media:fullscreen:enter");
                     } else {
@@ -39,18 +39,17 @@ define([
          * This function works out the correct prefix for the current browser.
          */
         getVendorPrefix: function() {
-            var prefix = "webkit";// Chrome, Safari, Opera and Edge all use the 'webkit' prefix, so default to that
             var $html = $('html');
 
-            if($html.hasClass('internet explorer')){
+            if ($html.hasClass('internet explorer')) {
                 return "ms";
             }
 
-            if($html.hasClass('firefox')) {
+            if ($html.hasClass('firefox')) {
                 return "moz";
             }
 
-            return prefix;
+            return "webkit"; // Chrome, Safari, Opera and Edge all use the 'webkit' prefix, so default to that
         }
     });
 });
