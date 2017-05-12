@@ -185,8 +185,8 @@
       "type":"boolean",
       "required":false,
       "default": false,
-      "title": "Prevents user from skipping ahead in media.",
-      "inputType": {"type": "Boolean", "options": [true, false]},
+      "title": "Attempt to prevent media scrubbing?",
+      "inputType": "Checkbox",
       "validators": [],
       "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
     },
@@ -200,7 +200,7 @@
           "required":false,
           "default": true,
           "title": "Trigger completion?",
-          "inputType": "type": "Checkbox",
+          "inputType": {"type": "Boolean", "options": [true, false]},
           "validators": [],
           "help": Set to 'true' to have this component mark as completed when the inline transcript is shown."
         },
