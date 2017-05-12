@@ -41,13 +41,13 @@ define([
 		getVendorPrefix: function() {
 			var prefix = "webkit";// Chrome, Safari, Opera and Edge all use the 'webkit' prefix, so default to that
 			var $html = $('html');
-            
+
 			if($html.hasClass('internet explorer')){
-				prefix = "ms";
+				return "ms";
 			}
 
 			if($html.hasClass('firefox')) {
-				prefix = "moz";
+				return "moz";
 			}
 
 			return prefix;
