@@ -1,41 +1,56 @@
 define([
-    'core/js/adapt',
-    'libraries/mediaelement-and-player'
+	'core/js/adapt',
+	'libraries/mediaelement-and-player'
 ], function(Adapt) {
-    
-    //  fixes a bug (adaptlearning/adapt_framework#1478)
-    //  where the media player going into/coming out of full-screen mode would trigger inview on 
-    //  components below it; we therefore need to switch off inview when entering full screen mode 
-    //  and switch it back on again shortly after exiting it
+	var mepPrototype = $.extend({}, mejs.MediaElementPlayer.prototype);
 
-    var mepPrototype = $.extend({}, mejs.MediaElementPlayer.prototype);
-    $.extend(mejs.MediaElementPlayer.prototype, {
+	$.extend(mejs.MediaElementPlayer.prototype, {
+		/**
+         * fixes a bug (adaptlearning/adapt_framework#1478)
+		 * where the media player going into/coming out of full-screen mode would trigger inview on 
+		 * components below it; we therefore need to switch off inview when entering full screen mode 
+		 * and switch it back on again after exiting full screen mode
+         */
+		detectFullscreenMode: function() {
+			var vendorPrefix = this.getVendorPrefix();
+			var fsEventName = "on" + vendorPrefix + "fullscreenchange";
 
-        exitFullScreen: function() {
+			if(document[fsEventName] === null) {
+				document[fsEventName] = function fullScreenEventHandler() {
 
-            Adapt.trigger("media:fullscreen:exit", this);
+					// because Firefox just HAS to be different...
+					var elementName = (vendorPrefix === "moz" ? "mozFullScreenElement" : vendorPrefix + "FullscreenElement");
 
-            var returnValue = mepPrototype.exitFullScreen.apply(this, arguments);
+					if(document[elementName] !== null) {
+						$.inview.lock("mediaelement");
+						Adapt.trigger("media:fullscreen:enter");
+					} else {
+						$.inview.unlock("mediaelement");
+						Adapt.trigger("media:fullscreen:exit");
+					}
+				};
+			}
+			return mepPrototype.detectFullscreenMode.apply(this, arguments);
+		}, 
 
-            // Wait for browser to settle coming down from full screen.
-            _.delay(function() {
-                $.inview.unlock("mediaelement");
-            }, 500);
+		/**
+		 * unfortunately the fullscreen events and properties are all still vendor-prefixed, see
+		 * https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#Prefixing
+		 * This function works out the correct prefix for the current browser.
+		 */
+		getVendorPrefix: function() {
+			var prefix = "webkit";// Chrome, Safari, Opera and Edge all use the 'webkit' prefix, so default to that
+			var $html = $('html');
             
-            return returnValue;
-            
-        },
+			if($html.hasClass('internet explorer')){
+				prefix = "ms";
+			}
 
-        enterFullScreen: function() {
+			if($html.hasClass('firefox')) {
+				prefix = "moz";
+			}
 
-            Adapt.trigger("media:fullscreen:enter", this);
-
-            $.inview.lock("mediaelement");
-
-            return mepPrototype.enterFullScreen.apply(this, arguments);
-
-        }
-
-    });
-
+			return prefix;
+		}
+	});
 });
