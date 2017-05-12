@@ -39,13 +39,13 @@ define([
          * This function works out the correct prefix for the current browser.
          */
         getVendorPrefix: function() {
-            var $html = $('html');
+            var browser = Adapt.device.browser.toLowerCase();
 
-            if ($html.hasClass('internet explorer')) {
+            if (browser === "internet explorer") {
                 return "ms";
             }
 
-            if ($html.hasClass('firefox')) {
+            if (browser === "firefox") {
                 return "moz";
             }
 
