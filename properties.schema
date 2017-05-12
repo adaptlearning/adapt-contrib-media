@@ -188,7 +188,7 @@
       "title": "Prevents user from skipping ahead in media.",
       "inputType": {"type": "Boolean", "options": [true, false]},
       "validators": [],
-      "help": "If set to true, will not allow users to skip beyond previously viewed points in media."
+      "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
     },
     "_transcript": {
       "type":"object",
@@ -202,7 +202,7 @@
           "title": "Trigger completion?",
           "inputType": "type": "Checkbox",
           "validators": [],
-          "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
+          "help": Set to 'true' to have this component mark as completed when the inline transcript is shown."
         },
         "_inlineTranscript": {
           "type":"boolean",
