@@ -202,7 +202,7 @@
           "title": "Trigger completion?",
           "inputType": {"type": "Boolean", "options": [true, false]},
           "validators": [],
-          "help": Set to 'true' to have this component mark as completed when the inline transcript is shown."
+          "help": "Set to 'true' to have this component mark as completed when the inline transcript is shown."
         },
         "_inlineTranscript": {
           "type":"boolean",
