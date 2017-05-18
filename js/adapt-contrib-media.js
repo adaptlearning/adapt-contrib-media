@@ -40,7 +40,7 @@ define([
             this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
             this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
 
-            _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded');
+            _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking');
 
             // set initial player state attributes
             this.model.set({
@@ -160,6 +160,14 @@ define([
                 this.$('.component-widget').on('inview', _.bind(this.inview, this));
             }
 
+            // wrapper to check if preventForwardScrubbing is turned on.
+            if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
+                $(this.mediaElement).on({
+                    'seeking': this.onMediaElementSeeking,
+                    'timeupdate': this.onMediaElementTimeUpdate
+                });
+            }
+            
             // handle other completion events in the event Listeners 
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
@@ -188,6 +196,26 @@ define([
 
             if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
+            }
+        },
+        
+        onMediaElementSeeking: function(event) {
+            var maxViewed = this.model.get("_maxViewed");
+            if(!maxViewed) {
+                maxViewed = 0;
+            }
+            if (event.target.currentTime > maxViewed) {
+                event.target.currentTime = maxViewed;
+            }
+        },
+
+        onMediaElementTimeUpdate: function(event) {
+            var maxViewed = this.model.get("_maxViewed");
+            if (!maxViewed) {
+                maxViewed = 0;
+            }
+            if (event.target.currentTime > maxViewed) {
+                this.model.set("_maxViewed", event.target.currentTime);
             }
         },
 
@@ -290,9 +318,11 @@ define([
 
             if (this.mediaElement) {
                 $(this.mediaElement).off({
-                	'play': this.onMediaElementPlay,
-                	'pause': this.onMediaElementPause,
-                	'ended': this.onMediaElementEnded
+                    'play': this.onMediaElementPlay,
+                    'pause': this.onMediaElementPause,
+                    'ended': this.onMediaElementEnded,
+                    'seeking': this.onMediaElementSeeking,
+                    'timeupdate': this.onMediaElementTimeUpdate
                 });
 
                 this.mediaElement.src = "";
