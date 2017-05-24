@@ -36,9 +36,12 @@ define([
         },
 
         preRender: function() {
-            this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
-            this.listenTo(Adapt, 'device:changed', this.onDeviceChanged);
-            this.listenTo(Adapt, 'accessibility:toggle', this.onAccessibilityToggle);
+            this.listenTo(Adapt, {
+                'device:resize': this.onScreenSizeChanged,
+                'device:changed': this.onDeviceChanged,
+                'accessibility:toggle': this.onAccessibilityToggle,
+                'media:stop': this.onMediaStop
+            });
 
             _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking');
 
@@ -240,6 +243,13 @@ define([
 
             // pause on player click
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
+        },
+        
+        onMediaStop: function() {
+            var player = this.mediaElement.player;
+            if (!player) return;
+            
+            player.pause();
         },
 
         onOverlayClick: function() {
