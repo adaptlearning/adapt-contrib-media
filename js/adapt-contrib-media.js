@@ -83,7 +83,7 @@ define([
                 if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
                     modelOptions.features.push('fullscreen');
                 }
-                if (!isMobile && this.model.get('_showVolumeControl')) {
+                if (this.model.get('_showVolumeControl')) {
                     modelOptions.features.push('volume');
                 }
             }
