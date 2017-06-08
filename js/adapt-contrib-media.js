@@ -6,7 +6,8 @@ define([
 ], function(Adapt, ComponentView) {
 
     var froogaloopAdded = false;
-    
+    var isMobile = mejs.MediaFeatures.isiOS || mejs.MediaFeatures.isAndroid;
+
     // The following function is used to to prevent a memory leak in Internet Explorer 
     // See: http://javascript.crockford.com/memory/leak.html
     function purge(d) {
@@ -82,7 +83,7 @@ define([
                 if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
                     modelOptions.features.push('fullscreen');
                 }
-                if (this.model.get('_showVolumeControl')) {
+                if (!isMobile && this.model.get('_showVolumeControl')) {
                     modelOptions.features.push('volume');
                 }
             }
@@ -365,7 +366,10 @@ define([
             }
 
             this.addThirdPartyAfterFixes();
-            this.setInitialVolume();
+
+            if (!isMobile) {
+                this.setInitialVolume();
+            }
 
             this.setReadyStatus();
             this.setupEventListeners();
