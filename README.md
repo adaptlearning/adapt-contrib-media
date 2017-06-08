@@ -56,7 +56,11 @@ guide the learner’s interaction with the component.
 
 **_startLanguage** (string): If using closed captions with multiple languages, use this property to specify which language should be shown by default. The value of this property must match one of the **srclang** values.  
 
-**_media** (object): The media attributes group will contain different values depending on the type of media: video or audio.  
+**_showVolumeControl** (boolean): If enabled, the volume control will appear in the media player (Not supported in mobile devices)
+
+**_startVolume** (string): Defines the default volume (Not supported in mobile devices)
+
+**_media** (object): The media attributes group will contain different values depending on the type of media: video or audio.
 For video it contains values for **mp4**, **webm**, **ogv**, **poster**, and **cc**. The properties **mp4**, **webm** and **ogv** are all optional, but at least one is required (see below for alternate properties for YouTube/Vimeo video).  
 For audio it contains **mp3** and **ogg**. As with video, both are optional, but at least one is required.  
 The decision to include more than one file format is typically based on the browser/s used by the targeted audience. The mostly widely supported video file format is [mp4](http://caniuse.com/#feat=mpeg4) (specifically [H.264/MPEG-4 Part 10 AVC](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC)). The most widely supported audio format is mp3.
