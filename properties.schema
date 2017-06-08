@@ -163,6 +163,16 @@
       "validators": [],
       "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
     },
+    "_startVolume": {
+      "type":"string",
+      "required":true,
+      "enum": ["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"],
+      "default": "30%",
+      "title": "Default volume",
+      "inputType": {"type": "Select", "options":["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"]},
+      "validators": ["required"],
+      "help": "Defines the default volume"
+    },
     "_allowFullScreen": {
       "type":"boolean",
       "required":false,

@@ -362,10 +362,17 @@ define([
             }
 
             this.addThirdPartyAfterFixes();
+            this.setInitialVolume();
 
             this.setReadyStatus();
             this.setupEventListeners();
         },
+
+         setInitialVolume: function() {
+             var volume = this.model.get('_startVolume') === undefined ? '30%' : this.model.get('_startVolume');
+
+             this.mediaElement.player.setVolume(parseInt(volume)/100); 
+         },
 
         addThirdPartyAfterFixes: function() {
             var media = this.model.get("_media");
