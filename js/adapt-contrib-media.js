@@ -82,6 +82,9 @@ define([
                 if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
                     modelOptions.features.push('fullscreen');
                 }
+                if (this.model.get('_showVolumeControl')) {
+                    modelOptions.features.push('volume');
+                }
             }
 
             modelOptions.success = _.bind(this.onPlayerReady, this);
