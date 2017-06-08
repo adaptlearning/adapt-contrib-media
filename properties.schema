@@ -176,8 +176,8 @@
       "type":"string",
       "required":true,
       "enum": ["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"],
-      "default": "30%",
-      "title": "Default volume (Not supported in mobile devices)",
+      "default": "80%",
+      "title": "Default volume (Not supported on mobile devices)",
       "inputType": {"type": "Select", "options":["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"]},
       "validators": ["required"],
       "help": "Defines the default volume. On mobile devices the audio level is under the user's physical control"
