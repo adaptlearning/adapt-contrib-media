@@ -167,7 +167,7 @@
       "type":"boolean",
       "required":false,
       "default": false,
-      "title": "Show Volume Control (Not supported in mobile devices)",
+      "title": "Show Volume Control (Not supported on mobile devices)",
       "inputType": {"type": "Boolean", "options": [true, false]},
       "validators": [],
       "help": "If set to 'true', the volume control will appear in the media player. On mobile devices the audio level is under the user's physical control."
