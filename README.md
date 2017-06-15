@@ -58,7 +58,7 @@ guide the learner’s interaction with the component.
 
 **_showVolumeControl** (boolean): If enabled, the volume control will appear in the media player (Not supported on mobile devices)
 
-**_startVolume** (string): Defines the default volume (Not supported on mobile devices)
+**_startVolume** (string): Defines the default volume as a percentage (Not supported on mobile devices).  This can be set with or without the percentage sign in the string
 
 **_media** (object): The media attributes group will contain different values depending on the type of media: video or audio.
 For video it contains values for **mp4**, **webm**, **ogv**, **poster**, and **cc**. The properties **mp4**, **webm** and **ogv** are all optional, but at least one is required (see below for alternate properties for YouTube/Vimeo video).  
