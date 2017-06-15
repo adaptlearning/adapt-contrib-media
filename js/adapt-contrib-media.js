@@ -6,9 +6,8 @@ define([
 ], function(Adapt, ComponentView) {
 
     var froogaloopAdded = false;
-    var isMobile = mejs.MediaFeatures.isiOS || mejs.MediaFeatures.isAndroid;
 
-    // The following function is used to to prevent a memory leak in Internet Explorer 
+    // The following function is used to to prevent a memory leak in Internet Explorer
     // See: http://javascript.crockford.com/memory/leak.html
     function purge(d) {
         var a = d.attributes, i, l, n;
@@ -367,19 +366,9 @@ define([
 
             this.addThirdPartyAfterFixes();
 
-            if (!isMobile) {
-                this.setInitialVolume();
-            }
-
             this.setReadyStatus();
             this.setupEventListeners();
         },
-
-         setInitialVolume: function() {
-             var volume = this.model.get('_startVolume') === undefined ? '30%' : this.model.get('_startVolume');
-
-             this.mediaElement.player.setVolume(parseInt(volume)/100); 
-         },
 
         addThirdPartyAfterFixes: function() {
             var media = this.model.get("_media");
