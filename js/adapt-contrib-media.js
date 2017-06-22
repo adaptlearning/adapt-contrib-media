@@ -180,6 +180,11 @@ define([
         },
 
         onMediaElementPlay: function(event) {
+
+            if (this.model.get("_stopOtherMediaOnPlay")) {
+                Adapt.trigger("media:stop", this);
+            }
+
             this.model.set({
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
@@ -245,7 +250,11 @@ define([
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
         },
         
-        onMediaStop: function() {
+        onMediaStop: function(view) {
+
+            // Make sure this view isn't triggering media:stop
+            if (view && view.cid === this.cid) return;
+
             var player = this.mediaElement.player;
             if (!player) return;
             
