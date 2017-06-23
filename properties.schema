@@ -190,15 +190,6 @@
       "validators": [],
       "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
     },
-    "_stopOtherMediaOnPlay": {
-      "type":"boolean",
-      "required":false,
-      "default": false,
-      "title": "Trigger 'media:stop' on play",
-      "inputType": "Checkbox",
-      "validators": [],
-      "help": "If enabled will attempt to stop other media playing by triggering a global 'media:stop' event."
-    },
     "_transcript": {
       "type":"object",
       "required":false,
