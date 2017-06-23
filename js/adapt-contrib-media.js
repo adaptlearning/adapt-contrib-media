@@ -181,9 +181,7 @@ define([
 
         onMediaElementPlay: function(event) {
 
-            if (this.model.get("_stopOtherMediaOnPlay")) {
-                Adapt.trigger("media:stop", this);
-            }
+            Adapt.trigger("media:stop", this);
 
             this.model.set({
                 '_isMediaPlaying': true,
