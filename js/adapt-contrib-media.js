@@ -309,12 +309,6 @@ define([
                 }
             }
 
-            if ($("html").is(".ie8")) {
-                var obj = this.$("object")[0];
-                if (obj) {
-                    obj.style.display = "none";
-                }
-            }
             if (this.mediaElement && this.mediaElement.player) {
                 var player_id = this.mediaElement.player.id;
 
