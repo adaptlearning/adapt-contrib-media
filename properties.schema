@@ -91,12 +91,12 @@
         "type": {
           "type":"string",
           "required":false,
-          "enum": ["Default", "video/youtube", "video/vimeo"],
+          "enum": ["", "video/youtube", "video/vimeo"],
           "default": "",
           "title": "Type",
-          "inputType": {"type": "Select", "options":["Default", "video/YouTube", "video/Vimeo"]},
+          "inputType": {"type": "Select", "options":["", "youTube", "vimeo"]},
           "validators": [],
-          "help": "Select option from below"
+          "help": "Select the 'Source URL' type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo."
         },
         "poster": {
           "type":"string",
