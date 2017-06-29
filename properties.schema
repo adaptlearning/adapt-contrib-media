@@ -181,7 +181,7 @@
       "validators": [],
       "help": "If set to 'true', videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
     },
-  "_preventForwardScrubbing": {
+    "_preventForwardScrubbing": {
       "type":"boolean",
       "required":false,
       "default": false,
