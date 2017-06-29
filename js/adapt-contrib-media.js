@@ -367,6 +367,7 @@ define([
             this.addThirdPartyAfterFixes();
 
             if(this.model.has('_startVolume')) {
+                // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
                 this.mediaElement.player.setVolume(parseInt(this.model.get('_startVolume'))/100);
             }
 
