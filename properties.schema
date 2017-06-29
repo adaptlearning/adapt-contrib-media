@@ -94,7 +94,7 @@
           "enum": ["", "video/youtube", "video/vimeo"],
           "default": "",
           "title": "Type",
-          "inputType": {"type": "Select", "options":["", "youTube", "vimeo"]},
+          "inputType": {"type": "Select", "options":["", "video/youtube", "video/vimeo"]},
           "validators": [],
           "help": "Select the 'Source URL' type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo."
         },
