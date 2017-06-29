@@ -87,10 +87,6 @@ define([
                 }
             }
 
-            if(this.model.has('_startVolume')) {
-                modelOptions.startVolume = parseInt(this.model.get('_startVolume'))/100;
-            }
-
             modelOptions.success = _.bind(this.onPlayerReady, this);
 
             if (this.model.get('_useClosedCaptions')) {
@@ -369,6 +365,10 @@ define([
             }
 
             this.addThirdPartyAfterFixes();
+
+            if(this.model.has('_startVolume')) {
+                this.mediaElement.player.setVolume(parseInt(this.model.get('_startVolume'))/100);
+            }
 
             this.setReadyStatus();
             this.setupEventListeners();
