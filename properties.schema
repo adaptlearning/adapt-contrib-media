@@ -91,11 +91,12 @@
         "type": {
           "type": "string",
           "required": false,
+          "enum": ["", "video/youtube", "video/vimeo"],
           "default": "",
           "title": "Type",
-          "inputType": "Text",
+          "inputType": {"type": "Select", "options":["", "video/youtube", "video/vimeo"]},
           "validators": [],
-          "help": "Enter the 'Source URL' type, for a YouTube link this would be video/youtube, and video/vimeo for Vimeo"
+          "help": "Select the 'Source URL' type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo."
         },
         "poster": {
           "type": "string",
@@ -162,6 +163,25 @@
       "validators": [],
       "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
     },
+    "_showVolumeControl": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Show Volume Control (Not supported on mobile devices)",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "If set to 'true', the volume control will appear in the media player. On mobile devices the audio level is under the user's physical control."
+    },
+    "_startVolume": {
+      "type":"string",
+      "required":true,
+      "enum": ["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"],
+      "default": "80%",
+      "title": "Default volume (Not supported on mobile devices)",
+      "inputType": {"type": "Select", "options":["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"]},
+      "validators": ["required"],
+      "help": "Defines the default volume. On mobile devices the audio level is under the user's physical control"
+    },
     "_allowFullScreen": {
       "type": "boolean",
       "required": false,
@@ -178,6 +198,15 @@
       "inputType": "Checkbox",
       "validators": [],
       "help": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
+    },
+    "_preventForwardScrubbing": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Attempt to prevent media scrubbing?",
+      "inputType": "Checkbox",
+      "validators": [],
+      "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
     },
     "_transcript": {
       "type": "object",
