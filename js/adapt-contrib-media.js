@@ -7,8 +7,8 @@ define([
 ], function(Adapt, ComponentView) {
 
     var froogaloopAdded = false;
-    
-    // The following function is used to to prevent a memory leak in Internet Explorer 
+
+    // The following function is used to to prevent a memory leak in Internet Explorer
     // See: http://javascript.crockford.com/memory/leak.html
     function purge(d) {
         var a = d.attributes, i, l, n;
@@ -82,6 +82,9 @@ define([
                 }
                 if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
                     modelOptions.features.push('fullscreen');
+                }
+                if (this.model.get('_showVolumeControl')) {
+                    modelOptions.features.push('volume');
                 }
             }
 
@@ -370,6 +373,11 @@ define([
             }
 
             this.addThirdPartyAfterFixes();
+
+            if(this.model.has('_startVolume')) {
+                // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
+                this.mediaElement.player.setVolume(parseInt(this.model.get('_startVolume'))/100);
+            }
 
             this.setReadyStatus();
             this.setupEventListeners();
