@@ -1,5 +1,5 @@
 {
-  "type":"object",
+  "type": "object",
   "$schema": "http://json-schema.org/draft-04/schema",
   "id": "http://jsonschema.net",
   "$ref": "http://localhost/plugins/content/component/model.schema",
@@ -21,7 +21,7 @@
       "translatable": true
     }
   },
-  "properties":{
+  "properties": {
     "_supportedLayout": {
       "type": "string",
       "required": true,
@@ -39,13 +39,13 @@
       "translatable": true
     },
     "_media": {
-      "type":"object",
-      "required":true,
+      "type": "object",
+      "required": true,
       "title": "Media",
-      "properties":{
+      "properties": {
         "mp4": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "MP4 Link",
           "inputType": "Asset:video",
@@ -53,8 +53,8 @@
           "help": "Link to an MP4 video"
         },
         "ogv": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "OGV Link",
           "inputType": "Asset:video",
@@ -62,8 +62,8 @@
           "help": "Link to an OGV video"
         },
         "webm": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "WEBM Link",
           "inputType": "Asset:video",
@@ -71,8 +71,8 @@
           "help": "Link to a WEBM video"
         },
         "mp3": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "MP3 Link",
           "inputType": "Asset:audio",
@@ -80,8 +80,8 @@
           "help": "Link to an MP3 audio"
         },
         "source": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "Source URL",
           "inputType": "Text",
@@ -89,8 +89,8 @@
           "help": "Enter an external link, such as a YouTube URL"
         },
         "type": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "enum": ["", "video/youtube", "video/vimeo"],
           "default": "",
           "title": "Type",
@@ -99,8 +99,8 @@
           "help": "Select the 'Source URL' type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo."
         },
         "poster": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "Poster Link",
           "inputType": "Asset:image",
@@ -108,24 +108,24 @@
           "help": "Image displayed before the video is played (except on Vimeo)"
         },
         "cc": {
-          "type":"array",
-          "required":false,
+          "type": "array",
+          "required": false,
           "title": "Closed Captions",
           "items": {
-            "type":"object",
-            "required":false,
-            "properties":{
+            "type": "object",
+            "required": false,
+            "properties": {
               "srclang": {
-                "type":"string",
-                "required":false,
+                "type": "string",
+                "required": false,
                 "default": "",
                 "title": "Language Code",
                 "inputType": "Text",
                 "validators": ["required"]
               },
               "src": {
-                "type":"string",
-                "required":false,
+                "type": "string",
+                "required": false,
                 "default": "",
                 "title": "Caption File",
                 "inputType": "Asset:other",
@@ -137,8 +137,8 @@
       }
     },
     "_setCompletionOn": {
-      "type":"string",
-      "required":true,
+      "type": "string",
+      "required": true,
       "enum": ["inview", "play", "ended"],
       "default": "inview",
       "title": "Completion trigger",
@@ -147,17 +147,16 @@
       "help": "Defines what media event should trigger completion of this component."
     },
     "_useClosedCaptions": {
-      "type":"boolean",
-      "required":false,
+      "type": "boolean",
+      "required": false,
       "default": false,
       "title": "Use Closed Captions",
-      "inputType": {"type": "Boolean", "options": [true, false]},
-      "validators": [],
-      "help": "If set to 'true', closed captions will be used."
+      "inputType": "Checkbox",
+      "validators": []
     },
     "_startLanguage": {
-      "type":"string",
-      "required":false,
+      "type": "string",
+      "required": false,
       "default": "en",
       "title": "Initial Closed Captions language",
       "inputType": "Text",
@@ -184,22 +183,21 @@
       "help": "Defines the default volume. On mobile devices the audio level is under the user's physical control"
     },
     "_allowFullScreen": {
-      "type":"boolean",
-      "required":false,
+      "type": "boolean",
+      "required": false,
       "default": false,
       "title": "Allow Full Screen",
-      "inputType": {"type": "Boolean", "options": [true, false]},
-      "validators": [],
-      "help": "If set to 'true', the full screen button will appear (excluding IE9)."
+      "inputType": "Checkbox",
+      "validators": []
     },
     "_playsinline": {
-      "type":"boolean",
-      "required":false,
+      "type": "boolean",
+      "required": false,
       "default": false,
       "title": "Play videos inline on iOS",
-      "inputType": {"type": "Boolean", "options": [true, false]},
+      "inputType": "Checkbox",
       "validators": [],
-      "help": "If set to 'true', videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
+      "help": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
     },
     "_preventForwardScrubbing": {
       "type":"boolean",
@@ -211,33 +209,33 @@
       "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
     },
     "_transcript": {
-      "type":"object",
-      "required":false,
+      "type": "object",
+      "required": false,
       "title": "Transcript Options",
-      "properties":{
+      "properties": {
         "_setCompletionOnView": {
-          "type":"boolean",
-          "required":false,
+          "type": "boolean",
+          "required": false,
           "default": true,
           "title": "Trigger completion?",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": [],
-          "help": "Set to 'true' to have this component mark as completed when the inline transcript is shown."
+          "help": "Whether to have this component mark as completed when the transcript is shown."
         },
         "_inlineTranscript": {
-          "type":"boolean",
-          "required":false,
+          "type": "boolean",
+          "required": false,
           "default": false,
           "title": "Show Inline",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": []
         },
         "_externalTranscript": {
-          "type":"boolean",
-          "required":false,
+          "type": "boolean",
+          "required": false,
           "default": false,
           "title": "Show Link",
-          "inputType": {"type": "Boolean", "options": [true, false]},
+          "inputType": "Checkbox",
           "validators": []
         },
         "inlineTranscriptButton": {
@@ -259,8 +257,8 @@
           "translatable": true
         },
         "inlineTranscriptBody": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "Inline Transcript",
           "inputType": "TextArea",
@@ -278,8 +276,8 @@
           "translatable": true
         },
         "transcriptLink": {
-          "type":"string",
-          "required":false,
+          "type": "string",
+          "required": false,
           "default": "",
           "title": "Transcript Link",
           "inputType": "Asset:other",
