@@ -164,13 +164,13 @@
       "help": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages."
     },
     "_showVolumeControl": {
-      "type":"boolean",
-      "required":false,
+      "type": "boolean",
+      "required": false,
       "default": false,
       "title": "Show Volume Control (Not supported on mobile devices)",
-      "inputType": {"type": "Boolean", "options": [true, false]},
+      "inputType": "Checkbox",
       "validators": [],
-      "help": "If set to 'true', the volume control will appear in the media player. On mobile devices the audio level is under the user's physical control."
+      "help": "When enabled, the volume control will appear in the media player. On mobile devices the audio level is controlled the device's physical volume controls."
     },
     "_startVolume": {
       "type":"string",
@@ -206,7 +206,7 @@
       "title": "Attempt to prevent media scrubbing?",
       "inputType": "Checkbox",
       "validators": [],
-      "help": "If enabled will attempt to prevent users from skipping ahead in audio/video."
+      "help": "If enabled, will attempt to prevent users from skipping ahead in audio/video."
     },
     "_transcript": {
       "type": "object",
