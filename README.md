@@ -63,7 +63,7 @@ guide the learner’s interaction with the component.
 **_media** (object): The media attributes group will contain different values depending on the type of media: video or audio.
 For video it contains values for **mp4**, **webm**, **ogv**, **poster**, and **cc**. The properties **mp4**, **webm** and **ogv** are all optional, but at least one is required (see below for alternate properties for YouTube/Vimeo video).  
 For audio it contains **mp3** and **ogg**. As with video, both are optional, but at least one is required.  
-The decision to include more than one file format is typically based on the browser/s used by the targeted audience. The mostly widely supported video file format is [mp4](http://caniuse.com/#feat=mpeg4) (specifically [H.264/MPEG-4 Part 10 AVC](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC)). The most widely supported audio format is mp3.
+The decision to include more than one file format is typically based on the browser/s used by the target audience. The most widely supported video file format is [mp4](http://caniuse.com/#feat=mpeg4) (specifically [H.264/MPEG-4 Part 10 AVC](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC)). The most widely supported audio format is mp3.
 
 >**mp4** (string): File name (including path) of the video file. Path should be relative to the *src* folder (e.g., *course/en/video/video-1.mp4*).
 
@@ -107,7 +107,6 @@ The decision to include more than one file format is typically based on the brow
 
 <div float align=right><a href="#top">Back to Top</a></div>
 
-
 ### JSON Examples  
 
 The attributes described above focus on the component's use with standard video. They are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) The same model can be applied to the component's use with audio and YouTube videos.     
@@ -115,8 +114,7 @@ The attributes described above focus on the component's use with standard video.
 **Standard video example:**
 ```json
 "_media": {
-	"mp4": "course/en/video/video.mp4",
-	"ogv": "course/en/video/video.ogv"
+	"mp4": "course/en/video/video.mp4"
 },
 ```
 
@@ -147,6 +145,9 @@ The attributes described above focus on the component's use with standard video.
 ### Accessibility
 **Media** has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: **ariaRegion** and **transcriptButton**. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the label texts need to be customised, they can be found within the **globals** object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).   
 <div float align=right><a href="#top">Back to Top</a></div>
+
+## Events
+Whenever playback is initiated, the component will emit a `media:stop` event to notify other plugins that make use of audio or video that they should stop playback.
 
 ## Limitations
  
