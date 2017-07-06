@@ -66,6 +66,12 @@ define([
 
         postRender: function() {
             this.setupPlayer();
+            this.addTabIndex();
+        },
+        addTabIndex:function(){
+            console.log(this.$el);
+            this.$('.mejs-container').attr('tabindex','0');
+
         },
 
         setupPlayer: function() {
