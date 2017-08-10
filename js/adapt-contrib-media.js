@@ -257,11 +257,9 @@ define([
             // Make sure this view isn't triggering media:stop
             if (view && view.cid === this.cid) return;
             
-            if (this.mediaElement && this.mediaElement.player) {
-              var player = this.mediaElement.player;
-              player.pause();
-            }
-            
+            if(!this.mediaElement || !this.mediaElement.player) return;
+
+            this.mediaElement.player.pause();
         },
 
         onOverlayClick: function() {
