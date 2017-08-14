@@ -80,6 +80,23 @@
         width:100%;
         display:block;
     }
+    
+    // Bug Fix for touch devices to override standard hover event in mep.less L119
+    // ==============================
+    .mejs-overlay {
+        &:hover {
+            .mejs-overlay-button {
+                background-position: 0 0;
+            }
+        }
+
+        .no-touch &:hover {
+            .mejs-overlay-button {
+                background-position: 0 -100px;
+            }
+        }
+    }
+    // ==============================
 
     .mejs-overlay-button {
         background-image: url(../../assets/bigplay.svg);
