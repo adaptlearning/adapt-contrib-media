@@ -80,7 +80,7 @@ define([
                 if (this.model.get('_useClosedCaptions')) {
                     modelOptions.features.unshift('tracks');
                 }
-                if (this.model.get("_allowFullScreen") && !$("html").is(".ie9")) {
+                if (this.model.get("_allowFullScreen")) {
                     modelOptions.features.push('fullscreen');
                 }
                 if (this.model.get('_showVolumeControl')) {
@@ -320,12 +320,6 @@ define([
                 }
             }
 
-            if ($("html").is(".ie8")) {
-                var obj = this.$("object")[0];
-                if (obj) {
-                    obj.style.display = "none";
-                }
-            }
             if (this.mediaElement && this.mediaElement.player) {
                 var player_id = this.mediaElement.player.id;
 
