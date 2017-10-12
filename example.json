@@ -12,6 +12,7 @@
     "_setCompletionOn": "inview",
     "_useClosedCaptions": true,
     "_startLanguage": "en",
+    "_allowFullScreen": true,
     "_showVolumeControl": true,
     "_startVolume": "80%",
     "_playsinline": false,
