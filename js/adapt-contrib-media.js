@@ -53,13 +53,14 @@ define([
             });
 
             if (this.model.get('_media').source) {
-                // Remove the protocol for streaming service.
-                // This prevents conflicts with HTTP/HTTPS
                 var media = this.model.get('_media');
 
-                media.source = media.source.replace(/^https?\:/, "");
+                // Avoid loading of Mixed Content (insecure content on a secure page)
+                if (window.location.protocol === 'https:' && media.source.indexOf('http:') === 0) {
+                    media.source = media.source.replace(/^http\:/, 'https:');
+                }
 
-                this.model.set('_media', media); 
+                this.model.set('_media', media);
             }
 
             this.checkIfResetOnRevisit();
