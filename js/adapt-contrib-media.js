@@ -156,17 +156,6 @@ define([
 		                    froogaloopAdded = false;
 		                    console.log('Could not load froogaloop.js');
 	                    });
-                    // Modernizr.load has been deprecated
-                    // https://modernizr.com/news/modernizr-3-new-release-site
-                    /*
-                    Modernizr.load({
-                        load: "assets/froogaloop.js",
-                        complete: function() {
-                            froogaloopAdded = true;
-                            callback();
-                        }
-                    });
-                    */
                     break;
                 default:
                     callback();
