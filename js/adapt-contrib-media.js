@@ -147,6 +147,18 @@ define([
                     modelOptions.hideVideoControlsOnLoad = true;
                     modelOptions.features = [];
                     if (froogaloopAdded) return callback();
+                    $.getScript("assets/froogaloop.js")
+                    	.done(function() {
+												froogaloopAdded = true;
+												callback();
+	                    })
+	                    .fail(function(){
+		                    froogaloopAdded = false;
+		                    console.log('Could not load froogaloop.js');
+	                    });
+                    // Modernizr.load has been deprecated
+                    // https://modernizr.com/news/modernizr-3-new-release-site
+                    /*
                     Modernizr.load({
                         load: "assets/froogaloop.js",
                         complete: function() {
@@ -154,6 +166,7 @@ define([
                             callback();
                         }
                     });
+                    */
                     break;
                 default:
                     callback();
