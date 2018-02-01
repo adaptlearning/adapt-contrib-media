@@ -148,14 +148,14 @@ define([
                     modelOptions.features = [];
                     if (froogaloopAdded) return callback();
                     $.getScript("assets/froogaloop.js")
-                    	.done(function() {
-												froogaloopAdded = true;
-												callback();
-	                    })
-	                    .fail(function(){
-		                    froogaloopAdded = false;
-		                    console.log('Could not load froogaloop.js');
-	                    });
+                        .done(function() {
+                            froogaloopAdded = true;
+                            callback();
+                        })
+                        .fail(function() {
+                            froogaloopAdded = false;
+                            console.log('Could not load froogaloop.js');
+                        });
                     break;
                 default:
                     callback();
