@@ -407,14 +407,14 @@ define([
                 $transcriptBodyContainer.removeClass("inline-transcript-open").stop(true, true).slideUp(function() {
                     $(window).resize();
                 });
-                $button.html(transcriptConfig.inlineTranscriptButton);
+                $button.html(transcriptConfig.inlineTranscriptButton).attr('aria-expanded', false);
                 return;
             }
             
             $transcriptBodyContainer.addClass("inline-transcript-open").stop(true, true).slideDown(function() {
                 $(window).resize();
             }).a11y_focus();
-            $button.html(transcriptConfig.inlineTranscriptCloseButton);
+            $button.html(transcriptConfig.inlineTranscriptCloseButton).attr('aria-expanded', true);
 
             if (transcriptConfig._setCompletionOnView !== false) {
                 this.setCompletionStatus();
