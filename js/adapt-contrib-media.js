@@ -147,13 +147,15 @@ define([
                     modelOptions.hideVideoControlsOnLoad = true;
                     modelOptions.features = [];
                     if (froogaloopAdded) return callback();
-                    Modernizr.load({
-                        load: "assets/froogaloop.js",
-                        complete: function() {
+                    $.getScript("assets/froogaloop.js")
+                        .done(function() {
                             froogaloopAdded = true;
                             callback();
-                        }
-                    });
+                        })
+                        .fail(function() {
+                            froogaloopAdded = false;
+                            console.log('Could not load froogaloop.js');
+                        });
                     break;
                 default:
                     callback();
