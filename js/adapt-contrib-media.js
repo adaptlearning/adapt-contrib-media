@@ -398,25 +398,26 @@ define([
 
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
+
+            var transcriptConfig = this.model.get('_transcript');
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
             var $button = this.$(".media-inline-transcript-button");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
-                $transcriptBodyContainer.stop(true,true).slideUp(function() {
+                $transcriptBodyContainer.removeClass("inline-transcript-open").stop(true, true).slideUp(function() {
                     $(window).resize();
                 });
-                $transcriptBodyContainer.removeClass("inline-transcript-open");
-                $button.html(this.model.get("_transcript").inlineTranscriptButton);
-            } else {
-                $transcriptBodyContainer.stop(true,true).slideDown(function() {
-                    $(window).resize();
-                }).a11y_focus();
-                $transcriptBodyContainer.addClass("inline-transcript-open");
-                $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+                $button.html(transcriptConfig.inlineTranscriptButton);
+                return;
+            }
+            
+            $transcriptBodyContainer.addClass("inline-transcript-open").stop(true, true).slideDown(function() {
+                $(window).resize();
+            }).a11y_focus();
+            $button.html(transcriptConfig.inlineTranscriptCloseButton);
 
-                if (this.model.get('_transcript')._setCompletionOnView !== false) {
-                    this.setCompletionStatus();
-                }
+            if (transcriptConfig._setCompletionOnView !== false) {
+                this.setCompletionStatus();
             }
         },
 
