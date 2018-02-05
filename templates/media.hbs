@@ -36,7 +36,7 @@
 
       <div class="media-transcript-button-container">
         {{#if _transcript._inlineTranscript}}
-          <button class="media-inline-transcript-button button" role="button">
+          <button class="media-inline-transcript-button button">
             <div class="transcript-text-container">
               {{#if _transcript.inlineTranscriptButton}}
                 {{_transcript.inlineTranscriptButton}}
@@ -47,7 +47,7 @@
           </button>
         {{/if}}
         {{#if _transcript._externalTranscript}}
-          <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button" role="button">
+          <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button">
             <div class="transcript-text-container">
               {{#if _transcript.transcriptLinkButton}}
                 {{_transcript.transcriptLinkButton}}
