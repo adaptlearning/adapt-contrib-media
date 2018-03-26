@@ -152,6 +152,12 @@
         background-color: black;
     }
 
+    // Bug fix for missing control icons on iOS touch devices 
+    // ==============================
+    .mejs-offscreen {
+        -webkit-clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px); // required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
+    }
+    // ==============================
 }
 
 
