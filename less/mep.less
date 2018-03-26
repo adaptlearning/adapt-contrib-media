@@ -3,6 +3,7 @@
 	clip: rect(1px 1px 1px 1px); /* IE6, IE7 - no likey commas */
 	clip: rect(1px, 1px, 1px, 1px); /* IE8-IE11 - we likey commas, no support for clip-path */
 	clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px);
+	-webkit-clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px); // required for Safari iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
 	position: absolute !important;
 	height: 1px;
 	width: 1px;
