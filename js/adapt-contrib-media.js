@@ -389,7 +389,7 @@ define([
         },
 
         onScreenSizeChanged: function() {
-            this.$('audio, video').width(this.$('.component-widget').width());
+            this.$('audio, video, .mejs-container').width(this.$('.component-widget').width());
         },
 
         onAccessibilityToggle: function() {
