@@ -37,20 +37,24 @@
       <div class="media-transcript-button-container">
         {{#if _transcript._inlineTranscript}}
           <button class="media-inline-transcript-button button" aria-expanded="false">
-            {{#if _transcript.inlineTranscriptButton}}
-              {{_transcript.inlineTranscriptButton}}
-            {{else}}
-              {{_transcript.transcriptLink}}
-            {{/if}}
+            <div class="transcript-text-container">
+              {{#if _transcript.inlineTranscriptButton}}
+                {{_transcript.inlineTranscriptButton}}
+              {{else}}
+                {{_transcript.transcriptLink}}
+              {{/if}}
+            </div>
           </button>
         {{/if}}
         {{#if _transcript._externalTranscript}}
           <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button">
-            {{#if _transcript.transcriptLinkButton}}
-              {{_transcript.transcriptLinkButton}}
-            {{else}}
-              {{_transcript.transcriptLink}}
-            {{/if}}
+            <div class="transcript-text-container">
+              {{#if _transcript.transcriptLinkButton}}
+                {{_transcript.transcriptLinkButton}}
+              {{else}}
+                {{_transcript.transcriptLink}}
+              {{/if}}
+            </div>
           </button>
         {{/if}}
         </div>
