@@ -177,8 +177,8 @@ define([
                     'timeupdate': this.onMediaElementTimeUpdate
                 });
             }
-            
-            // handle other completion events in the event Listeners 
+
+            // handle other completion events in the event Listeners
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
@@ -194,7 +194,7 @@ define([
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
             });
-            
+
             if (this.completionEvent === 'play') {
                 this.setCompletionStatus();
             }
@@ -211,7 +211,7 @@ define([
                 this.setCompletionStatus();
             }
         },
-        
+
         onMediaElementSeeking: function(event) {
             var maxViewed = this.model.get("_maxViewed");
             if(!maxViewed) {
@@ -254,7 +254,7 @@ define([
             // pause on player click
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
         },
-        
+
         onMediaStop: function(view) {
 
             // Make sure this view isn't triggering media:stop
@@ -262,7 +262,7 @@ define([
 
             var player = this.mediaElement.player;
             if (!player) return;
-            
+
             player.pause();
         },
 
@@ -398,25 +398,26 @@ define([
 
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
+
+            var transcriptConfig = this.model.get('_transcript');
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
             var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
-                $transcriptBodyContainer.stop(true,true).slideUp(function() {
+                $transcriptBodyContainer.removeClass("inline-transcript-open").stop(true, true).slideUp(function() {
                     $(window).resize();
                 });
-                $transcriptBodyContainer.removeClass("inline-transcript-open");
-                $buttonText.html(this.model.get("_transcript").inlineTranscriptButton);
-            } else {
-                $transcriptBodyContainer.stop(true,true).slideDown(function() {
-                    $(window).resize();
-                }).a11y_focus();
-                $transcriptBodyContainer.addClass("inline-transcript-open");
-                $buttonText.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+                $buttonText.html(transcriptConfig.inlineTranscriptButton).attr('aria-expanded', false);
+                return;
+            }
 
-                if (this.model.get('_transcript')._setCompletionOnView !== false) {
-                    this.setCompletionStatus();
-                }
+            $transcriptBodyContainer.addClass("inline-transcript-open").stop(true, true).slideDown(function() {
+                $(window).resize();
+            }).a11y_focus();
+            $buttonText.html(transcriptConfig.inlineTranscriptCloseButton).attr('aria-expanded', true);
+
+            if (transcriptConfig._setCompletionOnView !== false) {
+                this.setCompletionStatus();
             }
         },
 
@@ -455,8 +456,6 @@ define([
 
     });
 
-    Adapt.register('media', Media);
-
-    return Media;
+    return Adapt.register('media', Media);
 
 });
