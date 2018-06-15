@@ -2,7 +2,6 @@ define([
     'core/js/adapt',
     'core/js/views/componentView',
     'libraries/mediaelement-and-player',
-    'libraries/mediaelement-and-player-accessible-captions',
     'libraries/mediaelement-fullscreen-hook'
 ], function(Adapt, ComponentView) {
 
@@ -40,7 +39,6 @@ define([
             this.listenTo(Adapt, {
                 'device:resize': this.onScreenSizeChanged,
                 'device:changed': this.onDeviceChanged,
-                'accessibility:toggle': this.onAccessibilityToggle,
                 'media:stop': this.onMediaStop
             });
 
@@ -93,15 +91,6 @@ define([
 
             if (this.model.get('_useClosedCaptions')) {
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
-            }
-
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
-                ? true
-                : false;
-
-            if (hasAccessibility) {
-                modelOptions.alwaysShowControls = true;
-                modelOptions.hideVideoControlsOnLoad = false;
             }
 
             if (modelOptions.alwaysShowControls === undefined) {
@@ -177,8 +166,8 @@ define([
                     'timeupdate': this.onMediaElementTimeUpdate
                 });
             }
-            
-            // handle other completion events in the event Listeners 
+
+            // handle other completion events in the event Listeners
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
@@ -194,7 +183,7 @@ define([
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
             });
-            
+
             if (this.completionEvent === 'play') {
                 this.setCompletionStatus();
             }
@@ -211,7 +200,7 @@ define([
                 this.setCompletionStatus();
             }
         },
-        
+
         onMediaElementSeeking: function(event) {
             var maxViewed = this.model.get("_maxViewed");
             if(!maxViewed) {
@@ -254,7 +243,7 @@ define([
             // pause on player click
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
         },
-        
+
         onMediaStop: function(view) {
 
             // Make sure this view isn't triggering media:stop
@@ -262,7 +251,7 @@ define([
 
             var player = this.mediaElement.player;
             if (!player) return;
-            
+
             player.pause();
         },
 
@@ -392,10 +381,6 @@ define([
             this.$('audio, video').width(this.$('.component-widget').width());
         },
 
-        onAccessibilityToggle: function() {
-           this.showControls();
-        },
-
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
@@ -405,12 +390,14 @@ define([
                 $transcriptBodyContainer.stop(true,true).slideUp(function() {
                     $(window).resize();
                 });
+                $button.attr('aria-pressed', false);
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptButton);
             } else {
                 $transcriptBodyContainer.stop(true,true).slideDown(function() {
                     $(window).resize();
                 }).a11y_focus();
+                $button.attr('aria-pressed', true);
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
 
@@ -423,33 +410,6 @@ define([
         onExternalTranscriptClicked: function(event) {
             if (this.model.get('_transcript')._setCompletionOnView !== false) {
                 this.setCompletionStatus();
-            }
-        },
-
-        showControls: function() {
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
-                ? true
-                : false;
-
-            if (hasAccessibility) {
-                if (!this.mediaElement.player) return;
-
-                var player = this.mediaElement.player;
-
-                player.options.alwaysShowControls = true;
-                player.options.hideVideoControlsOnLoad = false;
-                player.enableControls();
-                player.showControls();
-
-                this.$('.mejs-playpause-button button').attr({
-                    "role": "button"
-                });
-                var screenReaderVideoTagFix = $("<div role='region' aria-label='.'>");
-                this.$('.mejs-playpause-button').prepend(screenReaderVideoTagFix);
-
-                this.$('.mejs-time, .mejs-time-rail').attr({
-                    "aria-hidden": "true"
-                });
             }
         }
 
