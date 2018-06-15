@@ -390,14 +390,14 @@ define([
                 $transcriptBodyContainer.stop(true,true).slideUp(function() {
                     $(window).resize();
                 });
-                $button.attr('aria-pressed', false);
+                $button.attr('aria-expanded', false);
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptButton);
             } else {
                 $transcriptBodyContainer.stop(true,true).slideDown(function() {
                     $(window).resize();
                 }).a11y_focus();
-                $button.attr('aria-pressed', true);
+                $button.attr('aria-expanded', true);
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
 
