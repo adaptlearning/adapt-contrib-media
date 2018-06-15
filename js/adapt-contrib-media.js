@@ -401,20 +401,20 @@ define([
 
             var transcriptConfig = this.model.get('_transcript');
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
-            var $button = this.$(".media-inline-transcript-button");
+            var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
                 $transcriptBodyContainer.removeClass("inline-transcript-open").stop(true, true).slideUp(function() {
                     $(window).resize();
                 });
-                $button.html(transcriptConfig.inlineTranscriptButton).attr('aria-expanded', false);
+                $buttonText.html(transcriptConfig.inlineTranscriptButton).attr('aria-expanded', false);
                 return;
             }
 
             $transcriptBodyContainer.addClass("inline-transcript-open").stop(true, true).slideDown(function() {
                 $(window).resize();
             }).a11y_focus();
-            $button.html(transcriptConfig.inlineTranscriptCloseButton).attr('aria-expanded', true);
+            $buttonText.html(transcriptConfig.inlineTranscriptCloseButton).attr('aria-expanded', true);
 
             if (transcriptConfig._setCompletionOnView !== false) {
                 this.setCompletionStatus();
