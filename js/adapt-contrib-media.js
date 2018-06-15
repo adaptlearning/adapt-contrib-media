@@ -399,20 +399,20 @@ define([
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
-            var $button = this.$(".media-inline-transcript-button");
+            var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
                 $transcriptBodyContainer.stop(true,true).slideUp(function() {
                     $(window).resize();
                 });
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
-                $button.html(this.model.get("_transcript").inlineTranscriptButton);
+                $buttonText.html(this.model.get("_transcript").inlineTranscriptButton);
             } else {
                 $transcriptBodyContainer.stop(true,true).slideDown(function() {
                     $(window).resize();
                 }).a11y_focus();
                 $transcriptBodyContainer.addClass("inline-transcript-open");
-                $button.html(this.model.get("_transcript").inlineTranscriptCloseButton);
+                $buttonText.html(this.model.get("_transcript").inlineTranscriptCloseButton);
 
                 if (this.model.get('_transcript')._setCompletionOnView !== false) {
                     this.setCompletionStatus();
