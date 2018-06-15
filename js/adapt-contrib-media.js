@@ -177,8 +177,8 @@ define([
                     'timeupdate': this.onMediaElementTimeUpdate
                 });
             }
-            
-            // handle other completion events in the event Listeners 
+
+            // handle other completion events in the event Listeners
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
@@ -194,7 +194,7 @@ define([
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
             });
-            
+
             if (this.completionEvent === 'play') {
                 this.setCompletionStatus();
             }
@@ -211,7 +211,7 @@ define([
                 this.setCompletionStatus();
             }
         },
-        
+
         onMediaElementSeeking: function(event) {
             var maxViewed = this.model.get("_maxViewed");
             if(!maxViewed) {
@@ -254,7 +254,7 @@ define([
             // pause on player click
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
         },
-        
+
         onMediaStop: function(view) {
 
             // Make sure this view isn't triggering media:stop
@@ -262,7 +262,7 @@ define([
 
             var player = this.mediaElement.player;
             if (!player) return;
-            
+
             player.pause();
         },
 
@@ -410,7 +410,7 @@ define([
                 $button.html(transcriptConfig.inlineTranscriptButton).attr('aria-expanded', false);
                 return;
             }
-            
+
             $transcriptBodyContainer.addClass("inline-transcript-open").stop(true, true).slideDown(function() {
                 $(window).resize();
             }).a11y_focus();
@@ -456,8 +456,6 @@ define([
 
     });
 
-    Adapt.register('media', Media);
-
-    return Media;
+    return Adapt.register('media', Media);
 
 });
