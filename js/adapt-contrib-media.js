@@ -384,6 +384,7 @@ define([
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
+            var $button = this.$(".media-inline-transcript-button");
             var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
