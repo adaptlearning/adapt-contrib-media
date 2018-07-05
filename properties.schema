@@ -7,7 +7,7 @@
     "ariaRegion": {
       "type": "string",
       "required": true,
-      "default": "Video{{#any _transcript._inlineTranscript _transcript._externalTranscript}} and transcript.{{else}}.{{/any}}",
+      "default": "Video{{#any _transcript._inlineTranscript _transcript._externalTranscript}} and transcript{{/any}}.",
       "inputType": "Text",
       "validators": [],
       "translatable": true
