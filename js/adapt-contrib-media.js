@@ -397,7 +397,7 @@ define([
             } else {
                 $transcriptBodyContainer.stop(true,true).slideDown(function() {
                     $(window).resize();
-                }).a11y_focus();
+                });
                 $button.attr('aria-expanded', true);
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $buttonText.html(this.model.get("_transcript").inlineTranscriptCloseButton);
