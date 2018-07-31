@@ -249,10 +249,10 @@ define([
             // Make sure this view isn't triggering media:stop
             if (view && view.cid === this.cid) return;
 
-            var player = this.mediaElement.player;
-            if (!player) return;
+            if (!this.mediaElement || !this.mediaElement.player) return;
 
-            player.pause();
+            this.mediaElement.player.pause();
+
         },
 
         onOverlayClick: function() {
