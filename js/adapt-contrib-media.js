@@ -28,6 +28,18 @@ define([
         }
     }
 
+    _.extend(mejs.MepDefaults, {
+        keyActions: [],
+        defaultSeekForwardInterval: function(duration) {
+            if (typeof duration === "object") return duration.duration*0.05;
+            return duration*0.05;
+        },
+        defaultSeekBackwardInterval: function(duration) {
+            if (typeof duration === "object") return duration.duration*0.05;
+            return duration*0.05;
+        }
+    });
+
     var Media = ComponentView.extend({
 
         events: {
@@ -105,6 +117,7 @@ define([
             this.addThirdPartyFixes(modelOptions, _.bind(function createPlayer() {
                 // create the player
                 this.$('audio, video').mediaelementplayer(modelOptions);
+                this.cleanUpPlayer();
 
                 // We're streaming - set ready now, as success won't be called above
                 try {
@@ -150,6 +163,12 @@ define([
                 default:
                     callback();
             }
+        },
+
+        cleanUpPlayer: function() {
+            this.$('.mejs-offscreen').remove();
+            this.$('[role=application]').removeAttr('role').removeAttr("tabindex");
+            this.$('[aria-controls]').removeAttr('aria-controls');
         },
 
         setupEventListeners: function() {
