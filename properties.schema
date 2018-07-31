@@ -7,15 +7,7 @@
     "ariaRegion": {
       "type": "string",
       "required": true,
-      "default": "This is a media player component. Select the play / pause button to watch or listen.",
-      "inputType": "Text",
-      "validators": [],
-      "translatable": true
-    },
-    "transcriptButton": {
-      "type": "string",
-      "required": false,
-      "default": "Alternatively you can select the link below for the transcript.",
+      "default": "Media player{{#any _transcript._inlineTranscript _transcript._externalTranscript}} and transcript{{/any}}.",
       "inputType": "Text",
       "validators": [],
       "translatable": true
