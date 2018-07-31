@@ -44,7 +44,8 @@ define([
 
         events: {
             "click .media-inline-transcript-button": "onToggleInlineTranscript",
-            "click .media-external-transcript-button": "onExternalTranscriptClicked"
+            "click .media-external-transcript-button": "onExternalTranscriptClicked",
+            "click .js-skip-to-transcript": "onSkipToTranscript"
         },
 
         preRender: function() {
@@ -398,6 +399,10 @@ define([
 
         onScreenSizeChanged: function() {
             this.$('audio, video').width(this.$('.component-widget').width());
+        },
+
+        onSkipToTranscript: function() {
+            this.$('.media-transcript-container button').a11y_focus();
         },
 
         onToggleInlineTranscript: function(event) {

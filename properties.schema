@@ -11,6 +11,14 @@
       "inputType": "Text",
       "validators": [],
       "translatable": true
+    },
+    "skipToTranscript": {
+      "type": "string",
+      "required": true,
+      "default": "Skip to transcript",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
     }
   },
   "properties": {

@@ -1,5 +1,9 @@
+{{import_globals}}
 <div class="media-inner component-inner">
     {{> component this}}
+    {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
+    <button class="aria-label js-skip-to-transcript" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
+    {{/any}}
     <div class="media-widget component-widget a11y-ignore-aria">
 
     {{#if _media.mp3}}
@@ -57,15 +61,15 @@
             </div>
           </button>
         {{/if}}
-        </div>
+      </div>
 
-        {{#if _transcript._inlineTranscript}}
-          <div class="media-inline-transcript-body-container" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
-            <div class="media-inline-transcript-body">
-            {{{compile _transcript.inlineTranscriptBody}}}
-            </div>
+      {{#if _transcript._inlineTranscript}}
+        <div class="media-inline-transcript-body-container" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
+          <div class="media-inline-transcript-body">
+          {{{compile _transcript.inlineTranscriptBody}}}
           </div>
-        {{/if}}
+        </div>
+      {{/if}}
 
     </div>
     {{/if}}
