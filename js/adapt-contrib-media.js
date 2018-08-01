@@ -167,7 +167,7 @@ define([
         },
 
         cleanUpPlayer: function() {
-            this.$('.media-widget > .mejs-offscreen').remove();
+            this.$('.media-widget').children('.mejs-offscreen').remove();
             this.$('[role=application]').removeAttr('role').removeAttr("tabindex");
             this.$('[aria-controls]').removeAttr('aria-controls');
         },
