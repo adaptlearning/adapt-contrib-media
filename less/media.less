@@ -26,6 +26,8 @@
 
     .mejs-container {
         background-color: transparent;
+        // The width set by mejs is always 100% of container, set in pixels. 
+        // Having a fixed pixel size prevents iOS from changing orientation without scaling.
         width: 100% !important;
         .mejs-controls .mejs-time {
             padding-right:1px;
