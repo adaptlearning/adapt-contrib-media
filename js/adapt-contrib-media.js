@@ -2,7 +2,6 @@ define([
     'core/js/adapt',
     'core/js/views/componentView',
     'libraries/mediaelement-and-player',
-    'libraries/mediaelement-and-player-accessible-captions',
     'libraries/mediaelement-fullscreen-hook'
 ], function(Adapt, ComponentView) {
 
@@ -29,18 +28,39 @@ define([
         }
     }
 
+    /*
+     * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
+     * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
+     * the removal of the default shortcut keys.
+     * 
+     * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One 
+     * is a duration integer the other is the player object. The default functions error on slider key press and so break 
+     * accessibility. Below is a correction.
+     */
+    _.extend(mejs.MepDefaults, {
+        keyActions: [],
+        defaultSeekForwardInterval: function(duration) {
+            if (typeof duration === "object") return duration.duration*0.05;
+            return duration*0.05;
+        },
+        defaultSeekBackwardInterval: function(duration) {
+            if (typeof duration === "object") return duration.duration*0.05;
+            return duration*0.05;
+        }
+    });
+
     var Media = ComponentView.extend({
 
         events: {
             "click .media-inline-transcript-button": "onToggleInlineTranscript",
-            "click .media-external-transcript-button": "onExternalTranscriptClicked"
+            "click .media-external-transcript-button": "onExternalTranscriptClicked",
+            "click .js-skip-to-transcript": "onSkipToTranscript"
         },
 
         preRender: function() {
             this.listenTo(Adapt, {
                 'device:resize': this.onScreenSizeChanged,
                 'device:changed': this.onDeviceChanged,
-                'accessibility:toggle': this.onAccessibilityToggle,
                 'media:stop': this.onMediaStop
             });
 
@@ -95,15 +115,6 @@ define([
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
             }
 
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
-                ? true
-                : false;
-
-            if (hasAccessibility) {
-                modelOptions.alwaysShowControls = true;
-                modelOptions.hideVideoControlsOnLoad = false;
-            }
-
             if (modelOptions.alwaysShowControls === undefined) {
                 modelOptions.alwaysShowControls = false;
             }
@@ -116,6 +127,7 @@ define([
             this.addThirdPartyFixes(modelOptions, _.bind(function createPlayer() {
                 // create the player
                 this.$('audio, video').mediaelementplayer(modelOptions);
+                this.cleanUpPlayer();
 
                 // We're streaming - set ready now, as success won't be called above
                 try {
@@ -163,6 +175,12 @@ define([
             }
         },
 
+        cleanUpPlayer: function() {
+            this.$('.media-widget').children('.mejs-offscreen').remove();
+            this.$('[role=application]').removeAttr('role tabindex')
+            this.$('[aria-controls]').removeAttr('aria-controls');
+        },
+
         setupEventListeners: function() {
             this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
 
@@ -177,8 +195,8 @@ define([
                     'timeupdate': this.onMediaElementTimeUpdate
                 });
             }
-            
-            // handle other completion events in the event Listeners 
+
+            // handle other completion events in the event Listeners
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
@@ -194,7 +212,7 @@ define([
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
             });
-            
+
             if (this.completionEvent === 'play') {
                 this.setCompletionStatus();
             }
@@ -211,7 +229,7 @@ define([
                 this.setCompletionStatus();
             }
         },
-        
+
         onMediaElementSeeking: function(event) {
             var maxViewed = this.model.get("_maxViewed");
             if(!maxViewed) {
@@ -254,15 +272,16 @@ define([
             // pause on player click
             this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
         },
-        
+
         onMediaStop: function(view) {
 
             // Make sure this view isn't triggering media:stop
             if (view && view.cid === this.cid) return;
-            
-            if(!this.mediaElement || !this.mediaElement.player) return;
+
+            if (!this.mediaElement || !this.mediaElement.player) return;
 
             this.mediaElement.player.pause();
+
         },
 
         onOverlayClick: function() {
@@ -391,25 +410,28 @@ define([
             this.$('audio, video').width(this.$('.component-widget').width());
         },
 
-        onAccessibilityToggle: function() {
-           this.showControls();
+        onSkipToTranscript: function() {
+            this.$('.media-transcript-container button').a11y_focus();
         },
 
         onToggleInlineTranscript: function(event) {
             if (event) event.preventDefault();
             var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
+            var $button = this.$(".media-inline-transcript-button");
             var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
 
             if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
                 $transcriptBodyContainer.stop(true,true).slideUp(function() {
                     $(window).resize();
                 });
+                $button.attr('aria-expanded', false);
                 $transcriptBodyContainer.removeClass("inline-transcript-open");
                 $buttonText.html(this.model.get("_transcript").inlineTranscriptButton);
             } else {
                 $transcriptBodyContainer.stop(true,true).slideDown(function() {
                     $(window).resize();
-                }).a11y_focus();
+                });
+                $button.attr('aria-expanded', true);
                 $transcriptBodyContainer.addClass("inline-transcript-open");
                 $buttonText.html(this.model.get("_transcript").inlineTranscriptCloseButton);
 
@@ -422,33 +444,6 @@ define([
         onExternalTranscriptClicked: function(event) {
             if (this.model.get('_transcript')._setCompletionOnView !== false) {
                 this.setCompletionStatus();
-            }
-        },
-
-        showControls: function() {
-            var hasAccessibility = Adapt.config.has('_accessibility') && Adapt.config.get('_accessibility')._isActive
-                ? true
-                : false;
-
-            if (hasAccessibility) {
-                if (!this.mediaElement.player) return;
-
-                var player = this.mediaElement.player;
-
-                player.options.alwaysShowControls = true;
-                player.options.hideVideoControlsOnLoad = false;
-                player.enableControls();
-                player.showControls();
-
-                this.$('.mejs-playpause-button button').attr({
-                    "role": "button"
-                });
-                var screenReaderVideoTagFix = $("<div role='region' aria-label='.'>");
-                this.$('.mejs-playpause-button').prepend(screenReaderVideoTagFix);
-
-                this.$('.mejs-time, .mejs-time-rail').attr({
-                    "aria-hidden": "true"
-                });
             }
         }
 

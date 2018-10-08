@@ -26,6 +26,9 @@
 
     .mejs-container {
         background-color: transparent;
+        // The width set by mejs is always 100% of container, set in pixels. 
+        // Having a fixed pixel size prevents iOS from changing orientation without scaling.
+        width: 100% !important;
         .mejs-controls .mejs-time {
             padding-right:1px;
             padding-left:1px;
@@ -80,7 +83,7 @@
         width:100%;
         display:block;
     }
-    
+
     // Bug Fix for touch devices to override standard hover event in mep.less L119
     // ==============================
     .mejs-overlay {
@@ -133,14 +136,6 @@
             background-image: url(assets/controls.svg);
         }
     }
-    
-    .accessibility.no-touch & {
-        .mejs-controls .mejs-button {
-            button:focus {
-                outline: @focus-outline;
-            }
-        }
-    }
 
     .no-svg .mejs-controls .mejs-button button {
         background-image: url(assets/controls.png);
@@ -152,7 +147,7 @@
         background-color: black;
     }
 
-    // Bug fix for missing control icons on iOS touch devices 
+    // Bug fix for missing control icons on iOS touch devices
     // ==============================
     .mejs-offscreen {
         -webkit-clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px); // required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
