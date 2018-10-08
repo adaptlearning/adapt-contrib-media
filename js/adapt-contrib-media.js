@@ -323,6 +323,15 @@ define([
                     this.$('.component-inner').off('inview');
                     this.setCompletionStatus();
                 }
+
+                // initialize to false if autoplay option doesn't exist
+                var autoPlay = this.model.get('autoplay') || false;
+                if (this._isVisibleTop && this._isVisibleBottom && autoPlay === true) {
+                    var player = this.mediaElement.player;
+                    if (!player) return;
+
+                    player.play();
+                }
             }
         },
 
