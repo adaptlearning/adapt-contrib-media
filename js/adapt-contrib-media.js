@@ -115,7 +115,11 @@ define([
 
             var successCallback = this.onPlayerReady.bind(this);
 
-            modelOptions.success = function(mediaElement, domObject) {_.delay(function(){successCallback(mediaElement, domObject)}, 100);};
+            modelOptions.success = function(mediaElement, domObject) {
+                _.delay(function() {
+                    successCallback(mediaElement, domObject);
+                }, 100);
+            };
 
             if (this.model.get('_useClosedCaptions')) {
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
