@@ -116,9 +116,7 @@ define([
             var successCallback = this.onPlayerReady.bind(this);
 
             modelOptions.success = function(mediaElement, domObject) {
-                _.delay(function() {
-                    successCallback(mediaElement, domObject);
-                }, 100);
+                _.delay(successCallback, 100, mediaElement, domObject);
             };
 
             if (this.model.get('_useClosedCaptions')) {
