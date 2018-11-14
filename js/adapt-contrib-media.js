@@ -113,11 +113,7 @@ define([
                 Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player it will invoke the success callback prior to performing one last call to setPlayerSize. This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that we don't invoke setReadyStatus until the player is definitely finished rendering.
             */
 
-            var successCallback = this.onPlayerReady.bind(this);
-
-            modelOptions.success = function(mediaElement, domObject) {
-                _.delay(successCallback, 100, mediaElement, domObject);
-            };
+            modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
 
             if (this.model.get('_useClosedCaptions')) {
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
