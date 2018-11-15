@@ -109,7 +109,11 @@ define([
                 }
             }
 
-            modelOptions.success = _.bind(this.onPlayerReady, this);
+            /*
+                Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player it will invoke the success callback prior to performing one last call to setPlayerSize. This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that we don't invoke setReadyStatus until the player is definitely finished rendering.
+            */
+
+            modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
 
             if (this.model.get('_useClosedCaptions')) {
                 modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
@@ -124,7 +128,7 @@ define([
 
             this.addMediaTypeClass();
 
-            this.addThirdPartyFixes(modelOptions, _.bind(function createPlayer() {
+            this.addThirdPartyFixes(modelOptions, function createPlayer() {
                 // create the player
                 this.$('audio, video').mediaelementplayer(modelOptions);
                 this.cleanUpPlayer();
@@ -136,10 +140,9 @@ define([
                     }
                 } catch (e) {
                     console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
-                } finally {
                     this.setReadyStatus();
                 }
-            }, this));
+            }.bind(this));
         },
 
         addMediaTypeClass: function() {
@@ -185,7 +188,7 @@ define([
             this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
 
             if (this.completionEvent === 'inview') {
-                this.$('.component-widget').on('inview', _.bind(this.inview, this));
+                this.$('.component-widget').on('inview', this.inview.bind(this));
             }
 
             // wrapper to check if preventForwardScrubbing is turned on.
@@ -263,8 +266,8 @@ define([
             // stop the player dealing with this, we'll do it ourselves
             player.options.clickToPlayPause = false;
 
-            this.onOverlayClick = _.bind(this.onOverlayClick, this);
-            this.onMediaElementClick = _.bind(this.onMediaElementClick, this);
+            this.onOverlayClick = this.onOverlayClick.bind(this);
+            this.onMediaElementClick = this.onMediaElementClick.bind(this);
 
             // play on 'big button' click
             this.$('.mejs-overlay-button').on("click", this.onOverlayClick);
