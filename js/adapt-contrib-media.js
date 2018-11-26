@@ -185,10 +185,10 @@ define([
         },
 
         setupEventListeners: function() {
-            this.completionEvent = (!this.model.get('_setCompletionOn')) ? 'play' : this.model.get('_setCompletionOn');
+            this.completionEvent = (this.model.get('_setCompletionOn') || 'play');
 
             if (this.completionEvent === 'inview') {
-                this.$('.component-widget').on('inview', this.inview.bind(this));
+                this.setupInviewCompletion('.component-widget');
             }
 
             // wrapper to check if preventForwardScrubbing is turned on.
@@ -308,24 +308,6 @@ define([
             // If reset is enabled set defaults
             if (isResetOnRevisit) {
                 this.model.reset(isResetOnRevisit);
-            }
-        },
-
-        inview: function(event, visible, visiblePartX, visiblePartY) {
-            if (visible) {
-                if (visiblePartY === 'top') {
-                    this._isVisibleTop = true;
-                } else if (visiblePartY === 'bottom') {
-                    this._isVisibleBottom = true;
-                } else {
-                    this._isVisibleTop = true;
-                    this._isVisibleBottom = true;
-                }
-
-                if (this._isVisibleTop && this._isVisibleBottom) {
-                    this.$('.component-inner').off('inview');
-                    this.setCompletionStatus();
-                }
             }
         },
 
@@ -452,8 +434,6 @@ define([
 
     });
 
-    Adapt.register('media', Media);
-
-    return Media;
+    return Adapt.register('media', Media);
 
 });
