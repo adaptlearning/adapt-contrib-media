@@ -124,11 +124,14 @@ define([
             This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that
             we don't invoke setReadyStatus until the player is definitely finished rendering.
             */
-
             modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
 
             if (this.model.get('_useClosedCaptions')) {
-                modelOptions.startLanguage = this.model.get('_startLanguage') === undefined ? 'en' : this.model.get('_startLanguage');
+                var startLanguage = this.model.get('_startLanguage') || 'en';
+                if (!Adapt.offlineStorage.get('captions')) {
+                    Adapt.offlineStorage.set('captions', startLanguage);
+                }
+                modelOptions.startLanguage = this.checkForSupportedCCLanguage(Adapt.offlineStorage.get('captions'));
             }
 
             if (modelOptions.alwaysShowControls === undefined) {
@@ -217,6 +220,64 @@ define([
             	'pause': this.onMediaElementPause,
             	'ended': this.onMediaElementEnded
             });
+
+            // occasionally the mejs code triggers a click of the captions language
+            // selector during setup, this slight delay ensures we skip that
+            _.delay(this.listenForCaptionsChange.bind(this), 250);
+        },
+
+        /**
+         * Sets up the component to detect when the user has changed the captions so that it can store the user's
+         * choice in offlineStorage and notify other media components on the same page of the change
+         * Also sets the component up to listen for this event from other media components on the same page
+         */
+        listenForCaptionsChange: function() {
+            if(!this.model.get('_useClosedCaptions')) return;
+
+            var selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
+                '.mejs-captions-button button' :
+                '.mejs-captions-selector';
+
+            this.$(selector).on('click.mediaCaptionsChange', _.debounce(function() {
+                var srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
+                Adapt.offlineStorage.set('captions', srclang);
+                Adapt.trigger('media:captionsChange', this, srclang);
+            }.bind(this), 250)); // needs debouncing because the click event fires twice
+
+            this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
+        },
+
+        /**
+         * Handles updating the captions in this instance when learner changes captions in another
+         * media component on the same page
+         * @param {Backbone.View} view The view instance that triggered the event
+         * @param {string} lang The captions language the learner chose in the other media component
+         */
+        onCaptionsChanged: function(view, lang) {
+            if (view && view.cid === this.cid) return; //ignore the event if we triggered it
+
+            lang = this.checkForSupportedCCLanguage(lang);
+
+            this.mediaElement.player.setTrack(lang);
+
+            // because calling player.setTrack doesn't update the cc button's languages popup...
+            var $inputs = this.$('.mejs-captions-selector input');
+            $inputs.filter(':checked').prop('checked', false);
+            $inputs.filter('[value="' + lang + '"]').prop('checked', true);
+        },
+
+        /**
+         * When the learner selects a captions language in another media component, that language may not be available
+         * in this instance, in which case default to the `_startLanguage` if that's set - or "none" if it's not
+         * @param {string} lang The language we're being asked to switch to e.g. "de"
+         * @return {string} The language we're actually going to switch to - or "none" if there's no good match
+         */
+        checkForSupportedCCLanguage: function (lang) {
+            if (!lang || lang === 'none') return 'none';
+
+            if(_.findWhere(this.model.get('_media').cc, {srclang: lang})) return lang;
+
+            return this.model.get('_startLanguage') || 'none';
         },
 
         onMediaElementPlay: function(event) {
@@ -317,7 +378,6 @@ define([
         checkIfResetOnRevisit: function() {
             var isResetOnRevisit = this.model.get('_isResetOnRevisit');
 
-            // If reset is enabled set defaults
             if (isResetOnRevisit) {
                 this.model.reset(isResetOnRevisit);
             }
@@ -326,6 +386,13 @@ define([
         remove: function() {
             this.$('.mejs-overlay-button').off("click", this.onOverlayClick);
             this.$('.mejs-mediaelement').off("click", this.onMediaElementClick);
+
+            if(this.model.get('_useClosedCaptions')) {
+                var selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
+                '.mejs-captions-button button' :
+                '.mejs-captions-selector';
+                this.$(selector).off('click.mediaCaptionsChange');
+            }
 
             var modelOptions = this.model.get('_playerOptions');
             delete modelOptions.success;
