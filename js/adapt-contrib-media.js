@@ -32,9 +32,9 @@ define([
      * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
      * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
      * the removal of the default shortcut keys.
-     * 
-     * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One 
-     * is a duration integer the other is the player object. The default functions error on slider key press and so break 
+     *
+     * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One
+     * is a duration integer the other is the player object. The default functions error on slider key press and so break
      * accessibility. Below is a correction.
      */
     _.extend(mejs.MepDefaults, {
@@ -55,6 +55,15 @@ define([
             "click .media-inline-transcript-button": "onToggleInlineTranscript",
             "click .media-external-transcript-button": "onExternalTranscriptClicked",
             "click .js-skip-to-transcript": "onSkipToTranscript"
+        },
+
+        className: function() {
+            var classes = ComponentView.prototype.className.call(this);
+            var playerOptions = this.model.get('_playerOptions');
+            if (playerOptions && playerOptions.toggleCaptionsButtonWhenOnlyOne) {
+                classes += " toggle-captions";
+            }
+            return classes;
         },
 
         preRender: function() {
@@ -110,7 +119,10 @@ define([
             }
 
             /*
-                Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player it will invoke the success callback prior to performing one last call to setPlayerSize. This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that we don't invoke setReadyStatus until the player is definitely finished rendering.
+            Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player
+            it will invoke the success callback prior to performing one last call to setPlayerSize.
+            This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that
+            we don't invoke setReadyStatus until the player is definitely finished rendering.
             */
 
             modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
