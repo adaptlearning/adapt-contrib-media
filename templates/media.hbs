@@ -28,7 +28,7 @@
           {{/if}}
           {{#if _useClosedCaptions}}
               {{#each _media.cc}}
-                  <track kind="subtitles" src="{{src}}" type="text/vtt" srclang="{{srclang}}" />
+                <track kind="subtitles" src="{{src}}" type="text/vtt" srclang="{{srclang}}" />
               {{/each}}
           {{/if}}
         </video>
