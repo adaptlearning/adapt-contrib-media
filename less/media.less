@@ -153,6 +153,14 @@
         -webkit-clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px); // required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
     }
     // ==============================
+
+    // Bug fix for CC button language selector still appearing when toggleCaptionsButtonWhenOnlyOne: true
+    // see https://github.com/adaptlearning/adapt_framework/issues/1883
+    // ==============================
+    &.toggle-captions .mejs-captions-selector {
+        display: none !important;
+    }
+    // ==============================
 }
 
 
