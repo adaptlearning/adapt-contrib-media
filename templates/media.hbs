@@ -1,10 +1,12 @@
 {{import_globals}}
-<div class="media-inner component-inner">
+<div class="component__inner media__inner">
+
   {{> component this}}
+
   {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
   <button class="aria-label js-skip-to-transcript" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
   {{/any}}
-  <div class="media-widget component-widget a11y-ignore-aria">
+  <div class="component__widget media__widget a11y-ignore-aria">
 
   {{#if _media.mp3}}
     <audio src="{{_media.mp3}}" type="audio/mp3" style="width: 100%; height: 100%;"/>
@@ -37,12 +39,12 @@
   </div>
 
   {{#if _transcript}}
-  <div class="media-transcript-container">
+  <div class="media__transcript-container">
 
-    <div class="media-transcript-button-container">
+    <div class="media__transcript-btn-container">
       {{#if _transcript._inlineTranscript}}
-        <button class="media-inline-transcript-button button" aria-expanded="false">
-          <div class="transcript-text-container">
+        <button class="btn-text media__inline-transcript-btn js-media-inline-transcript-toggle" aria-expanded="false">
+          <div class="media__transcript-text-container">
             {{#if _transcript.inlineTranscriptButton}}
               {{_transcript.inlineTranscriptButton}}
             {{else}}
@@ -52,8 +54,8 @@
         </button>
       {{/if}}
       {{#if _transcript._externalTranscript}}
-        <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button">
-          <div class="transcript-text-container">
+        <button onclick="window.open('{{_transcript.transcriptLink}}')" class="btn-text media__external-transcript-btn js-media-external-transcript-click">
+          <div class="media__transcript-text-container">
             {{#if _transcript.transcriptLinkButton}}
               {{_transcript.transcriptLinkButton}}
             {{else}}
@@ -65,8 +67,8 @@
     </div>
 
     {{#if _transcript._inlineTranscript}}
-      <div class="media-inline-transcript-body-container" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
-        <div class="media-inline-transcript-body">
+      <div class="media__inline-transcript-body-container" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
+        <div class="media__inline-transcript-body">
         {{{compile _transcript.inlineTranscriptBody}}}
         </div>
       </div>

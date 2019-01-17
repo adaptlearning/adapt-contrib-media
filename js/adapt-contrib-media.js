@@ -52,8 +52,8 @@ define([
   var Media = ComponentView.extend({
 
     events: {
-      "click .media-inline-transcript-button": "onToggleInlineTranscript",
-      "click .media-external-transcript-button": "onExternalTranscriptClicked",
+      "click .js-media-inline-transcript-toggle": "onToggleInlineTranscript",
+      "click .js-media-external-transcript-click": "onExternalTranscriptClicked",
       "click .js-skip-to-transcript": "onSkipToTranscript"
     },
 
@@ -151,7 +151,7 @@ define([
         // We're streaming - set ready now, as success won't be called above
         try {
           if (this.model.get('_media').source) {
-            this.$('.media-widget').addClass('external-source');
+            this.$('.media__widget').addClass('external-source');
           }
         } catch (e) {
           console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
@@ -164,7 +164,7 @@ define([
       var media = this.model.get("_media");
       if (media && media.type) {
         var typeClass = media.type.replace(/\//, "-");
-        this.$(".media-widget").addClass(typeClass);
+        this.$(".media__widget").addClass(typeClass);
       }
     },
 
@@ -194,7 +194,7 @@ define([
     },
 
       cleanUpPlayer: function() {
-        this.$('.media-widget').children('.mejs-offscreen').remove();
+        this.$('.media__widget').children('.mejs-offscreen').remove();
         this.$('[role=application]').removeAttr('role tabindex')
         this.$('[aria-controls]').removeAttr('aria-controls');
       },
@@ -203,7 +203,7 @@ define([
         this.completionEvent = (this.model.get('_setCompletionOn') || 'play');
 
         if (this.completionEvent === 'inview') {
-          this.setupInviewCompletion('.component-widget');
+          this.setupInviewCompletion('.component__widget');
         }
 
         // wrapper to check if preventForwardScrubbing is turned on.
@@ -432,7 +432,7 @@ define([
 
       onDeviceChanged: function() {
         if (this.model.get('_media').source) {
-          this.$('.mejs-container').width(this.$('.component-widget').width());
+          this.$('.mejs-container').width(this.$('.component__widget').width());
         }
       },
 
@@ -468,18 +468,18 @@ define([
       },
 
       onScreenSizeChanged: function() {
-        this.$('audio, video').width(this.$('.component-widget').width());
+        this.$('audio, video').width(this.$('.component__widget').width());
       },
 
       onSkipToTranscript: function() {
-        this.$('.media-transcript-container button').a11y_focus();
+        this.$('.media__transcript-container button').a11y_focus();
       },
 
       onToggleInlineTranscript: function(event) {
         if (event) event.preventDefault();
-        var $transcriptBodyContainer = this.$(".media-inline-transcript-body-container");
-        var $button = this.$(".media-inline-transcript-button");
-        var $buttonText = this.$(".media-inline-transcript-button .transcript-text-container");
+        var $transcriptBodyContainer = this.$(".media__inline-transcript-body-container");
+        var $button = this.$(".media__inline-transcript-btn");
+        var $buttonText = this.$(".media__inline-transcript-btn .media__transcript-text-container");
 
         if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
           $transcriptBodyContainer.stop(true,true).slideUp(function() {
