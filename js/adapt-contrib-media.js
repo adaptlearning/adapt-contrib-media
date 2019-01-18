@@ -1,9 +1,10 @@
 define([
   'core/js/adapt',
   'core/js/views/componentView',
+  'core/js/models/componentModel',
   'libraries/mediaelement-and-player',
   'libraries/mediaelement-fullscreen-hook'
-], function(Adapt, ComponentView) {
+], function(Adapt, ComponentView, ComponentModel) {
 
   var froogaloopAdded = false;
 
@@ -49,7 +50,7 @@ define([
     }
   });
 
-  var Media = ComponentView.extend({
+  var MediaView = ComponentView.extend({
 
     events: {
       "click .js-media-inline-transcript-toggle": "onToggleInlineTranscript",
@@ -195,7 +196,7 @@ define([
 
       cleanUpPlayer: function() {
         this.$('.media__widget').children('.mejs-offscreen').remove();
-        this.$('[role=application]').removeAttr('role tabindex')
+        this.$('[role=application]').removeAttr('role tabindex');
         this.$('[aria-controls]').removeAttr('aria-controls');
       },
 
@@ -510,6 +511,9 @@ define([
 
   });
 
-  return Adapt.register('media', Media);
+  return Adapt.register('media', {
+    model: ComponentModel.extend({}),// create a new class in the inheritance chain so it can be extended per component type if necessary later
+    view: MediaView
+  });
 
 });
