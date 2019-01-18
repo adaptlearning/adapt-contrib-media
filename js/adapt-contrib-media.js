@@ -472,14 +472,14 @@ define([
       },
 
       onSkipToTranscript: function() {
-        this.$('.media__transcript-container button').a11y_focus();
+        this.$('.media__transcript-btn').a11y_focus();
       },
 
       onToggleInlineTranscript: function(event) {
         if (event) event.preventDefault();
-        var $transcriptBodyContainer = this.$(".media__inline-transcript-body-container");
-        var $button = this.$(".media__inline-transcript-btn");
-        var $buttonText = this.$(".media__inline-transcript-btn .media__transcript-text-container");
+        var $transcriptBodyContainer = this.$(".media__transcript-body-inline");
+        var $button = this.$(".media__transcript-btn-inline");
+        var $buttonText = this.$(".media__transcript-btn-inline .media__transcript-btn-text");
 
         if ($transcriptBodyContainer.hasClass("inline-transcript-open")) {
           $transcriptBodyContainer.stop(true,true).slideUp(function() {

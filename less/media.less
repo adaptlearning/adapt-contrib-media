@@ -1,5 +1,14 @@
 .media {
+  // --------------------------------------------------
+  // Transcript
+  // --------------------------------------------------
+  &__transcript-body-inline {
+    display: none;
+  }
 
+  // --------------------------------------------------
+  // Cross browser bug fixes
+  // --------------------------------------------------
   .me-plugin {
     position: relative;
     width: 100%;
@@ -15,7 +24,11 @@
       height: 100% !important;
     }
   }
+  // --------------------------------------------------
 
+  // --------------------------------------------------
+  // Vimeo fixes
+  // --------------------------------------------------
   &__widget.video-vimeo {
     .mejs-controls {
       display: none !important;
@@ -26,6 +39,7 @@
       display: none !important;
     }
   }
+  // --------------------------------------------------
 
   .external-source {
     .mejs-container {
@@ -47,13 +61,6 @@
   }
 
   // --------------------------------------------------
-  // Transcript
-  // --------------------------------------------------
-  &__inline-transcript-body-container {
-    display: none;
-  }
-
-  // --------------------------------------------------
   // Overrides for mep.less
   // --------------------------------------------------
   .mejs-container {
@@ -61,11 +68,11 @@
     // Having a fixed pixel size prevents iOS from changing orientation without scaling.
     width: 100% !important;
     background-color: transparent;
+  }
 
-    .mejs-controls .mejs-time {
-      padding-right: 0;
-      padding-left: 0;
-    }
+  .mejs-container .mejs-controls .mejs-time {
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .mejs-overlay {
@@ -151,12 +158,4 @@
     display: none !important;
   }
   // --------------------------------------------------
-}
-
-// --------------------------------------------------
-// Predefined component padding class
-// For use when no title or body or instruction is available
-// --------------------------------------------------
-.media-top-padding {
-  padding-top: 4em;
 }
