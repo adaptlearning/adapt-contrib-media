@@ -282,6 +282,7 @@ define([
         },
 
         onMediaElementPlay: function(event) {
+            this.triggerGlobalEvent('play');
 
             Adapt.trigger("media:stop", this);
 
@@ -296,11 +297,15 @@ define([
         },
 
         onMediaElementPause: function(event) {
-            this.model.set('_isMediaPlaying', false);
+          this.triggerGlobalEvent('pause');
+
+          this.model.set('_isMediaPlaying', false);
         },
 
         onMediaElementEnded: function(event) {
-            this.model.set('_isMediaEnded', true);
+          this.triggerGlobalEvent('ended');
+
+          this.model.set('_isMediaEnded', true);
 
             if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
@@ -510,6 +515,12 @@ define([
             if (this.model.get('_transcript')._setCompletionOnView !== false) {
                 this.setCompletionStatus();
             }
+        },
+
+        triggerGlobalEvent: function(eventType) {
+            var mediaType = this.mediaElement.tagName.toLowerCase();
+            var event = [mediaType, eventType].join(':');
+            Adapt.trigger(event, this.mediaElement.src, this.mediaElement.pluginType);
         }
 
     });
