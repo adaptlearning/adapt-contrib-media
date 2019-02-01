@@ -518,9 +518,12 @@ define([
         },
 
         triggerGlobalEvent: function(eventType) {
-            var mediaType = this.mediaElement.tagName.toLowerCase();
-            var event = [mediaType, eventType].join(':');
-            Adapt.trigger(event, this.mediaElement.src, this.mediaElement.pluginType);
+            Adapt.trigger('media', {
+              isVideo: this.mediaElement.player.isVideo,
+              type: eventType,
+              src: this.mediaElement.src,
+              platform: this.mediaElement.pluginType
+            });
         }
 
     });
