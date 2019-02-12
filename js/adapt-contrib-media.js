@@ -297,15 +297,15 @@ define([
         },
 
         onMediaElementPause: function(event) {
-          this.triggerGlobalEvent('pause');
+            this.triggerGlobalEvent('pause');
 
-          this.model.set('_isMediaPlaying', false);
+            this.model.set('_isMediaPlaying', false);
         },
 
         onMediaElementEnded: function(event) {
-          this.triggerGlobalEvent('ended');
+            this.triggerGlobalEvent('ended');
 
-          this.model.set('_isMediaEnded', true);
+            this.model.set('_isMediaEnded', true);
 
             if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
@@ -519,10 +519,10 @@ define([
 
         triggerGlobalEvent: function(eventType) {
             Adapt.trigger('media', {
-              isVideo: this.mediaElement.player.isVideo,
-              type: eventType,
-              src: this.mediaElement.src,
-              platform: this.mediaElement.pluginType
+                isVideo: this.mediaElement.player.isVideo,
+                type: eventType,
+                src: this.mediaElement.src,
+                platform: this.mediaElement.pluginType
             });
         }
 
