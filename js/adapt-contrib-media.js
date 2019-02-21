@@ -282,7 +282,7 @@ define([
         },
 
         onMediaElementPlay: function(event) {
-            this.triggerGlobalEvent('play');
+            this.queueGlobalEvent('play');
 
             Adapt.trigger("media:stop", this);
 
@@ -297,13 +297,13 @@ define([
         },
 
         onMediaElementPause: function(event) {
-            this.triggerGlobalEvent('pause');
+            this.queueGlobalEvent('pause');
 
             this.model.set('_isMediaPlaying', false);
         },
 
         onMediaElementEnded: function(event) {
-            this.triggerGlobalEvent('ended');
+            this.queueGlobalEvent('ended');
 
             this.model.set('_isMediaEnded', true);
 
@@ -514,6 +514,36 @@ define([
         onExternalTranscriptClicked: function(event) {
             if (this.model.get('_transcript')._setCompletionOnView !== false) {
                 this.setCompletionStatus();
+            }
+        },
+
+        /**
+         * Queue firing a media event to prevent simultaneous events firing, and provide a better indication of how the
+         * media  player is behaving
+         * @param {string} eventType
+         */
+        queueGlobalEvent: function(eventType) {
+            var t = Date.now();
+            var lastEvent = this.lastEvent || { time: 0 };
+            var timeSinceLastEvent = t - lastEvent.time;
+            var debounceTime = 500;
+
+            this.lastEvent = {
+                time: t,
+                type: eventType
+            };
+
+            // Clear any existing timeouts
+            clearTimeout(this.eventTimeout);
+
+            // Always trigger 'ended' events
+            if (eventType === 'ended') {
+                return this.triggerGlobalEvent(eventType);
+            }
+
+            // Fire the event after a delay, only if another event has not just been fired
+            if (timeSinceLastEvent > debounceTime) {
+                this.eventTimeout = setTimeout(this.triggerGlobalEvent.bind(this, eventType), debounceTime);
             }
         },
 
