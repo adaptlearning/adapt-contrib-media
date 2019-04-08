@@ -219,7 +219,8 @@ define([
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
-            	'ended': this.onMediaElementEnded
+                'ended': this.onMediaElementEnded,
+                'inview': this.onMediaElementInview
             });
 
             // occasionally the mejs code triggers a click of the captions language
@@ -310,6 +311,11 @@ define([
             if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
             }
+        },
+
+        onMediaElementInview: function(event, isInView) {
+            if (isInView || event.currentTarget.paused) return;
+            event.currentTarget.pause();
         },
 
         onMediaElementSeeking: function(event) {
@@ -428,7 +434,8 @@ define([
                     'pause': this.onMediaElementPause,
                     'ended': this.onMediaElementEnded,
                     'seeking': this.onMediaElementSeeking,
-                    'timeupdate': this.onMediaElementTimeUpdate
+                    'timeupdate': this.onMediaElementTimeUpdate,
+                    'inview': this.onMediaElementInview
                 });
 
                 this.mediaElement.src = "";
