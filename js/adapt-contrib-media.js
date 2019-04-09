@@ -217,8 +217,8 @@ define([
 
             // handle other completion events in the event Listeners
             $(this.mediaElement).on({
-            	'play': this.onMediaElementPlay,
-            	'pause': this.onMediaElementPause,
+                'play': this.onMediaElementPlay,
+                'pause': this.onMediaElementPause,
                 'ended': this.onMediaElementEnded
             });
 
@@ -318,8 +318,7 @@ define([
         },
 
         onMediaElementInview: function(event, isInView) {
-            if (isInView || event.currentTarget.paused) return;
-            event.currentTarget.pause();
+            if (!isInView && !event.currentTarget.paused) event.currentTarget.pause();
         },
 
         onMediaElementSeeking: function(event) {
