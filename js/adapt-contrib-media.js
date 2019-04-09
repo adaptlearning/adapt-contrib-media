@@ -219,9 +219,11 @@ define([
             $(this.mediaElement).on({
             	'play': this.onMediaElementPlay,
             	'pause': this.onMediaElementPause,
-                'ended': this.onMediaElementEnded,
-                'inview': this.onMediaElementInview
+                'ended': this.onMediaElementEnded
             });
+
+            var pauseWhenNotInview = this.model.get('_pauseWhenNotInview');
+            if (pauseWhenNotInview) $(this.mediaElement).on('inview', this.onMediaElementInview);
 
             // occasionally the mejs code triggers a click of the captions language
             // selector during setup, this slight delay ensures we skip that
