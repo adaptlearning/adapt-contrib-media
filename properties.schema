@@ -190,7 +190,7 @@
       "inputType": "Checkbox",
       "validators": []
     },
-    "_pauseWhenNotInview": {
+    "_pauseWhenOffScreen": {
       "type": "boolean",
       "required": false,
       "default": false,

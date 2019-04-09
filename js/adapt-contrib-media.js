@@ -222,9 +222,6 @@ define([
                 'ended': this.onMediaElementEnded
             });
 
-            var pauseWhenNotInview = this.model.get('_pauseWhenNotInview');
-            if (pauseWhenNotInview) $(this.mediaElement).on('inview', this.onMediaElementInview);
-
             // occasionally the mejs code triggers a click of the captions language
             // selector during setup, this slight delay ensures we skip that
             _.delay(this.listenForCaptionsChange.bind(this), 250);
@@ -289,6 +286,9 @@ define([
 
             Adapt.trigger("media:stop", this);
 
+            var pauseWhenOffScreen = this.model.get('_pauseWhenOffScreen');
+            if (pauseWhenOffScreen) $(this.mediaElement).on('inview', this.onMediaElementInview);
+
             this.model.set({
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
@@ -301,6 +301,8 @@ define([
 
         onMediaElementPause: function(event) {
             this.queueGlobalEvent('pause');
+
+            $(this.mediaElement).off('inview', this.onMediaElementInview);
 
             this.model.set('_isMediaPlaying', false);
         },

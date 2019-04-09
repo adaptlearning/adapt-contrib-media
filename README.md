@@ -50,7 +50,7 @@ guide the learner’s interaction with the component.
 
 **_allowFullScreen** (boolean): Determines whether fullscreen mode is available or not. Note that changing this setting has no effect in Internet Explorer 9 as this browser does not support fullscreen mode for HTML video.
 
-**_pauseWhenNotInview**  (boolean): If set to true, pause playback when video is no longer in view. The default is `false`.
+**_pauseWhenOffScreen**  (boolean): If set to true, pause playback when video is no longer in view. The default is `false`.
 
 **_playsinline** (boolean): If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.    
 
