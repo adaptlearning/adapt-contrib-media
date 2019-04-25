@@ -286,8 +286,7 @@ define([
 
             Adapt.trigger("media:stop", this);
 
-            var pauseWhenOffScreen = this.model.get('_pauseWhenOffScreen');
-            if (pauseWhenOffScreen) $(this.mediaElement).on('inview', this.onMediaElementInview);
+            if (this.model.get('_pauseWhenOffScreen')) $(this.mediaElement).on('inview', this.onMediaElementInview);
 
             this.model.set({
                 '_isMediaPlaying': true,
