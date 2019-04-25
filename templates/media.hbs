@@ -2,7 +2,7 @@
 <div class="media-inner component-inner">
     {{> component this}}
     {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
-        <button class="aria-label js-skip-to-transcript" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
+        <button class="aria-label js-skip-to-transcript" tabindex="-1" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
     {{/any}}
     <div class="media-widget component-widget a11y-ignore-aria">
     {{#if _media.mp3}}
