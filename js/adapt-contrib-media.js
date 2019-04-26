@@ -217,9 +217,9 @@ define([
 
             // handle other completion events in the event Listeners
             $(this.mediaElement).on({
-            	'play': this.onMediaElementPlay,
-            	'pause': this.onMediaElementPause,
-            	'ended': this.onMediaElementEnded
+                'play': this.onMediaElementPlay,
+                'pause': this.onMediaElementPause,
+                'ended': this.onMediaElementEnded
             });
 
             // occasionally the mejs code triggers a click of the captions language
@@ -286,6 +286,8 @@ define([
 
             Adapt.trigger("media:stop", this);
 
+            if (this.model.get('_pauseWhenOffScreen')) $(this.mediaElement).on('inview', this.onMediaElementInview);
+
             this.model.set({
                 '_isMediaPlaying': true,
                 '_isMediaEnded': false
@@ -299,6 +301,8 @@ define([
         onMediaElementPause: function(event) {
             this.queueGlobalEvent('pause');
 
+            $(this.mediaElement).off('inview', this.onMediaElementInview);
+
             this.model.set('_isMediaPlaying', false);
         },
 
@@ -310,6 +314,10 @@ define([
             if (this.completionEvent === 'ended') {
                 this.setCompletionStatus();
             }
+        },
+
+        onMediaElementInview: function(event, isInView) {
+            if (!isInView && !event.currentTarget.paused) event.currentTarget.pause();
         },
 
         onMediaElementSeeking: function(event) {
@@ -428,7 +436,8 @@ define([
                     'pause': this.onMediaElementPause,
                     'ended': this.onMediaElementEnded,
                     'seeking': this.onMediaElementSeeking,
-                    'timeupdate': this.onMediaElementTimeUpdate
+                    'timeupdate': this.onMediaElementTimeUpdate,
+                    'inview': this.onMediaElementInview
                 });
 
                 this.mediaElement.src = "";
