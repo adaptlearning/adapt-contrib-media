@@ -149,23 +149,22 @@ define([
                 this.$('audio, video').mediaelementplayer(modelOptions);
                 this.cleanUpPlayer();
 
-
                 var _media = this.model.get('_media');
-                // Check if _media property exists - set ready now, as success won't be called
+                // if there's no _media property, set ready now, as the success callback will never be called
                 if (!_media) {
-                    console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
+                    Adapt.log.warn("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
                     this.setReadyStatus();
-                } else {
-                    // Check if we're streaming
-                    if (_media.source) {
-                        this.$('.media-widget').addClass('external-source');
-                    } else {
-                        // If no media is selected - set ready now, as success won't be called
-                        if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm) {
-                            console.log("ERROR! No media is selected in components.json for component " + this.model.get('_id'));
-                            this.setReadyStatus();
-                        }
-                    }
+                    return;
+                }
+                // Check if we're streaming
+                if (_media.source) {
+                    this.$('.media-widget').addClass('external-source');
+                    return;
+                }
+                // if no media is selected - set ready now, as success won't be called
+                if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm) {
+                    Adapt.log.warn("ERROR! No media is selected in components.json for component " + this.model.get('_id'));
+                    this.setReadyStatus();
                 }
             }.bind(this));
         },
