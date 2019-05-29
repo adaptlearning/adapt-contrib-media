@@ -190,6 +190,14 @@
       "inputType": "Checkbox",
       "validators": []
     },
+    "_pauseWhenOffScreen": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "title": "Pause playback when video is no longer in view.",
+      "inputType": "Checkbox",
+      "validators": []
+    },
     "_playsinline": {
       "type": "boolean",
       "required": false,
