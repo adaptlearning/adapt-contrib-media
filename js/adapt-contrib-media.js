@@ -490,7 +490,11 @@ define([
       },
 
       onSkipToTranscript: function() {
-        this.$('.media__transcript-btn').a11y_focus();
+        // need slight delay before focussing button to make it work when JAWS is running
+        // see https://github.com/adaptlearning/adapt_framework/issues/2427
+        _.delay(function() {
+          this.$('.media__transcript-btn').a11y_focus();
+        }.bind(this), 250);
       },
 
       onToggleInlineTranscript: function(event) {
