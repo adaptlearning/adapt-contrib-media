@@ -50,6 +50,8 @@ guide the learner’s interaction with the component.
 
 **_allowFullScreen** (boolean): Determines whether fullscreen mode is available or not. Note that changing this setting has no effect in Internet Explorer 9 as this browser does not support fullscreen mode for HTML video.
 
+**_pauseWhenOffScreen**  (boolean): If set to true, pause playback when video is no longer in view. The default is `false`.
+
 **_playsinline** (boolean): If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.    
 
 **_preventForwardScrubbing** (boolean): If enabled, will attempt to prevent users from skipping ahead in media (audio/video) unless '_isComplete' is marked as 'true'.  Users can skip backwards, and back up to the maxViewed time tracked by updateTime. Note: This does not apply to full screen iOS users and IE users may be able to circumvent this rule by using video play speed options in browser.  
@@ -161,9 +163,9 @@ Edge | No known issues.
 IE11 | No known issues.
 
 ----------------------------
-**Version number:**  3.0.2  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
-**Framework versions:** 3+
+**Version number:**  4.0.1  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
+**Framework versions:** 3.3+
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)  
 **Accessibility support:** WAI AA   
 **RTL support:** yes  
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, IE Mobile 11, Safari 10+11 for macOS+iOS, Opera   
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, IE Mobile 11, Safari 11+12 for macOS+iOS, Opera   
