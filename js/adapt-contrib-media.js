@@ -149,14 +149,16 @@ define([
         this.$('audio, video').mediaelementplayer(modelOptions);
         this.cleanUpPlayer();
 
-        // We're streaming - set ready now, as success won't be called above
-        try {
-          if (this.model.get('_media').source) {
-            this.$('.media__widget').addClass('external-source');
-          }
-        } catch (e) {
-          console.log("ERROR! No _media property found in components.json for component " + this.model.get('_id'));
+        var _media = this.model.get('_media');
+        // if no media is selected - set ready now, as success won't be called
+        if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
+          Adapt.log.warn("ERROR! No media is selected in components.json for component " + this.model.get('_id'));
           this.setReadyStatus();
+          return;
+        }
+        // Check if we're streaming
+        if (_media.source) {
+          this.$('.media-widget').addClass('external-source');
         }
       }.bind(this));
     },
@@ -467,6 +469,7 @@ define([
         }
 
         this.addThirdPartyAfterFixes();
+        this.cleanUpPlayerAfter();
 
         if(this.model.has('_startVolume')) {
           // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
@@ -483,6 +486,10 @@ define([
         case "video/vimeo":
           this.$(".mejs-container").attr("tabindex", 0);
         }
+      },
+
+      cleanUpPlayerAfter: function() {
+        this.$("[aria-valuemax='NaN']").attr("aria-valuemax", 0);
       },
 
       onScreenSizeChanged: function() {
