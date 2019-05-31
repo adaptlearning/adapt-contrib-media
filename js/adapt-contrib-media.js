@@ -469,6 +469,7 @@ define([
             }
 
             this.addThirdPartyAfterFixes();
+            this.cleanUpPlayerAfter();
 
             if(this.model.has('_startVolume')) {
                 // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
@@ -485,6 +486,10 @@ define([
             case "video/vimeo":
                 this.$(".mejs-container").attr("tabindex", 0);
             }
+        },
+        
+        cleanUpPlayerAfter: function() {
+            this.$("[aria-valuemax='NaN']").attr("aria-valuemax", 0);
         },
 
         onScreenSizeChanged: function() {
