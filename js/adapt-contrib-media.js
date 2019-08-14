@@ -106,7 +106,7 @@ define([
       var modelOptions = this.model.get('_playerOptions');
 
       if (modelOptions.pluginPath === undefined) modelOptions.pluginPath = 'assets/';
-      if(modelOptions.features === undefined) {
+      if (modelOptions.features === undefined) {
         modelOptions.features = ['playpause','progress','current','duration'];
         if (this.model.get('_useClosedCaptions')) {
           modelOptions.features.unshift('tracks');
@@ -459,9 +459,8 @@ define([
       onPlayerReady: function (mediaElement, domObject) {
         this.mediaElement = mediaElement;
 
-        if (!this.mediaElement.player) {
-          this.mediaElement.player =  mejs.players[this.$('.mejs-container').attr('id')];
-        }
+        var player = this.mediaElement.player;
+        if (!player) player = mejs.players[this.$('.mejs-container').attr('id')];
 
         var hasTouch = mejs.MediaFeatures.hasTouch;
         if (hasTouch) {
@@ -471,9 +470,9 @@ define([
         this.addThirdPartyAfterFixes();
         this.cleanUpPlayerAfter();
 
-        if(this.model.has('_startVolume')) {
+        if (player && this.model.has('_startVolume')) {
           // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
-          this.mediaElement.player.setVolume(parseInt(this.model.get('_startVolume'))/100);
+          player.setVolume(parseInt(this.model.get('_startVolume')) / 100);
         }
 
         this.setReadyStatus();
@@ -568,12 +567,17 @@ define([
       },
 
       triggerGlobalEvent: function(eventType) {
-        Adapt.trigger('media', {
-          isVideo: this.mediaElement.player.isVideo,
+        var player = this.mediaElement.player;
+
+        var eventObj = {
           type: eventType,
           src: this.mediaElement.src,
           platform: this.mediaElement.pluginType
-        });
+        };
+
+        if (player) eventObj.isVideo = player.isVideo;
+
+        Adapt.trigger('media', eventObj);
       }
 
   });
