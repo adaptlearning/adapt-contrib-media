@@ -140,7 +140,7 @@
       "type": "string",
       "required": true,
       "enum": ["inview", "play", "ended"],
-      "default": "inview",
+      "default": "play",
       "title": "Completion trigger",
       "inputType": {"type": "Select", "options":["inview", "play", "ended"]},
       "validators": ["required"],
@@ -173,7 +173,7 @@
       "help": "When enabled, the volume control will appear in the media player. On mobile devices the audio level is controlled the device's physical volume controls."
     },
     "_startVolume": {
-      "type":"string",
+      "type": "string",
       "required":true,
       "enum": ["0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"],
       "default": "80%",
@@ -208,8 +208,8 @@
       "help": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above."
     },
     "_preventForwardScrubbing": {
-      "type":"boolean",
-      "required":false,
+      "type": "boolean",
+      "required": false,
       "default": false,
       "title": "Attempt to prevent media scrubbing?",
       "inputType": "Checkbox",

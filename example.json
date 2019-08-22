@@ -7,16 +7,18 @@
         "_layout": "full",
         "title": "Title of the media component",
         "displayTitle": "Title of the media component",
-        "body": "This is optional body text. Select the play button to start the video.",
-        "instruction": "",
+        "body": "This is optional body text.",
+        "instruction": "Select the play button to start the video.",
+        "_comment": "_setCompletionOn = inview | play | ended",
         "_setCompletionOn": "play",
         "_useClosedCaptions": true,
-        "_startLanguage": "en",
         "_allowFullScreen": true,
         "_pauseWhenOffScreen": false,
+        "_playsinline": false,
+        "_preventForwardScrubbing": false,
+        "_startLanguage": "en",
         "_showVolumeControl": true,
         "_startVolume": "80%",
-        "_playsinline": false,
         "_media": {
             "mp4": "course/assets/big_buck_bunny.mp4",
             "ogv": "course/assets/big_buck_bunny.ogv",
@@ -78,5 +80,8 @@
             "hideCaptionsButtonWhenEmpty": true,
             "toggleCaptionsButtonWhenOnlyOne": false,
             "slidesSelector": ""
+        },
+        "_pageLevelProgress": {
+            "_isEnabled": true
         }
     }
