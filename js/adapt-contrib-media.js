@@ -98,6 +98,11 @@ define([
 
     postRender: function() {
       this.setupPlayer();
+      this.addMejsButtonClass();
+    },
+
+    addMejsButtonClass: function() {
+      this.$('.mejs-overlay-button').addClass('icon');
     },
 
     setupPlayer: function() {
