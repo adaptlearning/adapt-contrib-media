@@ -8,11 +8,6 @@
   "displayName": "Media",
   "description": "Playback of video and audio with a Flash Player fallback for IE8+",
   "main": "/js/adapt-contrib-media.js",
-  "assetFields" : [
-    "_media.ogv",
-    "_media.mp4",
-    "_media.poster"
-  ],
   "keywords": [
     "adapt-plugin",
     "adapt-component"
