@@ -1,16 +1,16 @@
 {
   "name": "adapt-contrib-media",
-  "version": "4.1.1",
-  "framework": ">=3.3",
+  "version": "5.0.0",
+  "framework": ">=5",
   "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
   "issues": "https://github.com/adaptlearning/adapt_framework/issues/new",
-  "displayName": "Media",
   "component": "media",
+  "displayName": "Media",
   "description": "Playback of video and audio with a Flash Player fallback for IE8+",
   "main": "/js/adapt-contrib-media.js",
   "keywords": [
     "adapt-plugin",
     "adapt-component"
   ],
-  "license": "GPLv3"
+  "license": "GPL-3.0"
 }

@@ -1,73 +1,83 @@
 {{import_globals}}
-<div class="media-inner component-inner">
-    {{> component this}}
-    {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
-        <button class="aria-label js-skip-to-transcript" tabindex="-1" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
-    {{/any}}
-    <div class="media-widget component-widget a11y-ignore-aria">
-    {{#if _media.mp3}}
-        {{#if _media.poster}}
-            <img src="{{_media.poster}}" class="audio-poster"/>
-        {{/if}}
-        <audio src="{{_media.mp3}}" type="audio/mp3" style="width: 100%; height: 100%;"/>
+<div class="component__inner media__inner">
+
+  {{> component this}}
+
+  {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
+  <button class="aria-label js-skip-to-transcript" tabindex="-1" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
+  {{/any}}
+
+  <div class="component__widget media__widget a11y-ignore-aria">
+
+  {{#if _media.mp3}}
+    {{#if _media.poster}}
+    <img class="media_poster is-audio" src="{{_media.poster}}">
+    {{/if}}
+    <audio src="{{_media.mp3}}" type="audio/mp3" style="width: 100%; height: 100%;"/>
+  {{else}}
+    {{#if _media.ogg}}
+      <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
     {{else}}
-        {{#if _media.ogg}}
-            <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
+      <video aria-hidden="true" preload="none" width="640" height="360" {{#if _playsinline}}playsinline{{/if}} {{#if_value_equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/if_value_equals}} style="width:100%; height:100%;" controls="controls">
+        {{#if _media.source}}
+          <source src="{{_media.source}}" type="{{_media.type}}"/>
         {{else}}
-            <video aria-hidden="true" preload="none" width="640" height="360" {{#if _playsinline}}playsinline{{/if}} {{#if_value_equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/if_value_equals}} style="width:100%; height:100%;" controls="controls">
-            {{#if _media.source}}
-                <source src="{{_media.source}}" type="{{_media.type}}"/>
-            {{else}}
-                {{#if _media.mp4}}
-                    <source src="{{_media.mp4}}" type="video/mp4"/>
-                {{/if}}
-                {{#if _media.ogv}}
-                    <source src="{{_media.ogv}}" type="video/ogg"/>
-                {{/if}}
-                {{#if _media.webm}}
-                    <source src="{{_media.webm}}" type="video/webm"/>
-                {{/if}}
-            {{/if}}
-            {{#if _useClosedCaptions}}
-                {{#each _media.cc}}
-                    <track kind="subtitles" src="{{src}}" type="text/vtt" srclang="{{srclang}}" />
-                {{/each}}
-            {{/if}}
-            </video>
+          {{#if _media.mp4}}
+            <source src="{{_media.mp4}}" type="video/mp4"/>
+          {{/if}}
+          {{#if _media.ogv}}
+            <source src="{{_media.ogv}}" type="video/ogg"/>
+          {{/if}}
+          {{#if _media.webm}}
+            <source src="{{_media.webm}}" type="video/webm"/>
+          {{/if}}
         {{/if}}
+        {{#if _useClosedCaptions}}
+          {{#each _media.cc}}
+            <track kind="subtitles" src="{{src}}" type="text/vtt" srclang="{{srclang}}" />
+          {{/each}}
+        {{/if}}
+      </video>
     {{/if}}
+  {{/if}}
+  </div>
+
+  {{#if _transcript}}
+  <div class="media__transcript-container">
+
+    {{#if _transcript._inlineTranscript}}
+    <button class="media__transcript-btn media__transcript-btn-inline js-media-inline-transcript-toggle" aria-expanded="false">
+      <span class="media__transcript-btn-text">
+        {{#if _transcript.inlineTranscriptButton}}
+        {{_transcript.inlineTranscriptButton}}
+        {{else}}
+        {{_transcript.transcriptLink}}
+        {{/if}}
+      </span>
+    </button>
+    {{/if}}
+
+    {{#if _transcript._externalTranscript}}
+    <button class="media__transcript-btn media__transcript-btn-external js-media-external-transcript-click" onclick="window.open('{{_transcript.transcriptLink}}')">
+      <span class="media__transcript-btn-text">
+        {{#if _transcript.transcriptLinkButton}}
+        {{_transcript.transcriptLinkButton}}
+        {{else}}
+        {{_transcript.transcriptLink}}
+        {{/if}}
+      </span>
+    </button>
+    {{/if}}
+
+    {{#if _transcript._inlineTranscript}}
+    <div class="media__transcript-body-inline" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
+      <div class="media__transcript-body-inline-inner">
+        {{{compile _transcript.inlineTranscriptBody}}}
+      </div>
     </div>
-    {{#if _transcript}}
-        <div class="media-transcript-container">
-            <div class="media-transcript-button-container">
-            {{#if _transcript._inlineTranscript}}
-                <button class="media-inline-transcript-button button" aria-expanded="false">
-                    <div class="transcript-text-container">
-                    {{#if _transcript.inlineTranscriptButton}}
-                        {{_transcript.inlineTranscriptButton}}
-                    {{else}}
-                        {{_transcript.transcriptLink}}
-                    {{/if}}
-                    </div>
-                </button>
-            {{/if}}
-            {{#if _transcript._externalTranscript}}
-                <button onclick="window.open('{{_transcript.transcriptLink}}')" class="media-external-transcript-button button">
-                    <div class="transcript-text-container">
-                    {{#if _transcript.transcriptLinkButton}}
-                        {{_transcript.transcriptLinkButton}}
-                    {{else}}
-                        {{_transcript.transcriptLink}}
-                    {{/if}}
-                    </div>
-                </button>
-            {{/if}}
-            </div>
-            {{#if _transcript._inlineTranscript}}
-                <div class="media-inline-transcript-body-container" role="region" aria-label="{{#if _transcript.inlineTranscriptButton}}{{_transcript.inlineTranscriptButton}}{{else}}{{_transcript.transcriptLink}}{{/if}}">
-                    <div class="media-inline-transcript-body">{{{compile _transcript.inlineTranscriptBody}}}</div>
-                </div>
-            {{/if}}
-        </div>
     {{/if}}
+
+  </div>
+  {{/if}}
+
 </div>
