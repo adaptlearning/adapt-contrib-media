@@ -6,7 +6,7 @@
   "issues": "https://github.com/adaptlearning/adapt_framework/issues/new",
   "component": "media",
   "displayName": "Media",
-  "description": "Playback of video and audio with a Flash Player fallback for IE8+",
+  "description": "Playback of video and audio with a Flash Player fallback",
   "main": "/js/adapt-contrib-media.js",
   "keywords": [
     "adapt-plugin",
