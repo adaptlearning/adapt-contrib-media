@@ -36,7 +36,7 @@ define([
     * because the fullscreen events and properties are still vendor-prefixed in some browsers...
     */
     getVendorPrefix: function() {
-      var browser = Adapt.device.browser.toLowerCase();
+      var browser = Adapt.device.browser;
 
       if (browser === 'internet explorer') {
         return 'ms';
@@ -46,7 +46,7 @@ define([
         return 'webkit';
       }
 
-      return ''; // Chrome, Opera and Firefox no longer require a vendor prefiix
+      return ''; // Chrome, Opera and Firefox no longer require a vendor prefix
     }
   });
 });
