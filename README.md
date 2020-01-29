@@ -4,9 +4,11 @@
 
 **Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework). 
  
-It is a media playback component for audio and video. It uses HTML5 audio and video for browsers that support it and Flash/Silverlight fallbacks for browsers that don't.  
+This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used. 
 
 The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
+
+Whilst the underlying MediaElement player does have support for playing both YouTube and Vimeo videos, this no longer works very well due to changes in the YouTube/Vimeo player APIs - it is therefore strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) / [Vimeo](https://github.com/adaptlearning/adapt-vimeo) components instead.
 
 [Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.  
 
@@ -127,6 +129,7 @@ The attributes described above focus on the component's use with standard video.
 	"type": "video/youtube"
 },
 ```  
+Note: it is strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) component if you want to use YouTube videos in your Adapt course.
 
 **Vimeo video example:**
 ```json
@@ -135,6 +138,7 @@ The attributes described above focus on the component's use with standard video.
 	"type": "video/vimeo"
 },
 ```  
+Note: it is strongly suggested you use the dedicated [Vimeo](https://github.com/adaptlearning/adapt-vimeo) component if you want to use Vimeo videos in your Adapt course.
 
 **Audio example:**
 ```json
