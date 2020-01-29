@@ -8,7 +8,7 @@ This component is media playback component for both audio and video. It uses HTM
 
 The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
 
-Whilst the underlying MediaElement player does have support for playing both YouTube and Vimeo videos, this no longer works very well due to changes in the YouTube/Vimeo player APIs - it is therefore strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) / [Vimeo](https://github.com/adaptlearning/adapt-vimeo) components instead.
+Whilst the underlying MediaElement player does have support for playing both YouTube and Vimeo videos, this no longer works very well due to changes in the YouTube/Vimeo player APIs - it is therefore strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) / [Vimeo](https://github.com/adaptlearning/adapt-contrib-vimeo) components instead.
 
 [Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.  
 
@@ -138,7 +138,7 @@ Note: it is strongly suggested you use the dedicated [YouTube component](https:/
 	"type": "video/vimeo"
 },
 ```  
-Note: it is strongly suggested you use the dedicated [Vimeo component](https://github.com/adaptlearning/adapt-vimeo) if you want to include Vimeo videos in your Adapt course.
+Note: it is strongly suggested you use the dedicated [Vimeo component](https://github.com/adaptlearning/adapt-contrib-vimeo) if you want to include Vimeo videos in your Adapt course.
 
 **Audio example:**
 ```json
