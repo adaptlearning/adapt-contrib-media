@@ -129,7 +129,7 @@ The attributes described above focus on the component's use with standard video.
 	"type": "video/youtube"
 },
 ```  
-Note: it is strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) component if you want to use YouTube videos in your Adapt course.
+Note: it is strongly suggested you use the dedicated [YouTube component](https://github.com/adaptlearning/adapt-youtube) if you want to include YouTube videos in your Adapt course.
 
 **Vimeo video example:**
 ```json
@@ -138,7 +138,7 @@ Note: it is strongly suggested you use the dedicated [YouTube](https://github.co
 	"type": "video/vimeo"
 },
 ```  
-Note: it is strongly suggested you use the dedicated [Vimeo](https://github.com/adaptlearning/adapt-vimeo) component if you want to use Vimeo videos in your Adapt course.
+Note: it is strongly suggested you use the dedicated [Vimeo component](https://github.com/adaptlearning/adapt-vimeo) if you want to include Vimeo videos in your Adapt course.
 
 **Audio example:**
 ```json
