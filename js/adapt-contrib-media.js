@@ -353,7 +353,7 @@ define([
           maxViewed = 0;
         }
         if (event.target.currentTime > maxViewed) {
-          if (!!maxViewedLastUpdate && event.target.currentTime - maxViewed > 1.1 * (maxViewedNow - maxViewedLastUpdate) / 1000) {
+          if (!!maxViewedLastUpdate && event.target.currentTime - maxViewed > (maxViewedNow - maxViewedLastUpdate) / 1000) {
             return;
           }
           this.model.set("_maxViewed", event.target.currentTime);
