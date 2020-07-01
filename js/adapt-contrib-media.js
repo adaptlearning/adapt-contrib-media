@@ -347,11 +347,17 @@ define([
 
       onMediaElementTimeUpdate: function(event) {
         var maxViewed = this.model.get("_maxViewed");
+        var maxViewedLastUpdate = this.model.get("_maxViewedLastUpdate");
+        var maxViewedNow = new Date().getTime();
         if (!maxViewed) {
           maxViewed = 0;
         }
         if (event.target.currentTime > maxViewed) {
+          if (!!maxViewedLastUpdate && event.target.currentTime - maxViewed > 1.1 * (maxViewedNow - maxViewedLastUpdate) / 1000) {
+            return;
+          }
           this.model.set("_maxViewed", event.target.currentTime);
+          this.model.set("_maxViewedLastUpdate", maxViewedNow);
         }
       },
 
