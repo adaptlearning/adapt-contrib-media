@@ -1,0 +1,78 @@
+// Overrides for mep.less
+// --------------------------------------------------
+.mejs-container {
+  // The width set by mejs is always 100% of container, set in pixels.
+  // Having a fixed pixel size prevents iOS from changing orientation without scaling.
+  width: 100% !important;
+  background-color: transparent;
+}
+
+.mejs-container .mejs-controls .mejs-time {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.mejs-overlay:hover .mejs-overlay-button {
+  // Bug Fix for touch devices to override standard hover event in mep.less L119
+  background-position: 0 0;
+}
+
+.no-touch & .mejs-overlay:hover .mejs-overlay-button {
+  background-position: 0 -100px;
+}
+
+.mejs-overlay-button {
+  background-image: url(assets/bigplay.svg);
+}
+
+.no-svg .mejs-overlay-button {
+  background-image: url(assets/bigplay.png);
+}
+
+.mejs-overlay-loading,
+.mejs-container .mejs-controls,
+.mejs-controls .mejs-volume-button .mejs-volume-slider,
+.mejs-controls .mejs-captions-button .mejs-captions-selector,
+.mejs-captions-text,
+.mejs-controls .mejs-sourcechooser-button .mejs-sourcechooser-selector,
+.mejs-postroll-layer,
+.mejs-postroll-close,
+.mejs-controls .mejs-speed-button .mejs-speed-selector {
+  background-image: url(assets/background.png);
+}
+
+.mejs-overlay-loading span {
+  background-image: url(assets/loading.gif);
+}
+
+.mejs-controls .mejs-button {
+  &.mejs-jump-forward-button {
+    background-image: url(assets/jumpforward.png);
+  }
+
+  &.mejs-skip-back-button {
+    background-image: url(assets/skipback.png);
+  }
+
+  button {
+    background-image: url(assets/controls.svg);
+  }
+}
+
+.no-svg .mejs-controls .mejs-button button {
+  background-image: url(assets/controls.png);
+}
+
+.mejs-container-fullscreen .mejs-mediaelement,
+.mejs-container-fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: black;
+}
+
+// Bug fix for missing control icons on iOS touch devices
+// required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
+// --------------------------------------------------
+.mejs-offscreen {
+  -webkit-clip-path: polygon(0 0, 0 0,0 0, 0 0);
+}

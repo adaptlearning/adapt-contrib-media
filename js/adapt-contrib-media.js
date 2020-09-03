@@ -171,7 +171,7 @@ define([
         }
         // Check if we're streaming
         if (_media.source) {
-          this.$('.media-widget').addClass('external-source');
+          this.$('.media__widget').addClass('external-source');
         }
       }.bind(this));
     },
