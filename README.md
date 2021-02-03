@@ -4,7 +4,7 @@
 
 **Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework). 
  
-This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used (see the [Notes](Notes) section for more information).
+This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used (see the [Notes](#notes) section for more information).
 
 The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
 
