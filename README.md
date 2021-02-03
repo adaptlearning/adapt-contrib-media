@@ -45,21 +45,21 @@ The attributes listed below are used in *components.json* to configure **Media**
 This must be set to `"media"`.
 
 ### \_classes (string):
-CSS class name(s) to be applied to this component’s containing `div`. The class must be predefined in one of the Less files. Separate multiple classes with a space.
+CSS class name(s) to be applied to this component’s containing `div`. The class(es) must be predefined in one of the Less files. Separate multiple classes with a space.
 
 ### \_layout (string):
-This defines the horizontal position of the component in the block. Acceptable values are `"full"`, `"left"` or `"right"`.
+Defines the horizontal position of the component in the block. Acceptable values are `"full"`, `"left"` or `"right"`.
 
 ### instruction (string):
 This optional text appears above the component. It is frequently used to guide the learner’s interaction with the component.
 
 ### \_setCompletionOn (string):
-Determines when Adapt will register this component as having been completed by the user. Acceptable values are `"inview"` (triggered when the component is fully displayed within the viewport), `"play"` (triggered when playback is initiated), or `"ended"` (triggered when the video has reached the end of playback).
+Determines when Adapt will register this component as having been completed by the learner. Acceptable values are `"inview"` (triggered when the component is fully displayed within the viewport), `"play"` (triggered when playback is initiated), or `"ended"` (triggered when the video has reached the end of playback).
 
 ### \_useClosedCaptions (boolean):
 If set to `true`, the component will allow for closed captions support when playing video. The default is `false`.
 
-### _startLanguage (string):
+### \_startLanguage (string):
 If using closed captions, use this property to specify which language should be shown by default - or to prevent closed captions from being shown by default (so that the learner will need to switch them on). The value of this property must match one of the `srclang` values - or be set to `"none"` if you need the default to be 'closed captions off'.
 
 ### \_allowFullScreen (boolean):
