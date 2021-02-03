@@ -4,7 +4,7 @@
 
 **Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework). 
  
-This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used. 
+This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used (see the [Notes](Notes) section for more information).
 
 The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
 
@@ -193,7 +193,6 @@ The media component has two elements that have been assigned a label using the [
 Whenever playback is initiated, the component will emit a `media:stop` event to notify other plugins that make use of audio or video that they should stop playback.
 
 ## Limitations
-
 Browser | Limitation | 
 --------- | :----------- | 
 Chrome   | No known issues.
@@ -202,6 +201,10 @@ iOS/iPad | No known issues.
 Android | Firefox 33.1 with Vimeo: 'This video can't be played with your current setup'.
 Edge | No known issues.
 IE11 | No known issues.
+
+## Notes
+Although [Adobe Flash Player has now reached End of Life](https://www.adobe.com/uk/products/flashplayer/end-of-life.html) we have left the 'Flash fallback player' in place on the off-chance anyone still needs it and wants to take the risk of using it. The Flash-based video player itself is [hosted on a CDN](https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.21.2/flashmediaelement-cdn.swf) so no that no Flash file needs to be included in the course output (as many networks/Learning Management Systems now block the .swf file type).  
+**Please note**: if you wish to use this method of playback it is entirely at your own risk and not supported by the Adapt Core Team.
 
 ----------------------------
 **Version number:**  5.0.2  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
