@@ -28,7 +28,6 @@
         "instruction": {
           "type": "string",
           "title": "Instruction",
-          "description": "This is the instruction text",
           "default": "",
           "_adapt": {
             "translatable": true
@@ -41,8 +40,7 @@
           "properties": {
             "mp4": {
               "type": "string",
-              "title": "MP4 Link",
-              "description": "Link to an MP4 video",
+              "title": "MP4 source",
               "default": "",
               "_backboneForms": {
                 "type": "Asset",
@@ -51,8 +49,7 @@
             },
             "ogv": {
               "type": "string",
-              "title": "OGV Link",
-              "description": "Link to an OGV video",
+              "title": "OGV source",
               "default": "",
               "_backboneForms": {
                 "type": "Asset",
@@ -61,8 +58,7 @@
             },
             "webm": {
               "type": "string",
-              "title": "WEBM Link",
-              "description": "Link to a WEBM video",
+              "title": "WebM source",
               "default": "",
               "_backboneForms": {
                 "type": "Asset",
@@ -71,8 +67,7 @@
             },
             "mp3": {
               "type": "string",
-              "title": "MP3 Link",
-              "description": "Link to an MP3 audio",
+              "title": "MP3 source",
               "default": "",
               "_backboneForms": {
                 "type": "Asset",
@@ -81,14 +76,14 @@
             },
             "source": {
               "type": "string",
-              "title": "Source URL",
+              "title": "External source",
               "description": "Enter an external link, such as a YouTube URL",
               "default": ""
             },
             "type": {
               "type": "string",
-              "title": "Type",
-              "description": "Select the 'Source URL' type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo.",
+              "title": "External source type",
+              "description": "Select the external source type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo",
               "default": "",
               "enum": [
                 "",
@@ -99,7 +94,7 @@
             },
             "poster": {
               "type": "string",
-              "title": "Poster Link",
+              "title": "Poster frame",
               "description": "Image displayed before the video is played (except on Vimeo)",
               "default": "",
               "_backboneForms": {
@@ -109,18 +104,18 @@
             },
             "cc": {
               "type": "array",
-              "title": "Closed Captions",
+              "title": "Closed captions",
               "items": {
                 "type": "object",
                 "properties": {
                   "srclang": {
                     "type": "string",
-                    "title": "Language Code",
+                    "title": "Language code",
                     "default": ""
                   },
                   "src": {
                     "type": "string",
-                    "title": "Caption File",
+                    "title": "WebVTT source",
                     "default": "",
                     "_backboneForms": {
                       "type": "Asset",
@@ -135,7 +130,7 @@
         "_setCompletionOn": {
           "type": "string",
           "title": "Completion trigger",
-          "description": "Defines what media event should trigger completion of this component.",
+          "description": "Defines what media event should trigger completion of this component",
           "default": "play",
           "enum": [
             "inview",
@@ -146,24 +141,24 @@
         },
         "_useClosedCaptions": {
           "type": "boolean",
-          "title": "Use Closed Captions",
+          "title": "Enable closed captions",
           "default": false
         },
         "_startLanguage": {
           "type": "string",
-          "title": "Initial Closed Captions language",
-          "description": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages.",
+          "title": "Initial closed captions language",
+          "description": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages",
           "default": "en"
         },
         "_showVolumeControl": {
           "type": "boolean",
-          "title": "Show Volume Control (Not supported on mobile devices)",
-          "description": "When enabled, the volume control will appear in the media player. On mobile devices the audio level is controlled the device's physical volume controls.",
+          "title": "Show volume control (not supported on mobile)",
+          "description": "When enabled, the volume control will appear in the media player. On mobile devices the audio level is controlled the device's physical volume controls",
           "default": false
         },
         "_startVolume": {
           "type": "string",
-          "title": "Default volume (Not supported on mobile devices)",
+          "title": "Default volume (not supported on mobile)",
           "description": "Defines the default volume. On mobile devices the audio level is under the user's physical control",
           "default": "80%",
           "enum": [
@@ -183,50 +178,49 @@
         },
         "_allowFullScreen": {
           "type": "boolean",
-          "title": "Allow Full Screen",
+          "title": "Allow full screen",
           "default": false
         },
         "_pauseWhenOffScreen": {
           "type": "boolean",
-          "title": "Pause playback when video is no longer in view.",
+          "title": "Pause playback when no longer in view",
           "default": false
         },
         "_playsinline": {
           "type": "boolean",
           "title": "Play videos inline on iOS",
-          "description": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above.",
+          "description": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above",
           "default": false
         },
         "_preventForwardScrubbing": {
           "type": "boolean",
-          "title": "Attempt to prevent media scrubbing?",
-          "description": "If enabled, will attempt to prevent users from skipping ahead in audio/video.",
+          "title": "Attempt to prevent media scrubbing",
+          "description": "If enabled, will attempt to prevent users from skipping ahead in audio/video",
           "default": false
         },
         "_transcript": {
           "type": "object",
-          "title": "Transcript Options",
+          "title": "Transcript",
           "default": {},
           "properties": {
             "_setCompletionOnView": {
               "type": "boolean",
-              "title": "Trigger completion?",
-              "description": "Whether to have this component mark as completed when the transcript is shown.",
+              "title": "Mark this component as complete when transcript is shown",
               "default": true
             },
             "_inlineTranscript": {
               "type": "boolean",
-              "title": "Show Inline",
+              "title": "Enable inline transcript",
               "default": false
             },
             "_externalTranscript": {
               "type": "boolean",
-              "title": "Show Link",
+              "title": "Enable linked transcript file",
               "default": false
             },
             "inlineTranscriptButton": {
               "type": "string",
-              "title": "Inline Open Button",
+              "title": "Inline transcript open button label",
               "default": "",
               "_adapt": {
                 "translatable": true
@@ -234,7 +228,7 @@
             },
             "inlineTranscriptCloseButton": {
               "type": "string",
-              "title": "Inline Close Button",
+              "title": "Inline transcript close button label",
               "default": "",
               "_adapt": {
                 "translatable": true
@@ -242,8 +236,7 @@
             },
             "inlineTranscriptBody": {
               "type": "string",
-              "title": "Inline Transcript",
-              "description": "Optional text appears below the video",
+              "title": "Inline transcript",
               "default": "",
               "_adapt": {
                 "translatable": true
@@ -252,7 +245,7 @@
             },
             "transcriptLinkButton": {
               "type": "string",
-              "title": "Link Open Button",
+              "title": "Linked transcript file button label",
               "default": "",
               "_adapt": {
                 "translatable": true
@@ -260,8 +253,7 @@
             },
             "transcriptLink": {
               "type": "string",
-              "title": "Transcript Link",
-              "description": "Select a file for the transcript link",
+              "title": "Linked transcript file source",
               "default": "",
               "_backboneForms": {
                 "type": "Asset",
@@ -272,7 +264,7 @@
         },
         "_playerOptions": {
           "type": "object",
-          "title": "Player Options",
+          "title": "Player options",
           "description": "Optional object that can be used to customize the player",
           "default": {},
           "_backboneForms": {
