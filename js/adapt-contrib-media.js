@@ -9,10 +9,10 @@ define([
   // The following function is used to to prevent a memory leak in Internet Explorer
   // See: http://javascript.crockford.com/memory/leak.html
   function purge(d) {
-    var a = d.attributes, i, l, n;
+    var a = d.attributes;
     if (a) {
-      for (i = a.length - 1; i >= 0; i -= 1) {
-        n = a[i].name;
+      for (let i = a.length - 1; i >= 0; i -= 1) {
+        let n = a[i].name;
         if (typeof d[n] === 'function') {
           d[n] = null;
         }
@@ -20,8 +20,7 @@ define([
     }
     a = d.childNodes;
     if (a) {
-      l = a.length;
-      for (i = 0; i < l; i += 1) {
+      for (let i = 0, count = a.length; i < count; i += 1) {
         purge(d.childNodes[i]);
       }
     }
@@ -36,7 +35,7 @@ define([
    * is a duration integer the other is the player object. The default functions error on slider key press and so break
    * accessibility. Below is a correction.
    */
-  _.extend(mejs.MepDefaults, {
+  _.extend(window.mejs.MepDefaults, {
     keyActions: [],
     defaultSeekForwardInterval: (duration) => {
       if (typeof duration === "object") return duration.duration*0.05;
@@ -66,7 +65,7 @@ define([
       var classes = ComponentView.prototype.className.call(this);
       var playerOptions = this.model.get('_playerOptions');
       if (playerOptions && playerOptions.toggleCaptionsButtonWhenOnlyOne) {
-        classes += " toggle-captions";
+        classes += ' toggle-captions';
       }
       return classes;
     }
@@ -91,7 +90,7 @@ define([
 
         // Avoid loading of Mixed Content (insecure content on a secure page)
         if (window.location.protocol === 'https:' && media.source.indexOf('http:') === 0) {
-          media.source = media.source.replace(/^http\:/, 'https:');
+          media.source = media.source.replace(/^http:/, 'https:');
         }
 
         this.model.set('_media', media);
@@ -124,11 +123,11 @@ define([
       }
 
       if (modelOptions.features === undefined) {
-        modelOptions.features = ['playpause','progress','current','duration'];
+        modelOptions.features = ['playpause', 'progress', 'current', 'duration'];
         if (this.model.get('_useClosedCaptions')) {
           modelOptions.features.unshift('tracks');
         }
-        if (this.model.get("_allowFullScreen")) {
+        if (this.model.get('_allowFullScreen')) {
           modelOptions.features.push('fullscreen');
         }
         if (this.model.get('_showVolumeControl')) {
@@ -169,7 +168,7 @@ define([
         var _media = this.model.get('_media');
         // if no media is selected - set ready now, as success won't be called
         if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
-          Adapt.log.warn("ERROR! No media is selected in components.json for component " + this.model.get('_id'));
+          Adapt.log.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
           this.setReadyStatus();
           return;
         }
@@ -187,8 +186,8 @@ define([
     addMediaTypeClass() {
       var media = this.model.get("_media");
       if (media && media.type) {
-        var typeClass = media.type.replace(/\//, "-");
-        this.$(".media__widget").addClass(typeClass);
+        var typeClass = media.type.replace(/\//, '-');
+        this.$('.media__widget').addClass(typeClass);
       }
     }
 
@@ -197,7 +196,7 @@ define([
       if (!media) return callback();
 
       switch (media.type) {
-        case "video/vimeo":
+        case 'video/vimeo':
           modelOptions.alwaysShowControls = false;
           modelOptions.hideVideoControlsOnLoad = true;
           modelOptions.features = [];
@@ -216,34 +215,27 @@ define([
           callback();
       }
     }
+    
+    cleanUpPlayer() {
+      this.$('.media__widget').children('.mejs-offscreen').remove();
+      this.$('[role=application]').removeAttr('role tabindex');
+      this.$('[aria-controls]').removeAttr('aria-controls');
+    }
 
-      cleanUpPlayer() {
-        this.$('.media__widget').children('.mejs-offscreen').remove();
-        this.$('[role=application]').removeAttr('role tabindex');
-        this.$('[aria-controls]').removeAttr('aria-controls');
+    setupEventListeners() {
+      this.completionEvent = (this.model.get('_setCompletionOn') || 'play');
+
+      if (this.completionEvent === 'inview') {
+        this.setupInviewCompletion('.component__widget');
       }
 
-      setupEventListeners() {
-        this.completionEvent = (this.model.get('_setCompletionOn') || 'play');
-
-        if (this.completionEvent === 'inview') {
-          this.setupInviewCompletion('.component__widget');
-        }
-
-        // wrapper to check if preventForwardScrubbing is turned on.
-        if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
-          $(this.mediaElement).on({
-            'seeking': this.onMediaElementSeeking,
-            'timeupdate': this.onMediaElementTimeUpdate
-          });
-        }
-
-        // handle other completion events in the event Listeners
+      // wrapper to check if preventForwardScrubbing is turned on.
+      if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
         $(this.mediaElement).on({
-          'play': this.onMediaElementPlay,
-          'pause': this.onMediaElementPause,
-          'ended': this.onMediaElementEnded
+          'seeking': this.onMediaElementSeeking,
+          'timeupdate': this.onMediaElementTimeUpdate
         });
+      }
 
         // occasionally the mejs code triggers a click of the captions language
         // selector during setup, this slight delay ensures we skip that
@@ -299,7 +291,7 @@ define([
       checkForSupportedCCLanguage(lang) {
         if (!lang || lang === 'none') return 'none';
 
-        if(_.findWhere(this.model.get('_media').cc, {srclang: lang})) return lang;
+        if (_.findWhere(this.model.get('_media').cc, { srclang: lang })) return lang;
 
         return this.model.get('_startLanguage') || 'none';
       }
@@ -307,7 +299,7 @@ define([
       onMediaElementPlay(event) {
         this.queueGlobalEvent('play');
 
-        Adapt.trigger("media:stop", this);
+        Adapt.trigger('media:stop', this);
 
         if (this.model.get('_pauseWhenOffScreen')) $(this.mediaElement).on('inview', this.onMediaElementInview);
 
@@ -356,6 +348,8 @@ define([
       onMediaElementTimeUpdate(event) {
         var maxViewed = this.model.get("_maxViewed");
         if (!maxViewed) {
+          
+          
           maxViewed = 0;
         }
         if (event.target.currentTime > maxViewed) {
@@ -380,7 +374,7 @@ define([
         this.onMediaElementClick = this.onMediaElementClick.bind(this);
 
         // play on 'big button' click
-        this.$('.mejs-overlay-button').on("click", this.onOverlayClick);
+        this.$('.mejs-overlay-button').on('click', this.onOverlayClick);
 
         // pause on player click
         this.$('.mejs-mediaelement').on("click", this.onMediaElementClick);
@@ -388,12 +382,12 @@ define([
 
       onMediaStop(view) {
 
-        // Make sure this view isn't triggering media:stop
-        if (view && view.cid === this.cid) return;
+      // Make sure this view isn't triggering media:stop
+      if (view && view.cid === this.cid) return;
 
-        if (!this.mediaElement || !this.mediaElement.player) return;
+      if (!this.mediaElement || !this.mediaElement.player) return;
 
-        this.mediaElement.player.pause();
+      this.mediaElement.player.pause();
 
       }
 
@@ -424,32 +418,32 @@ define([
         this.$('.mejs-overlay-button').off("click", this.onOverlayClick);
         this.$('.mejs-mediaelement').off("click", this.onMediaElementClick);
 
-        if(this.model.get('_useClosedCaptions')) {
+        if (this.model.get('_useClosedCaptions')) {
           var selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
-          '.mejs-captions-button button' :
-          '.mejs-captions-selector';
+            '.mejs-captions-button button' :
+            '.mejs-captions-selector';
           this.$(selector).off('click.mediaCaptionsChange');
         }
 
         var modelOptions = this.model.get('_playerOptions');
         delete modelOptions.success;
 
-        var media = this.model.get("_media");
+        var media = this.model.get('_media');
         if (media) {
           switch (media.type) {
-          case "video/vimeo":
-              this.$("iframe")[0].isRemoved = true;
+            case 'video/vimeo':
+              this.$('iframe')[0].isRemoved = true;
           }
         }
 
         if (this.mediaElement && this.mediaElement.player) {
-          var player_id = this.mediaElement.player.id;
+          var playerId = this.mediaElement.player.id;
 
           purge(this.$el[0]);
           this.mediaElement.player.remove();
 
-          if (mejs.players[player_id]) {
-              delete mejs.players[player_id];
+          if (window.mejs.players[playerId]) {
+            delete window.mejs.players[playerId];
           }
         }
 
@@ -463,11 +457,6 @@ define([
             'inview': this.onMediaElementInview
           });
 
-          this.mediaElement.src = "";
-          $(this.mediaElement.pluginElement).remove();
-          delete this.mediaElement;
-        }
-
         ComponentView.prototype.remove.call(this);
       }
 
@@ -480,22 +469,19 @@ define([
       onPlayerReady(mediaElement, domObject) {
         this.mediaElement = mediaElement;
 
-        var player = this.mediaElement.player;
-        if (!player) player = mejs.players[this.$('.mejs-container').attr('id')];
+      onPlayerReady: function (mediaElement, domObject) {
+        this.mediaElement = mediaElement;
 
-        var hasTouch = mejs.MediaFeatures.hasTouch;
+        var player = this.mediaElement.player;
+        if (!player) player = window.mejs.players[this.$('.mejs-container').attr('id')];
+
+        var hasTouch = window.mejs.MediaFeatures.hasTouch;
         if (hasTouch) {
           this.setupPlayPauseToggle();
         }
 
         this.addThirdPartyAfterFixes();
         this.cleanUpPlayerAfter();
-
-        if (player && this.model.has('_startVolume')) {
-          // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
-          player.setVolume(parseInt(this.model.get('_startVolume')) / 100);
-        }
-
         this.setReadyStatus();
         this.setupEventListeners();
       }
@@ -590,21 +576,30 @@ define([
       triggerGlobalEvent(eventType) {
         var player = this.mediaElement.player;
 
-        var eventObj = {
-          type: eventType,
-          src: this.mediaElement.src,
-          platform: this.mediaElement.pluginType
-        };
+        // Fire the event after a delay, only if another event has not just been fired
+        if (timeSinceLastEvent > debounceTime) {
+          this.eventTimeout = setTimeout(this.triggerGlobalEvent.bind(this, eventType), debounceTime);
+        }
+    },
 
-        if (player) eventObj.isVideo = player.isVideo;
+    triggerGlobalEvent: function(eventType) {
+      var player = this.mediaElement.player;
 
-        Adapt.trigger('media', eventObj);
-      }
+      var eventObj = {
+        type: eventType,
+        src: this.mediaElement.src,
+        platform: this.mediaElement.pluginType
+      };
+
+      if (player) eventObj.isVideo = player.isVideo;
+
+      Adapt.trigger('media', eventObj);
+    }
 
   };
 
   return Adapt.register('media', {
-    model: ComponentModel.extend({}),// create a new class in the inheritance chain so it can be extended per component type if necessary later
+    model: ComponentModel.extend({}), // create a new class in the inheritance chain so it can be extended per component type if necessary later
     view: MediaView
   });
 
