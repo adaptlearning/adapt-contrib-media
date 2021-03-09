@@ -189,6 +189,11 @@ define([
       const media = this.model.get('_media');
       if (!media) return callback();
 
+      if (media.mp3 || media.ogg) {
+        // https://github.com/adaptlearning/adapt_framework/issues/3055
+        modelOptions.alwaysShowControls = true;
+      }
+
       switch (media.type) {
         case 'video/vimeo':
           modelOptions.alwaysShowControls = false;
