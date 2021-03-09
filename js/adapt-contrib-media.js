@@ -176,6 +176,14 @@ define([
         if (_media.source) {
           this.$('.media__widget').addClass('external-source');
         }
+
+        if (!_media.mp3) return;
+
+        this.$('.mejs-container').focusout((e) => {
+          // set controls are visible to false to show the controls and remove the offscreen class
+          mejs.MediaElementPlayer.prototype.controlsAreVisible = false;
+          mejs.MediaElementPlayer.prototype.showControls(false);
+				});
       }.bind(this));
     }
 
