@@ -183,7 +183,7 @@ define([
           // set controls are visible to false to show the controls and remove the offscreen class
           mejs.MediaElementPlayer.prototype.controlsAreVisible = false;
           mejs.MediaElementPlayer.prototype.showControls(false);
-				});
+        });
       }.bind(this));
     }
 
