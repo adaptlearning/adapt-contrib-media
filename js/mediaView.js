@@ -36,7 +36,8 @@ define([
    * is a duration integer the other is the player object. The default functions error on slider key press and so break
    * accessibility. Below is a correction.
    */
-  _.extend(window.mejs.MepDefaults, {
+
+  Object.assign(window.mejs.MepDefaults, {
     keyActions: [],
     defaultSeekForwardInterval: duration => {
       if (typeof duration === 'object') return duration.duration * 0.05;
@@ -59,7 +60,7 @@ define([
     }
 
     className() {
-      const classes = ComponentView.prototype.className.call(this);
+      const classes = super.className();
       const playerOptions = this.model.get('_playerOptions');
       if (playerOptions && playerOptions.toggleCaptionsButtonWhenOnlyOne) {
         classes += ' toggle-captions';
@@ -157,7 +158,7 @@ define([
 
       this.addMediaTypeClass();
 
-      this.addThirdPartyFixes(modelOptions, function createPlayer() {
+      this.addThirdPartyFixes(modelOptions, () => {
         // create the player
         this.$('audio, video').mediaelementplayer(modelOptions);
         this.cleanUpPlayer();
@@ -173,7 +174,7 @@ define([
         if (_media.source) {
           this.$('.media__widget').addClass('external-source');
         }
-      }.bind(this));
+      });
     }
 
     addMediaTypeClass() {
@@ -592,7 +593,7 @@ define([
 
       Adapt.trigger('media', eventObj);
     }
-  };
+  }
 
   return MediaView;
 });

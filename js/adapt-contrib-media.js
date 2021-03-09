@@ -1,9 +1,7 @@
 define([
   'core/js/adapt',
   './mediaView',
-  'core/js/models/componentModel',
-  'libraries/mediaelement-and-player',
-  'libraries/mediaelement-fullscreen-hook'
+  'core/js/models/componentModel'
 ], function(Adapt, MediaView, ComponentModel) {
 
   return Adapt.register('media', {
