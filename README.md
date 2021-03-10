@@ -1,16 +1,16 @@
-# adapt-contrib-media  
+# adapt-contrib-media
 
-<img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/media02.gif" alt="image of media component" align="right">  
+<img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/media02.gif" alt="image of media component" align="right">
 
-**Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework). 
- 
+**Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework).
+
 This component is media playback component for both audio and video. It uses HTML5 audio and video for browsers that support it and a Flash fallback for browsers for when HTML5 audio/video isn't supported or can't be used (see the [Notes](#notes) section for more information).
 
-The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.  
+The component uses [MediaElement.js (v2.21.2)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.
 
 Whilst the underlying MediaElement player does have support for playing both YouTube and Vimeo videos, this no longer works very well due to changes in the YouTube/Vimeo player APIs - it is therefore strongly suggested you use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) / [Vimeo](https://github.com/adaptlearning/adapt-contrib-vimeo) components instead.
 
-[Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.  
+[Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.
 
 ## Installation
 
@@ -28,14 +28,14 @@ As one of Adapt's *[core components](https://github.com/adaptlearning/adapt_fram
 	```console
 	adapt install
 	```
-  (This second method will reinstall all plug-ins listed in *adapt.json*.)  
+  (This second method will reinstall all plug-ins listed in *adapt.json*.)
 
-* If **Media** has been uninstalled from the Adapt authoring tool, it may be reinstalled using the [Plug-in Manager](https://github.com/adaptlearning/adapt_authoring/wiki/Plugin-Manager).  
+* If **Media** has been uninstalled from the Adapt authoring tool, it may be reinstalled using the [Plug-in Manager](https://github.com/adaptlearning/adapt_authoring/wiki/Plugin-Manager).
 <div float align=right><a href="#top">Back to Top</a></div>
 
 ## Settings Overview
 
-The attributes listed below are used in *components.json* to configure **Media**, and are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json). Visit the [**Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about how they appear in the [authoring tool](https://github.com/adaptlearning/adapt_authoring/wiki). 
+The attributes listed below are used in *components.json* to configure **Media**, and are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json). Visit the [**Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about how they appear in the [authoring tool](https://github.com/adaptlearning/adapt_authoring/wiki).
 
 ## Attributes
 
@@ -119,7 +119,7 @@ File name (including path) of the audio file. Path should be relative to the `sr
 ### \_transcript (object):
 The transcript object contains the following settings:
 
-#### \_setCompletionOnView (boolean): 
+#### \_setCompletionOnView (boolean):
 Determines whether Adapt will register this component as having been completed by the learner when the inline transcript is opened. The default value is `true`.
 
 #### \_inlineTranscript (boolean):
@@ -148,9 +148,9 @@ This optional object can be used to customize the player. See [*example.json*](h
 
 <div float align=right><a href="#top">Back to Top</a></div>
 
-### JSON Examples  
+### JSON Examples
 
-The attributes described above focus on the component's use with standard video. They are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) The same model can be applied to the component's use with audio and YouTube videos.  
+The attributes described above focus on the component's use with standard video. They are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) The same model can be applied to the component's use with audio and YouTube videos.
 
 #### Standard video example:
 ```json
@@ -165,7 +165,7 @@ The attributes described above focus on the component's use with standard video.
 	"source": "//www.youtube.com/watch?v=RT-KmgAgxuo",
 	"type": "video/youtube"
 },
-```  
+```
 Note: it is strongly suggested you use the dedicated [YouTube component](https://github.com/adaptlearning/adapt-youtube) if you want to include YouTube videos in your Adapt course.
 
 #### Vimeo video example:
@@ -174,7 +174,7 @@ Note: it is strongly suggested you use the dedicated [YouTube component](https:/
 	"source": "//player.vimeo.com/video/96961553",
 	"type": "video/vimeo"
 },
-```  
+```
 Note: it is strongly suggested you use the dedicated [Vimeo component](https://github.com/adaptlearning/adapt-contrib-vimeo) if you want to include Vimeo videos in your Adapt course.
 
 #### Audio example:
@@ -183,18 +183,18 @@ Note: it is strongly suggested you use the dedicated [Vimeo component](https://g
 	"mp3": "course/en/audio/audio.mp3",
 	"ogg": "course/en/audio/audio.ogg"
 },
-```  
+```
 
 ### Accessibility
-The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).   
+The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
 <div float align=right><a href="#top">Back to Top</a></div>
 
 ## Events
 Whenever playback is initiated, the component will emit a `media:stop` event to notify other plugins that make use of audio or video that they should stop playback.
 
 ## Limitations
-Browser | Limitation | 
---------- | :----------- | 
+Browser | Limitation |
+--------- | :----------- |
 Chrome   | No known issues.
 Firefox | No known issues.
 iOS/iPad | No known issues.
@@ -203,13 +203,13 @@ Edge | No known issues.
 IE11 | No known issues.
 
 ## Notes
-Although [Adobe Flash Player has now reached End of Life](https://www.adobe.com/uk/products/flashplayer/end-of-life.html) we have left the 'Flash fallback player' in place on the off-chance anyone still needs it and wants to take the risk of using it. The Flash-based video player itself is [hosted on a CDN](https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.21.2/flashmediaelement-cdn.swf) so no that no Flash file needs to be included in the course output (as many networks/Learning Management Systems now block the .swf file type).  
+Although [Adobe Flash Player has now reached End of Life](https://www.adobe.com/uk/products/flashplayer/end-of-life.html) we have left the 'Flash fallback player' in place on the off-chance anyone still needs it and wants to take the risk of using it. The Flash-based video player itself is [hosted on a CDN](https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.21.2/flashmediaelement-cdn.swf) so no that no Flash file needs to be included in the course output (as many networks/Learning Management Systems now block the .swf file type).
 **Please note**: if you wish to use this method of playback it is entirely at your own risk and not supported by the Adapt Core Team.
 
 ----------------------------
-**Version number:**  5.0.2  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
-**Framework versions:** 5+  
-**Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)  
-**Accessibility support:** WAI AA  
-**RTL support:** Yes  
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera  
+**Version number:**  5.1.1  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>
+**Framework versions:** 5+
+**Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)
+**Accessibility support:** WAI AA
+**RTL support:** Yes
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera
