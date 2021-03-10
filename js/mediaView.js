@@ -3,7 +3,7 @@ define([
   'core/js/views/componentView',
   'libraries/mediaelement-and-player',
   'libraries/mediaelement-fullscreen-hook'
-  ], function(Adapt, ComponentView) {
+], function(Adapt, ComponentView) {
 
   let froogaloopAdded = false;
 
@@ -60,7 +60,7 @@ define([
     }
 
     className() {
-      const classes = super.className();
+      let classes = super.className();
       const playerOptions = this.model.get('_playerOptions');
       if (playerOptions && playerOptions.toggleCaptionsButtonWhenOnlyOne) {
         classes += ' toggle-captions';
@@ -75,12 +75,12 @@ define([
         'media:stop': this.onMediaStop
       });
 
-      _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking');
+      _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick');
 
       // set initial player state attributes
       this.model.set({
-        '_isMediaEnded': false,
-        '_isMediaPlaying': false
+        _isMediaEnded: false,
+        _isMediaPlaying: false
       });
 
       if (this.model.get('_media').source) {
@@ -207,7 +207,7 @@ define([
             })
             .fail(() => {
               froogaloopAdded = false;
-              console.log('Could not load froogaloop.js');
+              Adapt.log.error('Could not load froogaloop.js');
             });
           break;
         default:
@@ -285,7 +285,7 @@ define([
       // because calling player.setTrack doesn't update the cc button's languages popup...
       const $inputs = this.$('.mejs-captions-selector input');
       $inputs.filter(':checked').prop('checked', false);
-      $inputs.filter('[value="' + lang + '"]').prop('checked', true);
+      $inputs.filter(`[value="${lang}"]`).prop('checked', true);
     }
 
     /**
@@ -367,15 +367,12 @@ define([
       const player = this.mediaElement.player;
 
       if (!player) {
-        console.log("Media.setupPlayPauseToggle: OOPS! there's no player reference.");
+        Adapt.log.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
         return;
       }
 
       // stop the player dealing with this, we'll do it ourselves
       player.options.clickToPlayPause = false;
-
-      this.onOverlayClick = this.onOverlayClick.bind(this);
-      this.onMediaElementClick = this.onMediaElementClick.bind(this);
 
       // play on 'big button' click
       this.$('.mejs-overlay-button').on('click', this.onOverlayClick);
@@ -478,7 +475,7 @@ define([
     onPlayerReady(mediaElement, domObject) {
       this.mediaElement = mediaElement;
 
-      const player = this.mediaElement.player;
+      let player = this.mediaElement.player;
       if (!player) player = window.mejs.players[this.$('.mejs-container').attr('id')];
 
       const hasTouch = window.mejs.MediaFeatures.hasTouch;
@@ -518,7 +515,7 @@ define([
       // need slight delay before focussing button to make it work when JAWS is running
       // see https://github.com/adaptlearning/adapt_framework/issues/2427
       _.delay(() => {
-        this.$('.media__transcript-btn').a11y_focus();
+        Adapt.a11y.focus(this.$('.media__transcript-btn'));
       }, 250);
     }
 
@@ -531,21 +528,22 @@ define([
       if ($transcriptBodyContainer.hasClass('inline-transcript-open')) {
         $transcriptBodyContainer.stop(true, true).slideUp(() => {
           $(window).resize();
-        });
+        }).removeClass('inline-transcript-open');
         $button.attr('aria-expanded', false);
-        $transcriptBodyContainer.removeClass('inline-transcript-open');
         $buttonText.html(this.model.get('_transcript').inlineTranscriptButton);
-      } else {
-        $transcriptBodyContainer.stop(true, true).slideDown(() => {
-          $(window).resize();
-        });
-        $button.attr('aria-expanded', true);
-        $transcriptBodyContainer.addClass('inline-transcript-open');
-        $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
 
-        if (this.model.get('_transcript')._setCompletionOnView !== false) {
-          this.setCompletionStatus();
-        }
+        return;
+      }
+
+      $transcriptBodyContainer.stop(true, true).slideDown(() => {
+        $(window).resize();
+      }).addClass('inline-transcript-open');
+
+      $button.attr('aria-expanded', true);
+      $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
+
+      if (this.model.get('_transcript')._setCompletionOnView !== false) {
+        this.setCompletionStatus();
       }
     }
 
@@ -561,13 +559,13 @@ define([
      * @param {string} eventType
      */
     queueGlobalEvent(eventType) {
-      const t = Date.now();
+      const time = Date.now();
       const lastEvent = this.lastEvent || { time: 0 };
-      const timeSinceLastEvent = t - lastEvent.time;
+      const timeSinceLastEvent = time - lastEvent.time;
       const debounceTime = 500;
 
       this.lastEvent = {
-        time: t,
+        time,
         type: eventType
       };
 
