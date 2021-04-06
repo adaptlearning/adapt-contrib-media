@@ -1,4 +1,10 @@
 .media {
+  // Bugfix to prevent resize between poster image and video transition
+  // --------------------------------------------------
+  video {
+    object-fit: fill;
+  }
+  
   // Transcript
   // --------------------------------------------------
   &__transcript-body-inline {
