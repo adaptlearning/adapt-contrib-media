@@ -75,7 +75,6 @@
             "isVideo": true,
             "enableKeyboard": true,
             "pauseOtherPlayers": true,
-            "startLanguage": "",
             "tracksText": "mejs.i18n.t('Captions/Subtitles')",
             "hideCaptionsButtonWhenEmpty": true,
             "toggleCaptionsButtonWhenOnlyOne": false,
