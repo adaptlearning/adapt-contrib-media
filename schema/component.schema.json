@@ -40,8 +40,8 @@
           "properties": {
             "mp4": {
               "type": "string",
+              "isObjectId": true,
               "title": "MP4 source",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "video"
@@ -49,8 +49,8 @@
             },
             "ogv": {
               "type": "string",
+              "isObjectId": true,
               "title": "OGV source",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "video"
@@ -58,8 +58,8 @@
             },
             "webm": {
               "type": "string",
+              "isObjectId": true,
               "title": "WebM source",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "video"
@@ -67,8 +67,8 @@
             },
             "mp3": {
               "type": "string",
+              "isObjectId": true,
               "title": "MP3 source",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "audio"
@@ -94,9 +94,9 @@
             },
             "poster": {
               "type": "string",
+              "isObjectId": true,
               "title": "Poster frame",
               "description": "Image displayed before the video is played (except on Vimeo)",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "image"
@@ -115,8 +115,8 @@
                   },
                   "src": {
                     "type": "string",
+                    "isObjectId": true,
                     "title": "WebVTT source",
-                    "default": "",
                     "_backboneForms": {
                       "type": "Asset",
                       "media": "other"
@@ -253,8 +253,8 @@
             },
             "transcriptLink": {
               "type": "string",
+              "isObjectId": true,
               "title": "Linked transcript file source",
-              "default": "",
               "_backboneForms": {
                 "type": "Asset",
                 "media": "other"
