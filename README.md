@@ -65,6 +65,12 @@ If using closed captions, use this property to specify which language should be 
 ### \_allowFullScreen (boolean):
 Determines whether fullscreen mode is available or not. The default is `false`.
 
+### \_isPortrait (boolean):
+Change the aspect ratio of the video to portrait. The default is `false`.
+
+### \_isSquare (boolean):
+Change the aspect ratio of the video to square. The default is `false`.
+
 ### \_playsinline (boolean):
 If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.
 

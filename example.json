@@ -19,6 +19,8 @@
         "_startLanguage": "en",
         "_showVolumeControl": true,
         "_startVolume": "80%",
+        "_isPortrait": false,
+        "_isSquare": false,
         "_media": {
             "mp4": "course/assets/big_buck_bunny.mp4",
             "ogv": "course/assets/big_buck_bunny.ogv",
