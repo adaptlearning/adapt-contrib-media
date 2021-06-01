@@ -190,21 +190,12 @@
       "inputType": "Checkbox",
       "validators": []
     },
-    "_isPortrait": {
-      "type": "boolean",
-      "required": false,
-      "default": false,
-      "title": "Change the aspect ratio of the video to portrait.",
-      "inputType": "Checkbox",
-      "validators": []
-    },
-    "_isSquare": {
-      "type": "boolean",
-      "required": false,
-      "default": false,
-      "title": "Change the aspect ratio of the video to square.",
-      "inputType": "Checkbox",
-      "validators": []
+    "_aspectRatio": {
+      "type": "string",
+      "required": true,
+      "enum": ["landscape", "portrait", "square"],
+      "default": "landscape",
+      "editorOnly": true
     },
     "_pauseWhenOffScreen": {
       "type": "boolean",

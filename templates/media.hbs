@@ -19,11 +19,11 @@
       <audio src="{{_media.ogg}}" type="audio/ogg" style="width: 100%; height: 100%;"/>
     {{else}}
       <video aria-hidden="true" preload="none"
-        {{#if _isSquare}} width="640" height="640"
-        {{else if _isPortrait}} width="540" height="960"
+        {{#if_value_equals _aspectRatio "square"}} width="640" height="640"
+        {{else if_value_equals _aspectRatio "portrait"}} width="540" height="960"
         {{else}} width="640" height="360"
-        {{/if}} 
-        {{#if _playsinline}}playsinline{{/if}} {{#equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/equals}} style="width:100%; height:100%;" controls="controls">
+        {{/if_value_equals}}
+        {{#if _playsinline}} playsinline{{/if}} {{#equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/equals}} style="width:100%; height:100%;" controls="controls">
         {{#if _media.source}}
           <source src="{{_media.source}}" type="{{_media.type}}"/>
         {{else}}
