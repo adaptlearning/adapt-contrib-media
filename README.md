@@ -66,7 +66,7 @@ If using closed captions, use this property to specify which language should be 
 Determines whether fullscreen mode is available or not. The default is `false`.
 
 ### \_aspectRatio (string):
-Defines the aspect ratio of the video to either be landscape (16:9), portrait (9:16), or square (1:1). Acceptable values are `"full"`, `"left"` or `"right"`. The default is `"landscape"`.
+Defines the aspect ratio of the video to either be landscape (16:9), portrait (9:16), or square (1:1). Acceptable values are `"landscape"`, `"portrait"` or `"square"`. The default is `"landscape"`.
 
 ### \_playsinline (boolean):
 If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.
