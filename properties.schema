@@ -190,6 +190,13 @@
       "inputType": "Checkbox",
       "validators": []
     },
+    "_aspectRatio": {
+      "type": "string",
+      "required": true,
+      "enum": ["landscape", "portrait", "square"],
+      "default": "landscape",
+      "editorOnly": true
+    },
     "_pauseWhenOffScreen": {
       "type": "boolean",
       "required": false,
