@@ -181,6 +181,17 @@
           "title": "Allow full screen",
           "default": false
         },
+        "_aspectRatio": {
+          "type": "string",
+          "title": "Aspect ratio",
+          "default": "landscape",
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
+          "_backboneForms": "Select"
+        },
         "_pauseWhenOffScreen": {
           "type": "boolean",
           "title": "Pause playback when no longer in view",
