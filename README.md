@@ -65,6 +65,9 @@ If using closed captions, use this property to specify which language should be 
 ### \_allowFullScreen (boolean):
 Determines whether fullscreen mode is available or not. The default is `false`.
 
+### \_aspectRatio (string):
+Defines the aspect ratio of the video to either be landscape (16:9), portrait (9:16), or square (1:1). Acceptable values are `"landscape"`, `"portrait"` or `"square"`. The default is `"landscape"`.
+
 ### \_playsinline (boolean):
 If set to `true`, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above. The default is `false`.
 
@@ -207,7 +210,7 @@ Although [Adobe Flash Player has now reached End of Life](https://www.adobe.com/
 **Please note**: if you wish to use this method of playback it is entirely at your own risk and not supported by the Adapt Core Team.
 
 ----------------------------
-**Version number:**  5.1.0  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
+**Version number:**  5.2.0  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
 **Framework versions:** 5.5+  
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)  
 **Accessibility support:** WAI AA  
