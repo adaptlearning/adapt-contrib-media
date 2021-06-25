@@ -193,9 +193,13 @@
     "_aspectRatio": {
       "type": "string",
       "required": true,
-      "enum": ["landscape", "portrait", "square"],
       "default": "landscape",
-      "editorOnly": true
+      "title": "Aspect ratio",
+      "enum": ["landscape", "portrait", "square"],
+      "inputType": {
+        "type": "Select",
+        "options": ["landscape", "portrait", "square"]
+      }
     },
     "_pauseWhenOffScreen": {
       "type": "boolean",
