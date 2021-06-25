@@ -194,7 +194,7 @@
       "type": "string",
       "required": true,
       "default": "landscape",
-      "title": "Aspect ratio"
+      "title": "Aspect ratio",
       "enum": ["landscape", "portrait", "square"],
       "inputType": {
         "type": "Select",
