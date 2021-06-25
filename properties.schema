@@ -199,8 +199,7 @@
       "inputType": {
         "type": "Select",
         "options": ["landscape", "portrait", "square"]
-      },
-      "editorOnly": true
+      }
     },
     "_pauseWhenOffScreen": {
       "type": "boolean",
