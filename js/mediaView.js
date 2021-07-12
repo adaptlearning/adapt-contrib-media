@@ -75,7 +75,7 @@ define([
         'media:stop': this.onMediaStop
       });
 
-      _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick');
+      _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
       // set initial player state attributes
       this.model.set({
@@ -307,7 +307,9 @@ define([
 
       Adapt.trigger('media:stop', this);
 
-      if (this.model.get('_pauseWhenOffScreen')) $(this.mediaElement).on('inview', this.onMediaElementInview);
+      if (this.model.get('_pauseWhenOffScreen')) {
+        this.$('.component__widget').on('inview', this.onWidgetInview);
+      }
 
       this.model.set({
         '_isMediaPlaying': true,
@@ -322,7 +324,7 @@ define([
     onMediaElementPause(event) {
       this.queueGlobalEvent('pause');
 
-      $(this.mediaElement).off('inview', this.onMediaElementInview);
+      this.$('.component__widget').off('inview', this.onWidgetInview);
 
       this.model.set('_isMediaPlaying', false);
     }
@@ -337,8 +339,8 @@ define([
       }
     }
 
-    onMediaElementInview(event, isInView) {
-      if (!isInView && !event.currentTarget.paused) event.currentTarget.pause();
+    onWidgetInview(event, isInView) {
+      if (!isInView && !this.mediaElement.paused) this.mediaElement.player.pause();
     }
 
     onMediaElementSeeking(event) {
@@ -418,6 +420,7 @@ define([
     remove() {
       this.$('.mejs-overlay-button').off('click', this.onOverlayClick);
       this.$('.mejs-mediaelement').off('click', this.onMediaElementClick);
+      this.$('.component__widget').off('inview', this.onWidgetInview);
 
       if (this.model.get('_useClosedCaptions')) {
         const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
@@ -454,8 +457,7 @@ define([
           'pause': this.onMediaElementPause,
           'ended': this.onMediaElementEnded,
           'seeking': this.onMediaElementSeeking,
-          'timeupdate': this.onMediaElementTimeUpdate,
-          'inview': this.onMediaElementInview
+          'timeupdate': this.onMediaElementTimeUpdate
         });
 
         this.mediaElement.src = '';
