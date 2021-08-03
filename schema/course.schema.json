@@ -1,0 +1,42 @@
+{
+  "$anchor": "media-course",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$patch": {
+    "source": {
+      "$ref": "course"
+    },
+    "with": {
+      "properties": {
+        "_globals": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "_media": {
+              "type": "object",
+              "default": {},
+              "properties": {
+                "ariaRegion": {
+                  "type": "string",
+                  "title": "ARIA region",
+                  "default": "Media player{{#any _transcript._inlineTranscript _transcript._externalTranscript}} and transcript{{/any}}.",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "skipToTranscript": {
+                  "type": "string",
+                  "title": "Skip to transcript",
+                  "default": "Skip to transcript",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

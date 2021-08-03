@@ -1,0 +1,289 @@
+{
+  "$anchor": "media-component",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$merge": {
+    "source": {
+      "$ref": "component"
+    },
+    "with": {
+      "required": [
+        "_setCompletionOn",
+        "_startVolume"
+      ],
+      "properties": {
+        "_supportedLayout": {
+          "type": "string",
+          "title": "Supported layout",
+          "default": "both",
+          "enum": [
+            "full-width",
+            "half-width",
+            "both"
+          ],
+          "_adapt": {
+            "editorOnly": true
+          }
+        },
+        "instruction": {
+          "type": "string",
+          "title": "Instruction",
+          "default": "",
+          "_adapt": {
+            "translatable": true
+          }
+        },
+        "_media": {
+          "type": "object",
+          "title": "Media",
+          "default": {},
+          "properties": {
+            "mp4": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "MP4 source",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "video"
+              }
+            },
+            "ogv": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "OGV source",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "video"
+              }
+            },
+            "webm": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "WebM source",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "video"
+              }
+            },
+            "mp3": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "MP3 source",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "audio"
+              }
+            },
+            "source": {
+              "type": "string",
+              "title": "External source",
+              "description": "Enter an external link, such as a YouTube URL",
+              "default": ""
+            },
+            "type": {
+              "type": "string",
+              "title": "External source type",
+              "description": "Select the external source type, for a YouTube link this would be 'video/youtube', and 'video/vimeo' for Vimeo",
+              "default": "",
+              "enum": [
+                "",
+                "video/youtube",
+                "video/vimeo"
+              ],
+              "_backboneForms": "Select"
+            },
+            "poster": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "Poster frame",
+              "description": "Image displayed before the video is played (except on Vimeo)",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "image"
+              }
+            },
+            "cc": {
+              "type": "array",
+              "title": "Closed captions",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "srclang": {
+                    "type": "string",
+                    "title": "Language code",
+                    "default": ""
+                  },
+                  "src": {
+                    "type": "string",
+                    "isObjectId": true,
+                    "title": "WebVTT source",
+                    "_backboneForms": {
+                      "type": "Asset",
+                      "media": "other"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "_setCompletionOn": {
+          "type": "string",
+          "title": "Completion trigger",
+          "description": "Defines what media event should trigger completion of this component",
+          "default": "play",
+          "enum": [
+            "inview",
+            "play",
+            "ended"
+          ],
+          "_backboneForms": "Select"
+        },
+        "_useClosedCaptions": {
+          "type": "boolean",
+          "title": "Enable closed captions",
+          "default": false
+        },
+        "_startLanguage": {
+          "type": "string",
+          "title": "Initial closed captions language",
+          "description": "Select which closed caption language to display by default. Only required when closed captions are enabled and there are multiple languages",
+          "default": "en"
+        },
+        "_showVolumeControl": {
+          "type": "boolean",
+          "title": "Show volume control (not supported on mobile)",
+          "description": "When enabled, the volume control will appear in the media player. On mobile devices the audio level is controlled the device's physical volume controls",
+          "default": false
+        },
+        "_startVolume": {
+          "type": "string",
+          "title": "Default volume (not supported on mobile)",
+          "description": "Defines the default volume. On mobile devices the audio level is under the user's physical control",
+          "default": "80%",
+          "enum": [
+            "0%",
+            "10%",
+            "20%",
+            "30%",
+            "40%",
+            "50%",
+            "60%",
+            "70%",
+            "80%",
+            "90%",
+            "100%"
+          ],
+          "_backboneForms": "Select"
+        },
+        "_allowFullScreen": {
+          "type": "boolean",
+          "title": "Allow full screen",
+          "default": false
+        },
+        "_aspectRatio": {
+          "type": "string",
+          "title": "Aspect ratio",
+          "default": "landscape",
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
+          "_backboneForms": "Select"
+        },
+        "_pauseWhenOffScreen": {
+          "type": "boolean",
+          "title": "Pause playback when no longer in view",
+          "default": false
+        },
+        "_playsinline": {
+          "type": "boolean",
+          "title": "Play videos inline on iOS",
+          "description": "If enabled, videos will play 'inline' on iPhones (the same way they do on iPads). Note that this feature is only available in iOS10 and above",
+          "default": false
+        },
+        "_preventForwardScrubbing": {
+          "type": "boolean",
+          "title": "Attempt to prevent media scrubbing",
+          "description": "If enabled, will attempt to prevent users from skipping ahead in audio/video",
+          "default": false
+        },
+        "_transcript": {
+          "type": "object",
+          "title": "Transcript",
+          "default": {},
+          "properties": {
+            "_setCompletionOnView": {
+              "type": "boolean",
+              "title": "Mark this component as complete when transcript is shown",
+              "default": true
+            },
+            "_inlineTranscript": {
+              "type": "boolean",
+              "title": "Enable inline transcript",
+              "default": false
+            },
+            "_externalTranscript": {
+              "type": "boolean",
+              "title": "Enable linked transcript file",
+              "default": false
+            },
+            "inlineTranscriptButton": {
+              "type": "string",
+              "title": "Inline transcript open button label",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "inlineTranscriptCloseButton": {
+              "type": "string",
+              "title": "Inline transcript close button label",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "inlineTranscriptBody": {
+              "type": "string",
+              "title": "Inline transcript",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              },
+              "_backboneForms": "TextArea"
+            },
+            "transcriptLinkButton": {
+              "type": "string",
+              "title": "Linked transcript file button label",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "transcriptLink": {
+              "type": "string",
+              "isObjectId": true,
+              "title": "Linked transcript file source",
+              "_backboneForms": {
+                "type": "Asset",
+                "media": "other"
+              }
+            }
+          }
+        },
+        "_playerOptions": {
+          "type": "object",
+          "title": "Player options",
+          "description": "Optional object that can be used to customize the player",
+          "default": {},
+          "_backboneForms": {
+            "type": "CodeEditor",
+            "mode": "json"
+          }
+        }
+      }
+    }
+  }
+}
