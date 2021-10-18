@@ -93,8 +93,6 @@ define([
 
         this.model.set('_media', media);
       }
-
-      this.checkIfResetOnRevisit();
     }
 
     postRender() {
@@ -407,14 +405,6 @@ define([
 
       const isPaused = player.media.paused;
       if (!isPaused) player.pause();
-    }
-
-    checkIfResetOnRevisit() {
-      const isResetOnRevisit = this.model.get('_isResetOnRevisit');
-
-      if (isResetOnRevisit) {
-        this.model.reset(isResetOnRevisit);
-      }
     }
 
     remove() {
