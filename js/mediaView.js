@@ -217,6 +217,7 @@ define([
       this.$('.media__widget').children('.mejs-offscreen').remove();
       this.$('[role=application]').removeAttr('role tabindex');
       this.$('[aria-controls]').removeAttr('aria-controls');
+      this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
     }
 
     setupEventListeners() {
