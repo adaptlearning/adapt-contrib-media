@@ -190,14 +190,14 @@ class MediaView extends ComponentView {
         modelOptions.alwaysShowControls = false;
         modelOptions.hideVideoControlsOnLoad = true;
         modelOptions.features = [];
-        if (this.froogaloopAdded) return callback();
+        if (MediaView.froogaloopAdded) return callback();
         $.getScript('assets/froogaloop.js')
           .done(() => {
-            this.froogaloopAdded = true;
+            MediaView.froogaloopAdded = true;
             callback();
           })
           .fail(() => {
-            this.froogaloopAdded = false;
+            MediaView.froogaloopAdded = false;
             Adapt.log.error('Could not load froogaloop.js');
           });
         break;
