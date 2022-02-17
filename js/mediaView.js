@@ -300,7 +300,7 @@ class MediaView extends ComponentView {
     Adapt.trigger('media:stop', this);
 
     if (this.model.get('_pauseWhenOffScreen')) {
-      this.$('.component__widget').on('inview', this.onWidgetInview);
+      this.$('.mejs-container').on('inview', this.onWidgetInview);
     }
 
     this.model.set({
@@ -315,7 +315,7 @@ class MediaView extends ComponentView {
   onMediaElementPause(event) {
     this.queueGlobalEvent('pause');
 
-    this.$('.component__widget').off('inview', this.onWidgetInview);
+    this.$('.mejs-container').off('inview', this.onWidgetInview);
 
     this.model.set('_isMediaPlaying', false);
   }
@@ -401,7 +401,7 @@ class MediaView extends ComponentView {
   remove() {
     this.$('.mejs-overlay-button').off('click', this.onOverlayClick);
     this.$('.mejs-mediaelement').off('click', this.onMediaElementClick);
-    this.$('.component__widget').off('inview', this.onWidgetInview);
+    this.$('.mejs-container').off('inview', this.onWidgetInview);
 
     if (this.model.get('_useClosedCaptions')) {
       const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
