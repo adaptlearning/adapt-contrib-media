@@ -6,7 +6,6 @@ import 'libraries/mediaelement-fullscreen-hook';
 import log from 'core/js/a11y/log';
 import offlineStorage from 'core/js/offlineStorage';
 
-
 /*
   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
   * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
