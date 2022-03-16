@@ -1,7 +1,11 @@
 import Adapt from 'core/js/adapt';
+import a11y from 'core/js/a11y';
 import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import 'libraries/mediaelement-fullscreen-hook';
+import log from 'core/js/a11y/log';
+import offlineStorage from 'core/js/offlineStorage';
+
 
 /*
   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
@@ -136,10 +140,10 @@ class MediaView extends ComponentView {
 
     if (this.model.get('_useClosedCaptions')) {
       const startLanguage = this.model.get('_startLanguage') || 'en';
-      if (!Adapt.offlineStorage.get('captions')) {
-        Adapt.offlineStorage.set('captions', startLanguage);
+      if (!offlineStorage.get('captions')) {
+        offlineStorage.set('captions', startLanguage);
       }
-      modelOptions.startLanguage = this.checkForSupportedCCLanguage(Adapt.offlineStorage.get('captions'));
+      modelOptions.startLanguage = this.checkForSupportedCCLanguage(offlineStorage.get('captions'));
     }
 
     if (modelOptions.alwaysShowControls === undefined) {
@@ -159,7 +163,7 @@ class MediaView extends ComponentView {
       const _media = this.model.get('_media');
       // if no media is selected - set ready now, as success won't be called
       if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
-        Adapt.log.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
+        log.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
@@ -198,7 +202,7 @@ class MediaView extends ComponentView {
           })
           .fail(() => {
             MediaView.froogaloopAdded = false;
-            Adapt.log.error('Could not load froogaloop.js');
+            log.error('Could not load froogaloop.js');
           });
         break;
       default:
@@ -254,7 +258,7 @@ class MediaView extends ComponentView {
 
     this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
       const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
-      Adapt.offlineStorage.set('captions', srclang);
+      offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
     }, 250)); // needs debouncing because the click event fires twice
 
@@ -358,7 +362,7 @@ class MediaView extends ComponentView {
     const player = this.mediaElement.player;
 
     if (!player) {
-      Adapt.log.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
+      log.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
       return;
     }
 
@@ -497,7 +501,7 @@ class MediaView extends ComponentView {
     // need slight delay before focussing button to make it work when JAWS is running
     // see https://github.com/adaptlearning/adapt_framework/issues/2427
     _.delay(() => {
-      Adapt.a11y.focus(this.$('.media__transcript-btn'));
+      a11y.focus(this.$('.media__transcript-btn'));
     }, 250);
   }
 
