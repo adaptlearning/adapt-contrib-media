@@ -16,6 +16,7 @@
         "_pauseWhenOffScreen": false,
         "_playsinline": false,
         "_preventForwardScrubbing": false,
+        "_comment": "_startLanguage = none | en | fr | ...",
         "_startLanguage": "en",
         "_showVolumeControl": true,
         "_startVolume": "80%",
