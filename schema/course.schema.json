@@ -31,6 +31,150 @@
                   "_adapt": {
                     "translatable": true
                   }
+                },
+                "playText": {
+                  "type": "string",
+                  "title": "Play",
+                  "default": "Play",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "pauseText": {
+                  "type": "string",
+                  "title": "Pause",
+                  "default": "Pause",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "stopText": {
+                  "type": "string",
+                  "title": "Stop",
+                  "default": "Stop",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "audioPlayerText": {
+                  "type": "string",
+                  "title": "Audio Player",
+                  "default": "Audio Player",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "videoPlayerText": {
+                  "type": "string",
+                  "title": "Video Player",
+                  "default": "Video Player",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "tracksText": {
+                  "type": "string",
+                  "title": "Captions/Subtitles",
+                  "default": "Captions/Subtitles",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "timeSliderText": {
+                  "type": "string",
+                  "title": "Time Slider",
+                  "default": "Time Slider",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "muteText": {
+                  "type": "string",
+                  "title": "Mute Toggle",
+                  "default": "Mute Toggle",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "unmuteStatusText": {
+                  "type": "string",
+                  "title": "Unmute",
+                  "default": "Unmute",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "muteStatusText": {
+                  "type": "string",
+                  "title": "Mute",
+                  "default": "Mute",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "volumeSliderText": {
+                  "type": "string",
+                  "title": "Volume Slider",
+                  "default": "Volume Slider",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "fullscreenText": {
+                  "type": "string",
+                  "title": "Fullscreen",
+                  "default": "Fullscreen",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "goFullscreenText": {
+                  "type": "string",
+                  "title": "Go Fullscreen",
+                  "default": "Go Fullscreen",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "turnOffFullscreenText": {
+                  "type": "string",
+                  "title": "Turn off Fullscreen",
+                  "default": "Turn off Fullscreen",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "noneText": {
+                  "type": "string",
+                  "title": "None",
+                  "default": "None",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "skipBackText": {
+                  "type": "string",
+                  "title": "Skip back %1 seconds",
+                  "default": "Skip back %1 seconds",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "allyVolumeControlText": {
+                  "type": "string",
+                  "title": "Use Up/Down Arrow keys to increase or decrease volume.",
+                  "default": "Use Up/Down Arrow keys to increase or decrease volume.",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "progessHelpText": {
+                  "type": "string",
+                  "title": "Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.",
+                  "default": "Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.",
+                  "_adapt": {
+                    "translatable": true
+                  }
                 }
               }
             }
