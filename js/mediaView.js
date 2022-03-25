@@ -73,7 +73,7 @@ const ariaLabelMappings = {
 };
 
 Adapt.on('app:dataReady', () => {
-  // populate the aria label from the _global._components._media.[*]
+  // Populate the aria labels from the _global._components._media
   const dynamicLabels = window.mejs.i18n.locale.strings['en-US'];
   const fixedDefaults = window.mejs.MepDefaults;
   const globals = Adapt.course.get('_globals')?._components?._media;
