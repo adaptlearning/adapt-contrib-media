@@ -19,6 +19,150 @@
       "inputType": "Text",
       "validators": [],
       "translatable": true
+    },
+    "playText": {
+      "type": "string",
+      "required": true,
+      "default": "Play",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "pauseText": {
+      "type": "string",
+      "required": true,
+      "default": "Pause",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "stopText": {
+      "type": "string",
+      "required": true,
+      "default": "Stop",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "audioPlayerText": {
+      "type": "string",
+      "required": true,
+      "default": "Audio Player",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "videoPlayerText": {
+      "type": "string",
+      "required": true,
+      "default": "Video Player",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "tracksText": {
+      "type": "string",
+      "required": true,
+      "default": "Captions/Subtitles",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "timeSliderText": {
+      "type": "string",
+      "required": true,
+      "default": "Time Slider",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "muteText": {
+      "type": "string",
+      "required": true,
+      "default": "Mute Toggle",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "unmuteStatusText": {
+      "type": "string",
+      "required": true,
+      "default": "Unmute",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "muteStatusText": {
+      "type": "string",
+      "required": true,
+      "default": "Mute",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "volumeSliderText": {
+      "type": "string",
+      "required": true,
+      "default": "Volume Slider",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "fullscreenText": {
+      "type": "string",
+      "required": true,
+      "default": "Fullscreen",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "goFullscreenText": {
+      "type": "string",
+      "required": true,
+      "default": "Go Fullscreen",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "turnOffFullscreenText": {
+      "type": "string",
+      "required": true,
+      "default": "Turn off Fullscreen",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "noneText": {
+      "type": "string",
+      "required": true,
+      "default": "None",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "skipBackText": {
+      "type": "string",
+      "required": true,
+      "default": "Skip back %1 seconds",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "allyVolumeControlText": {
+      "type": "string",
+      "required": true,
+      "default": "Use Up/Down Arrow keys to increase or decrease volume.",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "progessHelpText": {
+      "type": "string",
+      "required": true,
+      "default": "Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
     }
   },
   "properties": {
