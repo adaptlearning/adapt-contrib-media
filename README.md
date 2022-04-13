@@ -210,7 +210,7 @@ Although [Adobe Flash Player has now reached End of Life](https://www.adobe.com/
 **Please note**: if you wish to use this method of playback it is entirely at your own risk and not supported by the Adapt Core Team.
 
 ----------------------------
-**Version number:**  5.4.1  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a></br>
+**Version number:**  5.6.0  <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a></br>
 **Framework versions:** 5.17.2+</br>
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)</br>
 **Accessibility support:** WAI AA</br>
