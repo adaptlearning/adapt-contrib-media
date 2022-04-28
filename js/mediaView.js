@@ -5,8 +5,6 @@ import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import 'libraries/mediaelement-fullscreen-hook';
-import log from 'core/js/logging';
-import offlineStorage from 'core/js/offlineStorage';
 
 /*
   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
