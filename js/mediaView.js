@@ -1,10 +1,10 @@
 import Adapt from 'core/js/adapt';
+import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
+import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import 'libraries/mediaelement-fullscreen-hook';
-import log from 'core/js/logging';
-import offlineStorage from 'core/js/offlineStorage';
 
 /*
   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
@@ -200,7 +200,7 @@ class MediaView extends ComponentView {
       const _media = this.model.get('_media');
       // if no media is selected - set ready now, as success won't be called
       if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
-        log.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
+        logging.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
@@ -239,7 +239,7 @@ class MediaView extends ComponentView {
           })
           .fail(() => {
             MediaView.froogaloopAdded = false;
-            log.error('Could not load froogaloop.js');
+            logging.error('Could not load froogaloop.js');
           });
         break;
       default:
@@ -399,7 +399,7 @@ class MediaView extends ComponentView {
     const player = this.mediaElement.player;
 
     if (!player) {
-      log.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
+      logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
       return;
     }
 
