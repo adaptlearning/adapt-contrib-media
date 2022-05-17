@@ -248,9 +248,11 @@ class MediaView extends ComponentView {
   }
 
   cleanUpPlayer() {
+    const containerLabel = this.model.get('displayTitle') ? this.model.get('displayTitle') : this.model.get('title');
     this.$('.media__widget').children('.mejs-offscreen').remove();
     this.$('[role=application]').removeAttr('role tabindex');
     this.$('.mejs-container').attr('role', 'region');
+    this.$('.mejs-container').attr('aria-label', containerLabel);
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
   }
