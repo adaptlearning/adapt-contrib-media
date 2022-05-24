@@ -252,7 +252,10 @@ class MediaView extends ComponentView {
     this.$('.media__widget').children('.mejs-offscreen').remove();
     this.$('[role=application]').removeAttr('role tabindex');
     this.$('.mejs-container').attr('role', 'region');
-    this.$('.mejs-container').attr('aria-label', containerLabel);
+    this.$('.mejs-container').attr({
+      role: 'region',
+      'aria-label': containerLabel
+    });
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
   }
