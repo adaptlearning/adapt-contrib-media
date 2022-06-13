@@ -251,7 +251,6 @@ class MediaView extends ComponentView {
     const containerLabel = this.model.get('displayTitle') || this.model.get('title');
     this.$('.media__widget').children('.mejs-offscreen').remove();
     this.$('[role=application]').removeAttr('role tabindex');
-    this.$('.mejs-container').attr('role', 'region');
     this.$('.mejs-container').attr({
       role: 'region',
       'aria-label': containerLabel
