@@ -176,7 +176,7 @@
     "instruction": {
       "type": "string",
       "required": false,
-      "default": "",
+      "default": "Select the play button to start the video.",
       "inputType": "Text",
       "validators": [],
       "help": "This is the instruction text",
