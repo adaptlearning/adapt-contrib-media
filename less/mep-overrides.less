@@ -72,14 +72,8 @@
 
 // Bug fix for when video aspect ratio is different to viewport
 // --------------------------------------------------
-// as video is set to object-fit: fill, horizontally center the video 
-.mejs-mediaelement {
-  left: 50%;
-  transform: translateX(-50%);
-}
-// allow the height to fill the viewport without distorting the video width
 .orientation-portrait .mejs-container-fullscreen video {
-  width: auto !important;
+  object-fit: contain;
 }
 
 // Bug fix for missing control icons on iOS touch devices
