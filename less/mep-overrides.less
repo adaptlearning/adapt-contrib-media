@@ -70,6 +70,12 @@
   background-color: black;
 }
 
+// Bug fix to contain video when in portrait mode
+// --------------------------------------------------
+.orientation-portrait .mejs-container-fullscreen video {
+  object-fit: contain;
+}
+
 // Bug fix for missing control icons on iOS touch devices
 // required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
 // --------------------------------------------------
