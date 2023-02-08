@@ -30,7 +30,7 @@ Object.assign(window.mejs.MepDefaults, {
 
 // The following function is used to to prevent a memory leak in Internet Explorer
 // See: http://javascript.crockford.com/memory/leak.html
-const purge = function(d) {
+const purge = function (d) {
   let a = d.attributes;
   if (a) {
     for (let i = a.length - 1; i >= 0; i -= 1) {
