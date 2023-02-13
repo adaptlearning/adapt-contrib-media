@@ -5028,14 +5028,11 @@ if (typeof jQuery != 'undefined') {
 			if (lang == 'none') {
 				t.selectedTrack = null;
 				t.captionsButton.removeClass('mejs-captions-enabled');
-				t.captionsButton[0].firstChild.setAttribute('aria-pressed', false);
 			} else {
 				for (i = 0; i < t.tracks.length; i++) {
 					if (t.tracks[i].srclang == lang) {
-						if (t.selectedTrack === null) {
+						if (t.selectedTrack === null)
 							t.captionsButton.addClass('mejs-captions-enabled');
-							t.captionsButton[0].firstChild.setAttribute('aria-pressed', true);
-						}
 						t.selectedTrack = t.tracks[i];
 						t.captions.attr('lang', t.selectedTrack.srclang);
 						t.displayCaptions();
