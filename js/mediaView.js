@@ -30,7 +30,7 @@ Object.assign(window.mejs.MepDefaults, {
 
 // The following function is used to to prevent a memory leak in Internet Explorer
 // See: http://javascript.crockford.com/memory/leak.html
-const purge = function(d) {
+const purge = function (d) {
   let a = d.attributes;
   if (a) {
     for (let i = a.length - 1; i >= 0; i -= 1) {
@@ -46,6 +46,36 @@ const purge = function(d) {
       purge(d.childNodes[i]);
     }
   }
+};
+
+/**
+ * Overwrite mediaelement-and-player setTrack to allow use of aria-pressed on closed captions button.
+*/
+
+window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
+
+  const t = this;
+  let i;
+
+  if (lang === 'none') {
+    t.selectedTrack = null;
+    t.captionsButton.removeClass('mejs-captions-enabled');
+    t.captionsButton[0].firstChild.setAttribute('aria-pressed', false);
+  } else {
+    for (i = 0; i < t.tracks.length; i++) {
+      if (t.tracks[i].srclang === lang) {
+        if (t.selectedTrack === null) {
+          t.captionsButton.addClass('mejs-captions-enabled');
+          t.captionsButton[0].firstChild.setAttribute('aria-pressed', true);
+        }
+        t.selectedTrack = t.tracks[i];
+        t.captions.attr('lang', t.selectedTrack.srclang);
+        t.displayCaptions();
+        break;
+      }
+    }
+  }
+
 };
 
 /**
