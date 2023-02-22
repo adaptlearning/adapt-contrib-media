@@ -578,6 +578,7 @@ class MediaView extends ComponentView {
 
   onExternalTranscriptClicked(event) {
     if (this.model.get('_transcript')._setCompletionOnView === false) return;
+    Adapt.trigger('media:transcriptComplete', this);
     this.setCompletionStatus();
   }
 
