@@ -601,12 +601,14 @@ class MediaView extends ComponentView {
     $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
 
     if (this.model.get('_transcript')._setCompletionOnView !== false) {
+      Adapt.trigger('media:transcriptComplete', this);
       this.setCompletionStatus();
     }
   }
 
   onExternalTranscriptClicked(event) {
     if (this.model.get('_transcript')._setCompletionOnView === false) return;
+    Adapt.trigger('media:transcriptComplete', this);
     this.setCompletionStatus();
   }
 
