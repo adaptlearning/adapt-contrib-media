@@ -79,7 +79,7 @@ window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
 };
 
 /**
- * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix
+ * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix (Media issue #255)
 */
 
 window.mejs.MediaElementPlayer.prototype.enterFullScreen = function () {
