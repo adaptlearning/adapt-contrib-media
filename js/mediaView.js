@@ -79,6 +79,81 @@ window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
 };
 
 /**
+ * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix
+*/
+
+window.mejs.MediaElementPlayer.prototype.enterFullScreen = function () {
+  const t = this;
+
+  if (window.mejs.MediaFeatures.hasiOSFullScreen) {
+    t.media.webkitEnterFullscreen();
+    return;
+  }
+
+  // set it to not show scroll bars so 100% will work
+  $(document.documentElement).addClass('mejs-fullscreen');
+
+  // store sizing
+  t.normalHeight = t.container.height();
+  t.normalWidth = t.container.width();
+
+  // attempt to do true fullscreen
+  if (t.fullscreenMode === 'native-native' || t.fullscreenMode === 'plugin-native') {
+
+    window.mejs.MediaFeatures.requestFullScreen(t.container[0]);
+  }
+
+  // make full size
+  t.container
+    .addClass('mejs-container-fullscreen')
+    .width('100%')
+    .height('100%');
+
+  // Only needed for safari 5.1 native full screen, can cause display issues elsewhere
+  // Actually, it seems to be needed for IE8, too
+  t.containerSizeTimeout = setTimeout(function () {
+    t.container.css({ width: '100%', height: '100%' });
+    t.setControlsSize();
+  }, 500);
+
+  if (t.media.pluginType === 'native') {
+    t.$media
+      .width('100%')
+      .height('100%');
+  } else {
+    t.container.find('.mejs-shim')
+      .width('100%')
+      .height('100%');
+
+    setTimeout(function () {
+      const win = $(window);
+      const winW = win.width();
+      const winH = win.height();
+
+      t.media.setVideoSize(winW, winH);
+    }, 500);
+  }
+
+  t.layers.children('div')
+    .width('100%')
+    .height('100%');
+
+  if (t.fullscreenBtn) {
+    t.fullscreenBtn
+      .removeClass('mejs-fullscreen')
+      .addClass('mejs-unfullscreen');
+  }
+
+  t.setControlsSize();
+  t.isFullScreen = true;
+
+  t.container.find('.mejs-captions-text').css('font-size', screen.width / t.width * 1.00 * 100 + '%');
+  t.container.find('.mejs-captions-position').css('bottom', '45px');
+
+  t.container.trigger('enteredfullscreen');
+};
+
+/**
  * Force the default language so that the aria-label can be localised from Adapt
  * Note: Do not change these, their names and values are required for mapping in mejs
  */

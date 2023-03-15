@@ -4570,30 +4570,30 @@ if (typeof jQuery != 'undefined') {
 				mejs.MediaFeatures.requestFullScreen(t.container[0]);
 				//return;
 
-				// if (t.isInIframe) {
-				// 	// sometimes exiting from fullscreen doesn't work
-				// 	// notably in Chrome <iframe>. Fixed in version 17
-				// 	setTimeout(function checkFullscreen() {
+				if (t.isInIframe) {
+					// sometimes exiting from fullscreen doesn't work
+					// notably in Chrome <iframe>. Fixed in version 17
+					setTimeout(function checkFullscreen() {
 
-				// 		if (t.isNativeFullScreen) {
-				// 			var percentErrorMargin = 0.002, // 0.2%
-				// 				windowWidth = $(window).width(),
-				// 				screenWidth = screen.width,
-				// 				absDiff = Math.abs(screenWidth - windowWidth),
-				// 				marginError = screenWidth * percentErrorMargin;
+						if (t.isNativeFullScreen) {
+							var percentErrorMargin = 0.002, // 0.2%
+								windowWidth = $(window).width(),
+								screenWidth = screen.width,
+								absDiff = Math.abs(screenWidth - windowWidth),
+								marginError = screenWidth * percentErrorMargin;
 
-				// 			// check if the video is suddenly not really fullscreen
-				// 			if (absDiff > marginError) {
-				// 				// manually exit
-				// 				t.exitFullScreen();
-				// 			} else {
-				// 				// test again
-				// 				setTimeout(checkFullscreen, 500);
-				// 			}
-				// 		}
+							// check if the video is suddenly not really fullscreen
+							if (absDiff > marginError) {
+								// manually exit
+								t.exitFullScreen();
+							} else {
+								// test again
+								setTimeout(checkFullscreen, 500);
+							}
+						}
 
-				// 	}, 1000);
-				// }
+					}, 1000);
+				}
 
 			} else if (t.fullscreeMode == 'fullwindow') {
 				// move into position
