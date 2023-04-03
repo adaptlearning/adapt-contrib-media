@@ -79,9 +79,34 @@ window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
 };
 
 /**
+ * Fix for firefox fullscreen api
+ * https://github.com/adaptlearning/adapt-contrib-media/issues/239
+ */
+const mediaFeatures = window.mejs.MediaFeatures;
+if (mediaFeatures.hasMozNativeFullScreen) {
+  mediaFeatures.fullScreenEventName = document.exitFullscreen
+    ? 'fullscreenchange'
+    : 'mozfullscreenchange';
+  mediaFeatures.requestFullScreen = el => {
+    document.exitFullscreen
+      ? el.requestFullscreen()
+      : el.mozRequestFullScreen();
+  };
+  mediaFeatures.isFullScreen = () => {
+    return document.exitFullscreen
+      ? Boolean(document.fullscreenElement)
+      : document.mozFullScreen;
+  };
+  mediaFeatures.cancelFullScreen = el => {
+    document.exitFullscreen
+      ? document.exitFullscreen()
+      : document.mozCancelFullScreen();
+  };
+}
+
+/**
  * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix (Media issue #255)
 */
-
 window.mejs.MediaElementPlayer.prototype.enterFullScreen = function () {
   const t = this;
 
