@@ -84,24 +84,26 @@ window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
  */
 const mediaFeatures = window.mejs.MediaFeatures;
 if (mediaFeatures.hasMozNativeFullScreen) {
-  mediaFeatures.fullScreenEventName = document.exitFullscreen
-    ? 'fullscreenchange'
-    : 'mozfullscreenchange';
-  mediaFeatures.requestFullScreen = el => {
-    document.exitFullscreen
-      ? el.requestFullscreen()
-      : el.mozRequestFullScreen();
-  };
-  mediaFeatures.isFullScreen = () => {
-    return document.exitFullscreen
-      ? Boolean(document.fullscreenElement)
-      : document.mozFullScreen;
-  };
-  mediaFeatures.cancelFullScreen = el => {
-    document.exitFullscreen
-      ? document.exitFullscreen()
-      : document.mozCancelFullScreen();
-  };
+  Object.assign(mediaFeatures, {
+    fullScreenEventName: document.exitFullscreen
+      ? 'fullscreenchange'
+      : 'mozfullscreenchange',
+    requestFullScreen: el => {
+      document.exitFullscreen
+        ? el.requestFullscreen()
+        : el.mozRequestFullScreen();
+    },
+    isFullScreen: () => {
+      return document.exitFullscreen
+        ? Boolean(document.fullscreenElement)
+        : document.mozFullScreen;
+    },
+    cancelFullScreen: el => {
+      document.exitFullscreen
+        ? document.exitFullscreen()
+        : document.mozCancelFullScreen();
+    }
+  });
 }
 
 /**
