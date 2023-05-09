@@ -11,6 +11,21 @@
     display: none;
   }
 
+  // Skip to transcript button
+  &__skip-to-transcript {
+
+    html:not(.has-accessibility) & {
+      .u-display-none;
+    }
+
+    &:not(:focus-visible) {
+      height: 0;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+  }
+
   // Cross browser bug fixes
   // --------------------------------------------------
   .me-plugin {

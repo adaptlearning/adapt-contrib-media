@@ -4,7 +4,9 @@
   {{> component this}}
 
   {{#any _transcript._externalTranscript _transcript._inlineTranscript}}
-  <button class="aria-label js-skip-to-transcript" tabindex="-1" aria-label="{{_globals._components._media.skipToTranscript}}"></button>
+  <button class="btn-text media__skip-to-transcript js-skip-to-transcript">
+    {{_globals._components._media.skipToTranscript}}
+  </button>
   {{/any}}
 
   <div class="component__widget media__widget">
