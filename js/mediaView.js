@@ -217,7 +217,7 @@ class MediaView extends ComponentView {
       'media:stop': this.onMediaStop
     });
 
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
+    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
     // set initial player state attributes
     this.model.set({
@@ -383,7 +383,8 @@ class MediaView extends ComponentView {
     $(this.mediaElement).on({
       play: this.onMediaElementPlay,
       pause: this.onMediaElementPause,
-      ended: this.onMediaElementEnded
+      ended: this.onMediaElementEnded,
+      volumechange: this.onMediaVolumeChange
     });
 
     // occasionally the mejs code triggers a click of the captions language
@@ -479,6 +480,10 @@ class MediaView extends ComponentView {
     if (this.completionEvent === 'ended') {
       this.setCompletionStatus();
     }
+  }
+
+  onMediaVolumeChange(event) {
+    Adapt.trigger('media:volumeChange', this, this.mediaElement.muted, this.mediaElement.volume);
   }
 
   onWidgetInview(event, isInView) {
@@ -589,7 +594,8 @@ class MediaView extends ComponentView {
         pause: this.onMediaElementPause,
         ended: this.onMediaElementEnded,
         seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate
+        timeupdate: this.onMediaElementTimeUpdate,
+        volumechange: this.onMediaVolumeChange
       });
 
       this.mediaElement.src = '';
