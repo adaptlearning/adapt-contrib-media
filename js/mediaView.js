@@ -49,6 +49,118 @@ const purge = function (d) {
 };
 
 /**
+ * Overwrite mediaelement-and-player killContextMenuTimer to remove global delete
+*/
+window.mejs.MediaElementPlayer.prototype.killContextMenuTimer = function () {
+  var timer = this.contextMenuTimer;
+
+  //
+
+  if (timer != null) {
+    clearTimeout(timer);
+    timer = null;
+  }
+},
+
+/**
+ * Overwrite mediaelement-and-player buildfullscreen to remove global delete
+*/
+window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, controls, layers, media) {
+
+  if (!player.isVideo)
+    return;
+
+  player.isInIframe = (window.location != window.parent.location);
+
+  // detect on start
+  media.addEventListener('play', function () { player.detectFullscreenMode(); });
+
+  // build button
+  var t = this,
+    hideTimeout = null,
+    fullscreenBtn =
+      $('<div class="mejs-button mejs-fullscreen-button">' +
+        '<button type="button" aria-controls="' + t.id + '" title="' + t.options.fullscreenText + '" aria-label="' + t.options.fullscreenText + '"></button>' +
+        '</div>')
+        .appendTo(controls)
+        .on('click', function () {
+
+          // toggle fullscreen
+          var isFullScreen = (mejs.MediaFeatures.hasTrueNativeFullScreen && mejs.MediaFeatures.isFullScreen()) || player.isFullScreen;
+
+          if (isFullScreen) {
+            player.exitFullScreen();
+          } else {
+            player.enterFullScreen();
+          }
+        })
+        .on('mouseover', function () {
+
+          // very old browsers with a plugin
+          if (t.fullscreenMode == 'plugin-hover') {
+            if (hideTimeout !== null) {
+              clearTimeout(hideTimeout);
+            }
+
+            var buttonPos = fullscreenBtn.offset(),
+              containerPos = player.container.offset();
+
+            media.positionFullscreenButton(buttonPos.left - containerPos.left, buttonPos.top - containerPos.top, true);
+          }
+
+        })
+        .on('mouseout', function () {
+
+          if (t.fullscreenMode == 'plugin-hover') {
+            if (hideTimeout !== null) {
+              clearTimeout(hideTimeout);
+            }
+
+            hideTimeout = setTimeout(function () {
+              media.hideFullscreenButton();
+            }, 1500);
+          }
+
+        });
+
+
+
+  player.fullscreenBtn = fullscreenBtn;
+
+  t.globalBind('keydown', function (e) {
+    if (e.keyCode == 27 && ((mejs.MediaFeatures.hasTrueNativeFullScreen && mejs.MediaFeatures.isFullScreen()) || t.isFullScreen)) {
+      player.exitFullScreen();
+    }
+  });
+
+  t.normalHeight = 0;
+  t.normalWidth = 0;
+
+  // setup native fullscreen event
+  if (mejs.MediaFeatures.hasTrueNativeFullScreen) {
+
+    // chrome doesn't alays fire this in an iframe
+    var fullscreenChanged = function (e) {
+      if (player.isFullScreen) {
+        if (mejs.MediaFeatures.isFullScreen()) {
+          player.isNativeFullScreen = true;
+          // reset the controls once we are fully in full screen
+          player.setControlsSize();
+        } else {
+          player.isNativeFullScreen = false;
+          // when a user presses ESC
+          // make sure to put the player back into place
+          player.exitFullScreen();
+        }
+      }
+    };
+
+    player.globalBind(mejs.MediaFeatures.fullScreenEventName, fullscreenChanged);
+  }
+
+};
+
+/**
  * Overwrite mediaelement-and-player setTrack to allow use of aria-pressed on closed captions button.
 */
 
