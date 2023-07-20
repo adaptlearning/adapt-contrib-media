@@ -483,7 +483,7 @@ class MediaView extends ComponentView {
   }
 
   onMediaVolumeChange(event) {
-    Adapt.trigger('media:volumeChange', this, this.mediaElement.muted, this.mediaElement.volume);
+    Adapt.trigger('media:volumeChange', this.model, this.mediaElement.muted, this.mediaElement.volume);
   }
 
   onWidgetInview(event, isInView) {
