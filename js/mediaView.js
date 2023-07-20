@@ -3,7 +3,7 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-import './mediaLibraryOverrides';
+import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
 import 'libraries/mediaelement-fullscreen-hook';
 
