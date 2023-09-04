@@ -24,7 +24,7 @@ Object.assign(window.mejs.MepDefaults, {
 
 // The following function is used to to prevent a memory leak in Internet Explorer
 // See: http://javascript.crockford.com/memory/leak.html
-const purge = function (d) {
+window.mejs.purge = function (d) {
   let a = d.attributes;
   if (a) {
     for (let i = a.length - 1; i >= 0; i -= 1) {
@@ -37,7 +37,7 @@ const purge = function (d) {
   a = d.childNodes;
   if (a) {
     for (let i = 0, count = a.length; i < count; i += 1) {
-      purge(d.childNodes[i]);
+      window.mejs.purge(d.childNodes[i]);
     }
   }
 };
@@ -46,7 +46,7 @@ const purge = function (d) {
  * Overwrite mediaelement-and-player killContextMenuTimer to remove global delete
 */
 window.mejs.MediaElementPlayer.prototype.killContextMenuTimer = function () {
-  var timer = this.contextMenuTimer;
+  let timer = this.contextMenuTimer;
 
   //
 
@@ -54,25 +54,24 @@ window.mejs.MediaElementPlayer.prototype.killContextMenuTimer = function () {
     clearTimeout(timer);
     timer = null;
   }
-},
+};
 
 /**
  * Overwrite mediaelement-and-player buildfullscreen to remove global delete
 */
 window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, controls, layers, media) {
 
-  if (!player.isVideo)
-    return;
+  if (!player.isVideo) { return; }
 
-  player.isInIframe = (window.location != window.parent.location);
+  player.isInIframe = (window.location !== window.parent.location);
 
   // detect on start
   media.addEventListener('play', function () { player.detectFullscreenMode(); });
 
   // build button
-  var t = this,
-    hideTimeout = null,
-    fullscreenBtn =
+  const t = this;
+  let hideTimeout = null;
+  const fullscreenBtn =
       $('<div class="mejs-button mejs-fullscreen-button">' +
         '<button type="button" aria-controls="' + t.id + '" title="' + t.options.fullscreenText + '" aria-label="' + t.options.fullscreenText + '"></button>' +
         '</div>')
@@ -80,7 +79,7 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
         .on('click', function () {
 
           // toggle fullscreen
-          var isFullScreen = (mejs.MediaFeatures.hasTrueNativeFullScreen && mejs.MediaFeatures.isFullScreen()) || player.isFullScreen;
+          const isFullScreen = (window.mejs.MediaFeatures.hasTrueNativeFullScreen && window.mejs.MediaFeatures.isFullScreen()) || player.isFullScreen;
 
           if (isFullScreen) {
             player.exitFullScreen();
@@ -91,13 +90,13 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
         .on('mouseover', function () {
 
           // very old browsers with a plugin
-          if (t.fullscreenMode == 'plugin-hover') {
+          if (t.fullscreenMode === 'plugin-hover') {
             if (hideTimeout !== null) {
               clearTimeout(hideTimeout);
             }
 
-            var buttonPos = fullscreenBtn.offset(),
-              containerPos = player.container.offset();
+            const buttonPos = fullscreenBtn.offset();
+            const containerPos = player.container.offset();
 
             media.positionFullscreenButton(buttonPos.left - containerPos.left, buttonPos.top - containerPos.top, true);
           }
@@ -105,7 +104,7 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
         })
         .on('mouseout', function () {
 
-          if (t.fullscreenMode == 'plugin-hover') {
+          if (t.fullscreenMode === 'plugin-hover') {
             if (hideTimeout !== null) {
               clearTimeout(hideTimeout);
             }
@@ -117,12 +116,10 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
 
         });
 
-
-
   player.fullscreenBtn = fullscreenBtn;
 
   t.globalBind('keydown', function (e) {
-    if (e.keyCode == 27 && ((mejs.MediaFeatures.hasTrueNativeFullScreen && mejs.MediaFeatures.isFullScreen()) || t.isFullScreen)) {
+    if (e.keyCode === 27 && ((window.mejs.MediaFeatures.hasTrueNativeFullScreen && window.mejs.MediaFeatures.isFullScreen()) || t.isFullScreen)) {
       player.exitFullScreen();
     }
   });
@@ -131,12 +128,12 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
   t.normalWidth = 0;
 
   // setup native fullscreen event
-  if (mejs.MediaFeatures.hasTrueNativeFullScreen) {
+  if (window.mejs.MediaFeatures.hasTrueNativeFullScreen) {
 
     // chrome doesn't alays fire this in an iframe
-    var fullscreenChanged = function (e) {
+    const fullscreenChanged = function (e) {
       if (player.isFullScreen) {
-        if (mejs.MediaFeatures.isFullScreen()) {
+        if (window.mejs.MediaFeatures.isFullScreen()) {
           player.isNativeFullScreen = true;
           // reset the controls once we are fully in full screen
           player.setControlsSize();
@@ -149,7 +146,7 @@ window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, con
       }
     };
 
-    player.globalBind(mejs.MediaFeatures.fullScreenEventName, fullscreenChanged);
+    player.globalBind(window.mejs.MediaFeatures.fullScreenEventName, fullscreenChanged);
   }
 
 };

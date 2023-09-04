@@ -396,7 +396,7 @@ class MediaView extends ComponentView {
     if (this.mediaElement && this.mediaElement.player) {
       const playerId = this.mediaElement.player.id;
 
-      purge(this.$el[0]);
+      window.mejs.purge(this.$el[0]);
       this.mediaElement.player.remove();
 
       if (window.mejs.players[playerId]) {
