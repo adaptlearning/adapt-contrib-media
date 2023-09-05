@@ -20,7 +20,8 @@ class MediaView extends ComponentView {
   className() {
     let classes = super.className();
     const playerOptions = this.model.get('_playerOptions');
-    if (playerOptions?.toggleCaptionsButtonWhenOnlyOne) {
+    const captions = this.model.get('_media').cc;
+    if (playerOptions?.toggleCaptionsButtonWhenOnlyOne && captions?.length === 1) {
       classes += ' toggle-captions';
     }
     return classes;
