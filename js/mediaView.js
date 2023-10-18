@@ -106,7 +106,7 @@ class MediaView extends ComponentView {
     }
 
     if (modelOptions.alwaysShowControls === undefined) {
-      modelOptions.alwaysShowControls = false;
+      modelOptions.alwaysShowControls = true;
     }
     if (modelOptions.hideVideoControlsOnLoad === undefined) {
       modelOptions.hideVideoControlsOnLoad = true;
