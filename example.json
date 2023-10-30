@@ -67,7 +67,7 @@
             "showTimecodeFrameCount": false,
             "framesPerSecond": 25,
             "autosizeProgress" : true,
-            "alwaysShowControls": false,
+            "alwaysShowControls": true,
             "hideVideoControlsOnLoad": false,
             "clickToPlayPause": true,
             "iPadUseNativeControls": false,
