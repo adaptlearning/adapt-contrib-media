@@ -102,6 +102,10 @@ class MediaView extends ComponentView {
     if (playerOptions?.toggleCaptionsButtonWhenOnlyOne) {
       classes += ' toggle-captions';
     }
+    const offsetMediaControls = this.model.get('_offsetMediaControls');
+    if (offsetMediaControls) {
+      classes += ' offset-media-controls';
+    }
     return classes;
   }
 

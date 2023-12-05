@@ -209,6 +209,12 @@
           "description": "If enabled, will attempt to prevent users from skipping ahead in audio/video",
           "default": false
         },
+        "_offsetMediaControls": {
+          "type": "boolean",
+          "title": "Offset media controls",
+          "description": "If enabled, the media control bar will be respositioned below the media container to remove the standard overlap style.",
+          "default": false
+        },
         "_transcript": {
           "type": "object",
           "title": "Transcript",

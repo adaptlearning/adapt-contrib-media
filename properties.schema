@@ -371,6 +371,15 @@
       "validators": [],
       "help": "If enabled, will attempt to prevent users from skipping ahead in audio/video."
     },
+    "_offsetMediaControls": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "title": "Offset media controls",
+      "inputType": "Checkbox",
+      "validators": [],
+      "help": "If enabled, the media control bar will be respositioned below the media container to remove the standard overlap style."
+    },
     "_transcript": {
       "type": "object",
       "required": false,
