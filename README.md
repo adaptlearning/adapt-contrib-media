@@ -77,6 +77,9 @@ If set to `true`, playback will automatically be paused when the media component
 ### \_preventForwardScrubbing (boolean):
 If set to `true`, the component will *attempt* to prevent learners from 'skipping ahead' in media (both audio and video).  Learners can skip backwards, and back up to the `maxViewed` time tracked by `updateTime`. Note: This does not apply to full screen iOS/iPadOs - and learners using certain browsers (Internet Explorer, for example) may be able to circumvent this rule by using video play speed options. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting.
 
+### \_offsetMediaControls (boolean):
+If set to `true`, the media control bar will be respositioned below the media container to remove the standard overlap style. The default is `false`.
+
 ### \_showVolumeControl (boolean):
 Controls whether the volume controls will be shown in the media player control bar or not. Note that this setting has no impact when the device itself - iPhone, for example - enforces its own player controls. The default value is `false`.
 
