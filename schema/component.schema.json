@@ -119,7 +119,7 @@
                     "title": "WebVTT source",
                     "_backboneForms": {
                       "type": "Asset",
-                      "media": "other"
+                      "media": "text"
                     }
                   }
                 }
@@ -274,7 +274,7 @@
               "title": "Linked transcript file source",
               "_backboneForms": {
                 "type": "Asset",
-                "media": "other"
+                "media": "text"
               }
             }
           }
