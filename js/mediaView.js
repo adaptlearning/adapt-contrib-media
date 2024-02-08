@@ -521,7 +521,7 @@ class MediaView extends ComponentView {
   
     if (setCompletionOnView) {
       const transcriptComplete = isComplete ? 'media:transcript' : 'media:transcriptComplete';
-      Adapt.trigger(transcriptComplete, this);
+      Adapt.trigger(media:transcriptComplete, this);
       this.setCompletionStatus();
     }
   }
