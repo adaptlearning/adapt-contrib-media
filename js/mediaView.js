@@ -508,21 +508,17 @@ class MediaView extends ComponentView {
   onExternalTranscriptClicked(event) {
     this.transcriptTriggers();
   }
-
+  
   transcriptTriggers() {
     const setCompletionOnView = this.model.get('_transcript')._setCompletionOnView;
     const isComplete = this.model.get('_isComplete');
-  
-    if (!setCompletionOnView || (setCompletionOnView && isComplete)) {
-      Adapt.trigger('media:transcript', this);
-      return;
-    } 
-  
-    if (setCompletionOnView) {
-      const transcriptComplete = isComplete ? 'media:transcript' : 'media:transcriptComplete';
-      Adapt.trigger('media:transcriptComplete', this);
-      this.setCompletionStatus();
+    const shouldComplete = (setCompletionOnView && !isComplete);
+    
+    if (!shouldComplete) {
+      return Adapt.trigger('media:transcript', this);
     }
+    this.setCompletionStatus();
+    Adapt.trigger('media:transcriptComplete', this);
   }
 
   /**
