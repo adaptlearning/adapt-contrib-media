@@ -485,14 +485,13 @@ class MediaView extends ComponentView {
     const $button = this.$('.media__transcript-btn-inline');
     const $buttonText = this.$('.media__transcript-btn-inline .media__transcript-btn-text');
 
-    this.transcriptTriggers();
-
     if ($transcriptBodyContainer.hasClass('inline-transcript-open')) {
       $transcriptBodyContainer.stop(true, true).slideUp(() => {
         $(window).resize();
       }).removeClass('inline-transcript-open');
       $button.attr('aria-expanded', false);
       $buttonText.html(this.model.get('_transcript').inlineTranscriptButton);
+      this.transcriptTriggers('closed');
 
       return;
     }
@@ -503,22 +502,23 @@ class MediaView extends ComponentView {
 
     $button.attr('aria-expanded', true);
     $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
+    this.transcriptTriggers('opened');
   }
   
-  onExternalTranscriptClicked(event) {
-    this.transcriptTriggers();
+  onExternalTranscriptClicked() {
+    this.transcriptTriggers('external');
   }
   
-  transcriptTriggers() {
+  transcriptTriggers(state) {
     const setCompletionOnView = this.model.get('_transcript')._setCompletionOnView;
     const isComplete = this.model.get('_isComplete');
     const shouldComplete = (setCompletionOnView && !isComplete);
     
     if (!shouldComplete) {
-      return Adapt.trigger('media:transcript', this);
+      return Adapt.trigger('media:transcript', state, this);
     }
     this.setCompletionStatus();
-    Adapt.trigger('media:transcriptComplete', this);
+    Adapt.trigger('media:transcriptComplete', state, this);
   }
 
   /**
