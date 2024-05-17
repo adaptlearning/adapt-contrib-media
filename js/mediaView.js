@@ -518,7 +518,6 @@ class MediaView extends ComponentView {
       return Adapt.trigger('media:transcript', state, this);
     }
     this.setCompletionStatus();
-    Adapt.trigger('media:transcript', state, this);
     Adapt.trigger('media:transcript', 'complete', this);
   }
 
