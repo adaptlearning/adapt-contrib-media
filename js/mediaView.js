@@ -504,16 +504,16 @@ class MediaView extends ComponentView {
     $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
     this.transcriptTriggers('opened');
   }
-  
+
   onExternalTranscriptClicked() {
     this.transcriptTriggers('external');
   }
-  
+
   transcriptTriggers(state) {
     const setCompletionOnView = this.model.get('_transcript')._setCompletionOnView;
     const isComplete = this.model.get('_isComplete');
     const shouldComplete = (setCompletionOnView && !isComplete);
-    
+
     if (!shouldComplete) {
       return Adapt.trigger('media:transcript', state, this);
     }
