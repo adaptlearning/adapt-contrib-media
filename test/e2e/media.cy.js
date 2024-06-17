@@ -5,9 +5,9 @@ describe('Media', function () {
 
   it('should display the media component', function () {
     const mediaComponents = this.data.components.filter(component => component._component === 'media');
+    const stripHtml = cy.helpers.stripHtml;
     mediaComponents.forEach(mediaComponent => {
       cy.visit(`/#/preview/${mediaComponent._id}`);
-      const stripHtml = cy.helpers.stripHtml;
 
       cy.testContainsOrNotExists('.media__body', stripHtml(mediaComponent.body));
       cy.testContainsOrNotExists('.media__title', stripHtml(mediaComponent.displayTitle));
