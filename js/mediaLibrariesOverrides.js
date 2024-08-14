@@ -22,33 +22,11 @@ Object.assign(window.mejs.MepDefaults, {
   }
 });
 
-// The following function is used to to prevent a memory leak in Internet Explorer
-// See: http://javascript.crockford.com/memory/leak.html
-window.mejs.purge = function (d) {
-  let a = d.attributes;
-  if (a) {
-    for (let i = a.length - 1; i >= 0; i -= 1) {
-      const n = a[i].name;
-      if (typeof d[n] === 'function') {
-        d[n] = null;
-      }
-    }
-  }
-  a = d.childNodes;
-  if (a) {
-    for (let i = 0, count = a.length; i < count; i += 1) {
-      window.mejs.purge(d.childNodes[i]);
-    }
-  }
-};
-
 /**
  * Overwrite mediaelement-and-player killContextMenuTimer to remove global delete
 */
 window.mejs.MediaElementPlayer.prototype.killContextMenuTimer = function () {
   let timer = this.contextMenuTimer;
-
-  //
 
   if (timer != null) {
     clearTimeout(timer);
