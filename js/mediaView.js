@@ -32,11 +32,11 @@ class MediaView extends ComponentView {
   }
 
   preRender() {
-    this.listenTo(Adapt, {
-      'device:resize': this.onScreenSizeChanged,
-      'device:changed': this.onDeviceChanged,
-      'media:stop': this.onMediaStop
-    });
+    // this.listenTo(Adapt, {
+    //   'device:resize': this.onScreenSizeChanged,
+    //   'device:changed': this.onDeviceChanged,
+    //   'media:stop': this.onMediaStop
+    // });
 
     _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
@@ -552,7 +552,8 @@ class MediaView extends ComponentView {
     const eventObj = {
       type: eventType,
       src: this.mediaElement.src,
-      platform: this.mediaElement.pluginType
+      // platform: this.mediaElement.pluginType // removed in 4.x
+      platform: this.mediaElement.rendererName
     };
 
     if (player) eventObj.isVideo = player.isVideo;
