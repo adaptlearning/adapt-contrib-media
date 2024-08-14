@@ -32,11 +32,11 @@ class MediaView extends ComponentView {
   }
 
   preRender() {
-    // this.listenTo(Adapt, {
-    //   'device:resize': this.onScreenSizeChanged,
-    //   'device:changed': this.onDeviceChanged,
-    //   'media:stop': this.onMediaStop
-    // });
+    this.listenTo(Adapt, {
+      'device:resize': this.onScreenSizeChanged,
+      'device:changed': this.onDeviceChanged,
+      'media:stop': this.onMediaStop
+    });
 
     _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
@@ -58,8 +58,8 @@ class MediaView extends ComponentView {
   }
 
   postRender() {
-    // this.setupPlayer();
-    // this.addMejsButtonClass();
+    this.setupPlayer();
+    this.addMejsButtonClass();
   }
 
   addMejsButtonClass() {
@@ -106,6 +106,10 @@ class MediaView extends ComponentView {
     if (modelOptions.hideVideoControlsOnLoad === undefined) {
       modelOptions.hideVideoControlsOnLoad = true;
     }
+
+    // Use legacy prefix from 2.x
+    modelOptions.classPrefix = 'mejs-';
+    modelOptions.iconSprite = 'assets/mejs-controls.svg';
 
     this.addMediaTypeClass();
 
@@ -428,13 +432,10 @@ class MediaView extends ComponentView {
 
     let player = this.mediaElement.player;
 
-    // Use legacy prefix from 2.x
-    // player.classPrefix = 'mejs-';
-    // player.iconSprite = '../assets/mejs-controls.svg';
-
     if (!player) player = window.mejs.players[this.$('.mejs-container').attr('id')];
 
-    const hasTouch = window.mejs.MediaFeatures.hasTouch;
+    // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
+    const hasTouch = false;
     if (hasTouch) {
       this.setupPlayPauseToggle();
     }
