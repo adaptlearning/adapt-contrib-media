@@ -3,9 +3,9 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-import './mediaLibrariesOverrides';
+// import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
-import 'libraries/mediaelement-fullscreen-hook';
+// import 'libraries/mediaelement-fullscreen-hook';
 
 class MediaView extends ComponentView {
 
@@ -58,8 +58,8 @@ class MediaView extends ComponentView {
   }
 
   postRender() {
-    this.setupPlayer();
-    this.addMejsButtonClass();
+    // this.setupPlayer();
+    // this.addMejsButtonClass();
   }
 
   addMejsButtonClass() {
@@ -427,6 +427,11 @@ class MediaView extends ComponentView {
     this.mediaElement = mediaElement;
 
     let player = this.mediaElement.player;
+
+    // Use legacy prefix from 2.x
+    // player.classPrefix = 'mejs-';
+    // player.iconSprite = '../assets/mejs-controls.svg';
+
     if (!player) player = window.mejs.players[this.$('.mejs-container').attr('id')];
 
     const hasTouch = window.mejs.MediaFeatures.hasTouch;
