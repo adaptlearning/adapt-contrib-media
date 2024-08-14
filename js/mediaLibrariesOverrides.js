@@ -23,18 +23,6 @@ Object.assign(window.mejs.MepDefaults, {
 });
 
 /**
- * Overwrite mediaelement-and-player killContextMenuTimer to remove global delete
-*/
-window.mejs.MediaElementPlayer.prototype.killContextMenuTimer = function () {
-  let timer = this.contextMenuTimer;
-
-  if (timer != null) {
-    clearTimeout(timer);
-    timer = null;
-  }
-};
-
-/**
  * Overwrite mediaelement-and-player buildfullscreen to remove global delete
 */
 window.mejs.MediaElementPlayer.prototype.buildfullscreen = function (player, controls, layers, media) {
