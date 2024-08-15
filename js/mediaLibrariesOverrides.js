@@ -38,7 +38,7 @@
 //   const t = this;
 //   let hideTimeout = null;
 //   const fullscreenBtn =
-//       $('<div class="mejs-button mejs-fullscreen-button">' +
+//       $('<div class="mejs__button mejs__fullscreen-button">' +
 //         '<button type="button" aria-controls="' + t.id + '" title="' + t.options.fullscreenText + '" aria-label="' + t.options.fullscreenText + '"></button>' +
 //         '</div>')
 //         .appendTo(controls)
@@ -128,13 +128,13 @@
 
 //   if (lang === 'none') {
 //     t.selectedTrack = null;
-//     t.captionsButton.removeClass('mejs-captions-enabled');
+//     t.captionsButton.removeClass('mejs__captions-enabled');
 //     t.captionsButton[0].firstChild.setAttribute('aria-pressed', false);
 //   } else {
 //     for (i = 0; i < t.tracks.length; i++) {
 //       if (t.tracks[i].srclang === lang) {
 //         if (t.selectedTrack === null) {
-//           t.captionsButton.addClass('mejs-captions-enabled');
+//           t.captionsButton.addClass('mejs__captions-enabled');
 //           t.captionsButton[0].firstChild.setAttribute('aria-pressed', true);
 //         }
 //         t.selectedTrack = t.tracks[i];
@@ -160,7 +160,7 @@
 //   }
 
 //   // set it to not show scroll bars so 100% will work
-//   $(document.documentElement).addClass('mejs-fullscreen');
+//   $(document.documentElement).addClass('mejs__fullscreen');
 
 //   // store sizing
 //   t.normalHeight = t.container.height();
@@ -174,7 +174,7 @@
 
 //   // make full size
 //   t.container
-//     .addClass('mejs-container-fullscreen')
+//     .addClass('mejs__container-fullscreen')
 //     .width('100%')
 //     .height('100%');
 
@@ -190,7 +190,7 @@
 //       .width('100%')
 //       .height('100%');
 //   } else {
-//     t.container.find('.mejs-shim')
+//     t.container.find('.mejs__shim')
 //       .width('100%')
 //       .height('100%');
 
@@ -209,15 +209,15 @@
 
 //   if (t.fullscreenBtn) {
 //     t.fullscreenBtn
-//       .removeClass('mejs-fullscreen')
-//       .addClass('mejs-unfullscreen');
+//       .removeClass('mejs__fullscreen')
+//       .addClass('mejs__unfullscreen');
 //   }
 
 //   t.setControlsSize();
 //   t.isFullScreen = true;
 
-//   t.container.find('.mejs-captions-text').css('font-size', screen.width / t.width * 1.00 * 100 + '%');
-//   t.container.find('.mejs-captions-position').css('bottom', '45px');
+//   t.container.find('.mejs__captions-text').css('font-size', screen.width / t.width * 1.00 * 100 + '%');
+//   t.container.find('.mejs__captions-position').css('bottom', '45px');
 
 //   t.container.trigger('enteredfullscreen');
 // };

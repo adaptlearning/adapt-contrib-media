@@ -63,7 +63,7 @@ class MediaView extends ComponentView {
   }
 
   addMejsButtonClass() {
-    this.$('.mejs-overlay-button').addClass('icon');
+    this.$('.mejs__overlay-button').addClass('icon');
   }
 
   setupPlayer() {
@@ -107,8 +107,6 @@ class MediaView extends ComponentView {
       modelOptions.hideVideoControlsOnLoad = true;
     }
 
-    // Use legacy prefix from 2.x
-    modelOptions.classPrefix = 'mejs-';
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
 
     this.addMediaTypeClass();
@@ -170,14 +168,14 @@ class MediaView extends ComponentView {
 
   cleanUpPlayer() {
     const containerLabel = this.model.get('displayTitle') || this.model.get('title');
-    this.$('.media__widget').children('.mejs-offscreen').remove();
+    this.$('.media__widget').children('.mejs__offscreen').remove();
     this.$('[role=application]').removeAttr('role tabindex');
-    this.$('.mejs-container').attr({
+    this.$('.mejs__container').attr({
       role: 'region',
       'aria-label': containerLabel
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
-    this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
+    this.$('.mejs__overlay-play').attr('aria-hidden', 'true');
   }
 
   setupEventListeners() {
@@ -217,8 +215,8 @@ class MediaView extends ComponentView {
     if (!this.model.get('_useClosedCaptions')) return;
 
     const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
-      '.mejs-captions-button button' :
-      '.mejs-captions-selector';
+      '.mejs__captions-button button' :
+      '.mejs__captions-selector';
 
     this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
       const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
@@ -243,7 +241,7 @@ class MediaView extends ComponentView {
     this.mediaElement.player.setTrack(lang);
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
-    const $inputs = this.$('.mejs-captions-selector input');
+    const $inputs = this.$('.mejs__captions-selector input');
     $inputs.filter(':checked').prop('checked', false);
     $inputs.filter(`[value="${lang}"]`).prop('checked', true);
   }
@@ -268,7 +266,7 @@ class MediaView extends ComponentView {
     Adapt.trigger('media:stop', this);
 
     if (this.model.get('_pauseWhenOffScreen')) {
-      this.$('.mejs-container').on('inview', this.onWidgetInview);
+      this.$('.mejs__container').on('inview', this.onWidgetInview);
     }
 
     this.model.set({
@@ -283,7 +281,7 @@ class MediaView extends ComponentView {
   onMediaElementPause(event) {
     this.queueGlobalEvent('pause');
 
-    this.$('.mejs-container').off('inview', this.onWidgetInview);
+    this.$('.mejs__container').off('inview', this.onWidgetInview);
 
     this.model.set('_isMediaPlaying', false);
   }
@@ -338,10 +336,10 @@ class MediaView extends ComponentView {
     player.options.clickToPlayPause = false;
 
     // play on 'big button' click
-    this.$('.mejs-overlay-button').on('click', this.onOverlayClick);
+    this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
 
     // pause on player click
-    this.$('.mejs-mediaelement').on('click', this.onMediaElementClick);
+    this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
   }
 
   onMediaStop(view) {
@@ -371,14 +369,14 @@ class MediaView extends ComponentView {
   }
 
   remove() {
-    this.$('.mejs-overlay-button').off('click', this.onOverlayClick);
-    this.$('.mejs-mediaelement').off('click', this.onMediaElementClick);
-    this.$('.mejs-container').off('inview', this.onWidgetInview);
+    this.$('.mejs__overlay-button').off('click', this.onOverlayClick);
+    this.$('.mejs__mediaelement').off('click', this.onMediaElementClick);
+    this.$('.mejs__container').off('inview', this.onWidgetInview);
 
     if (this.model.get('_useClosedCaptions')) {
       const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
-        '.mejs-captions-button button' :
-        '.mejs-captions-selector';
+        '.mejs__captions-button button' :
+        '.mejs__captions-selector';
       this.$(selector).off('click.mediaCaptionsChange');
     }
 
@@ -424,7 +422,7 @@ class MediaView extends ComponentView {
 
   onDeviceChanged() {
     if (!this.model.get('_media').source) return;
-    this.$('.mejs-container').width(this.$('.component__widget').width());
+    this.$('.mejs__container').width(this.$('.component__widget').width());
   }
 
   onPlayerReady(mediaElement, domObject) {
@@ -432,7 +430,7 @@ class MediaView extends ComponentView {
 
     let player = this.mediaElement.player;
 
-    if (!player) player = window.mejs.players[this.$('.mejs-container').attr('id')];
+    if (!player) player = window.mejs.players[this.$('.mejs__container').attr('id')];
 
     // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
     const hasTouch = false;
@@ -456,7 +454,7 @@ class MediaView extends ComponentView {
     const media = this.model.get('_media');
     switch (media.type) {
       case 'video/vimeo':
-        this.$('.mejs-container').attr('tabindex', 0);
+        this.$('.mejs__container').attr('tabindex', 0);
     }
   }
 
