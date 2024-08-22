@@ -93,11 +93,11 @@ class MediaView extends ComponentView {
     modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
 
     if (this.model.get('_useClosedCaptions')) {
-      const startLanguage = this.model.get('_startLanguage') || 'en';
+      const autoplayCaptionLanguage = this.model.get('_startLanguage') || 'en';
       if (!offlineStorage.get('captions')) {
-        offlineStorage.set('captions', startLanguage);
+        offlineStorage.set('captions', autoplayCaptionLanguage);
       }
-      modelOptions.startLanguage = this.checkForSupportedCCLanguage(offlineStorage.get('captions'));
+      modelOptions.autoplayCaptionLanguage = this.checkForSupportedCCLanguage(offlineStorage.get('captions'));
     }
 
     if (modelOptions.alwaysShowControls === undefined) {
@@ -105,6 +105,9 @@ class MediaView extends ComponentView {
     }
     if (modelOptions.hideVideoControlsOnLoad === undefined) {
       modelOptions.hideVideoControlsOnLoad = true;
+    }
+    if (this.model.has('_startVolume')) {
+      modelOptions.startVolume = parseInt(this.model.get('_startVolume')) / 100;
     }
 
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
@@ -219,7 +222,8 @@ class MediaView extends ComponentView {
       '.mejs__captions-selector';
 
     this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
-      const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
+      // const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
+      const srclang = this.mediaElement.selectedTrack ? this.mediaElement.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
     }, 250)); // needs debouncing because the click event fires twice
@@ -343,14 +347,12 @@ class MediaView extends ComponentView {
   }
 
   onMediaStop(view) {
-
     // Make sure this view isn't triggering media:stop
     if (view?.cid === this.cid) return;
 
     if (!this.mediaElement || !this.mediaElement.player) return;
 
     this.mediaElement.player.pause();
-
   }
 
   onOverlayClick() {
@@ -425,12 +427,9 @@ class MediaView extends ComponentView {
     this.$('.mejs__container').width(this.$('.component__widget').width());
   }
 
-  onPlayerReady(mediaElement, domObject) {
-    this.mediaElement = mediaElement;
-
-    let player = this.mediaElement.player;
-
-    if (!player) player = window.mejs.players[this.$('.mejs__container').attr('id')];
+  onPlayerReady(media, domNode, mediaElementPlayer) {
+    // console.log(mediaElementPlayer);
+    this.mediaElement = mediaElementPlayer;
 
     // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
     const hasTouch = false;
@@ -440,12 +439,6 @@ class MediaView extends ComponentView {
 
     this.addThirdPartyAfterFixes();
     this.cleanUpPlayerAfter();
-
-    if (player && this.model.has('_startVolume')) {
-      // Setting the start volume only works with the Flash-based player if you do it here rather than in setupPlayer
-      player.setVolume(parseInt(this.model.get('_startVolume')) / 100);
-    }
-
     this.setReadyStatus();
     this.setupEventListeners();
   }
@@ -518,7 +511,7 @@ class MediaView extends ComponentView {
 
   /**
    * Queue firing a media event to prevent simultaneous events firing, and provide a better indication of how the
-   * media  player is behaving
+   * media player is behaving
    * @param {string} eventType
    */
   queueGlobalEvent(eventType) {
