@@ -47,12 +47,12 @@
 
   // External source mejs overrides
   // --------------------------------------------------
-  &__widget.external-source .mejs-container {
+  &__widget.external-source .mejs__container {
     position: relative;
     overflow: hidden;
   }
 
-  &__widget.external-source .mejs-container iframe {
+  &__widget.external-source .mejs__container iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -60,13 +60,13 @@
     height: 100%;
   }
 
-  &__widget.external-source .mejs-overlay-play {
+  &__widget.external-source .mejs__overlay-play {
     .u-display-none;
   }
 
   // Vimeo fixes
   // --------------------------------------------------
-  &__widget.video-vimeo .mejs-controls {
+  &__widget.video-vimeo .mejs__controls {
     .u-display-none;
     height: 0 !important;
   }
@@ -75,7 +75,7 @@
   // toggleCaptionsButtonWhenOnlyOne: true
   // See https://github.com/adaptlearning/adapt_framework/issues/1883
   // --------------------------------------------------
-  &.toggle-captions .mejs-captions-selector {
-    .u-display-none;
-  }
+  // &.toggle-captions .mejs__captions-selector {
+  //   .u-display-none;
+  // }
 }
