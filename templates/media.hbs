@@ -25,7 +25,7 @@
         {{else equals _aspectRatio "portrait"}} width="540" height="960"
         {{else}} width="640" height="360"
         {{/equals}}
-        {{#if _playsinline}} playsinline{{/if}} {{#equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/equals}} style="width:100%; height:100%;" controls="controls">
+        {{#if _playsinline}} playsinline{{/if}} {{#equals _media.type "video/vimeo"}}{{else}}poster="{{_media.poster}}"{{/equals}} style="max-width: 100%;" controls="controls">
         {{#if _media.source}}
           <source src="{{_media.source}}" type="{{_media.type}}"/>
         {{else}}
