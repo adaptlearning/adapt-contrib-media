@@ -222,8 +222,7 @@ class MediaView extends ComponentView {
       '.mejs__captions-selector';
 
     this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
-      // const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
-      const srclang = this.mediaElement.selectedTrack ? this.mediaElement.selectedTrack.srclang : 'none';
+      const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
     }, 250)); // needs debouncing because the click event fires twice
@@ -242,7 +241,7 @@ class MediaView extends ComponentView {
 
     lang = this.checkForSupportedCCLanguage(lang);
 
-    this.mediaElement.player.setTrack(lang);
+    this.mediaElementInstance.setTrack(lang);
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
     const $inputs = this.$('.mejs__captions-selector input');
@@ -305,7 +304,7 @@ class MediaView extends ComponentView {
   }
 
   onWidgetInview(event, isInView) {
-    if (!isInView && !this.mediaElement.paused) this.mediaElement.player.pause();
+    if (!isInView && !this.mediaElement.paused) this.mediaElement.pause();
   }
 
   onMediaElementSeeking(event) {
@@ -329,45 +328,46 @@ class MediaView extends ComponentView {
   // Overrides the default play/pause functionality to stop accidental playing on touch devices
   setupPlayPauseToggle() {
     // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
-    const player = this.mediaElement.player;
+    // const player = this.mediaElement.player;
 
-    if (!player) {
-      logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
-      return;
-    }
+    // if (!player) {
+    //   logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
+    //   return;
+    // }
 
-    // stop the player dealing with this, we'll do it ourselves
-    player.options.clickToPlayPause = false;
+    // // stop the player dealing with this, we'll do it ourselves
+    // player.options.clickToPlayPause = false;
 
-    // play on 'big button' click
-    this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
+    // // play on 'big button' click
+    // this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
 
-    // pause on player click
-    this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
+    // // pause on player click
+    // this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
   }
 
   onMediaStop(view) {
     // Make sure this view isn't triggering media:stop
-    if (view?.cid === this.cid) return;
+    // if (view?.cid === this.cid) return;
 
-    if (!this.mediaElement || !this.mediaElement.player) return;
+    // if (!this.mediaElement) return;
 
-    this.mediaElement.player.pause();
+    // console.log('Media stop');
+    // this.mediaElement.pause();
   }
 
   onOverlayClick() {
-    const player = this.mediaElement.player;
-    if (!player) return;
+    // const player = this.mediaElement.player;
+    // if (!player) return;
 
-    player.play();
+    // player.play();
   }
 
   onMediaElementClick(event) {
-    const player = this.mediaElement.player;
-    if (!player) return;
+    // const player = this.mediaElement.player;
+    // if (!player) return;
 
-    const isPaused = player.media.paused;
-    if (!isPaused) player.pause();
+    // const isPaused = player.media.paused;
+    // if (!isPaused) player.pause();
   }
 
   remove() {
@@ -393,11 +393,11 @@ class MediaView extends ComponentView {
       }
     }
 
-    if (this.mediaElement && this.mediaElement.player) {
-      const playerId = this.mediaElement.player.id;
+    if (this.mediaElementInstance) {
+      const playerId = this.mediaElementInstance.id;
 
       window.mejs.purge(this.$el[0]);
-      this.mediaElement.player.remove();
+      this.mediaElement.remove();
 
       if (window.mejs.players[playerId]) {
         delete window.mejs.players[playerId];
@@ -430,13 +430,13 @@ class MediaView extends ComponentView {
   /**
    * onPlayerReady
    * The success callback of MediaElementPlayer. Called as soon as the source is loaded.
-   * @param {*} media The wrapper that mimics all the native events/properties/methods for all renderers
-   * @param {*} node The HTML video, audio or iframe tag where the media was loaded originally. If html5 is being used, media and node are basically the same.
-   * @param {*} instance Gives access to the methods associated with the MediaElementPlayer class
+   * @param {HTMLElement} media The wrapper that mimics all the native events/properties/methods for all renderers
+   * @param {HTMLElement} node The HTML <video>, <audio> or <iframe> tag where the media was loaded originally. If html5 is being used, media and node are basically the same.
+   * @param {Object} instance Gives access to the methods associated with the MediaElementPlayer class
    */
   onPlayerReady(media, node, instance) {
-    // console.log(mediaElementPlayer);
-    this.mediaElement = instance;
+    this.mediaElement = media;
+    this.mediaElementInstance = instance;
 
     // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
     const hasTouch = false;
@@ -546,16 +546,15 @@ class MediaView extends ComponentView {
   }
 
   triggerGlobalEvent(eventType) {
-    const player = this.mediaElement.player;
+    const options = this.mediaElement.options;
 
     const eventObj = {
       type: eventType,
       src: this.mediaElement.src,
-      // platform: this.mediaElement.pluginType // removed in 4.x
       platform: this.mediaElement.rendererName
     };
 
-    if (player) eventObj.isVideo = player.isVideo;
+    if (options) eventObj.isVideo = options.isVideo;
 
     Adapt.trigger('media', eventObj);
   }
