@@ -394,11 +394,9 @@ class MediaView extends ComponentView {
     }
 
     if (this.mediaElementInstance) {
-      const playerId = this.mediaElementInstance.id;
-
-      window.mejs.purge(this.$el[0]);
       this.mediaElement.remove();
 
+      const playerId = this.mediaElementInstance.id;
       if (window.mejs.players[playerId]) {
         delete window.mejs.players[playerId];
       }
@@ -546,14 +544,13 @@ class MediaView extends ComponentView {
   }
 
   triggerGlobalEvent(eventType) {
-    const options = this.mediaElement.options;
-
     const eventObj = {
       type: eventType,
       src: this.mediaElement.src,
       platform: this.mediaElement.rendererName
     };
 
+    const options = this.mediaElement.options;
     if (options) eventObj.isVideo = options.isVideo;
 
     Adapt.trigger('media', eventObj);
