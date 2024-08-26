@@ -327,47 +327,46 @@ class MediaView extends ComponentView {
 
   // Overrides the default play/pause functionality to stop accidental playing on touch devices
   setupPlayPauseToggle() {
-    // bit sneaky, but we don't have a this.mediaElement.player ref on iOS devices
-    // const player = this.mediaElement.player;
+    // bit sneaky, but we don't have a this.mediaElement ref on iOS devices
+    const player = this.mediaElement;
 
-    // if (!player) {
-    //   logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
-    //   return;
-    // }
+    if (!player) {
+      logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
+      return;
+    }
 
-    // // stop the player dealing with this, we'll do it ourselves
-    // player.options.clickToPlayPause = false;
+    // stop the player dealing with this, we'll do it ourselves
+    player.options.clickToPlayPause = false;
 
-    // // play on 'big button' click
-    // this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
+    // play on 'big button' click
+    this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
 
-    // // pause on player click
-    // this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
+    // pause on player click
+    this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
   }
 
   onMediaStop(view) {
     // Make sure this view isn't triggering media:stop
-    // if (view?.cid === this.cid) return;
+    if (view?.cid === this.cid) return;
 
-    // if (!this.mediaElement) return;
+    if (!this.mediaElement) return;
 
-    // console.log('Media stop');
-    // this.mediaElement.pause();
+    this.mediaElement.pause();
   }
 
   onOverlayClick() {
-    // const player = this.mediaElement.player;
-    // if (!player) return;
+    const player = this.mediaElement;
+    if (!player) return;
 
-    // player.play();
+    player.play();
   }
 
   onMediaElementClick(event) {
-    // const player = this.mediaElement.player;
-    // if (!player) return;
+    const player = this.mediaElement;
+    if (!player) return;
 
-    // const isPaused = player.media.paused;
-    // if (!isPaused) player.pause();
+    const isPaused = player.paused;
+    if (!isPaused) player.pause();
   }
 
   remove() {
