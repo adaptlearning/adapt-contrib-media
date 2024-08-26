@@ -7,9 +7,44 @@
   
   // Transcript
   // --------------------------------------------------
+  // Skip to transcript button
+  &__skip-to-transcript {
+
+    html:not(.has-accessibility) & {
+      .u-display-none;
+    }
+
+    &:not(:focus-visible) {
+      height: 0;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+  }
+
+  // Transcript container
+  &__transcript-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__transcript-btn-icon {
+    margin-inline-start: @icon-padding / 2;
+  }
+
+  &.is-complete &__transcript-btn-icon .icon {
+    .icon-tick;
+  }
+
+  &__transcript-btn-inline .icon {
+    .icon-plus;
+  }
+
   &__transcript-body-inline {
     display: none;
   }
+
 
   // Cross browser bug fixes
   // --------------------------------------------------

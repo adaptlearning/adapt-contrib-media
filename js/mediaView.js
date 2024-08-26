@@ -3,220 +3,9 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
+import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
 import 'libraries/mediaelement-fullscreen-hook';
-
-/*
-  * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
-  * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
-  * the removal of the default shortcut keys.
-  *
-  * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One
-  * is a duration integer the other is the player object. The default functions error on slider key press and so break
-  * accessibility. Below is a correction.
-  */
-
-Object.assign(window.mejs.MepDefaults, {
-  keyActions: [],
-  defaultSeekForwardInterval: duration => {
-    if (typeof duration === 'object') return duration.duration * 0.05;
-    return duration * 0.05;
-  },
-  defaultSeekBackwardInterval: duration => {
-    if (typeof duration === 'object') return duration.duration * 0.05;
-    return duration * 0.05;
-  }
-});
-
-// The following function is used to to prevent a memory leak in Internet Explorer
-// See: http://javascript.crockford.com/memory/leak.html
-const purge = function (d) {
-  let a = d.attributes;
-  if (a) {
-    for (let i = a.length - 1; i >= 0; i -= 1) {
-      const n = a[i].name;
-      if (typeof d[n] === 'function') {
-        d[n] = null;
-      }
-    }
-  }
-  a = d.childNodes;
-  if (a) {
-    for (let i = 0, count = a.length; i < count; i += 1) {
-      purge(d.childNodes[i]);
-    }
-  }
-};
-
-/**
- * Overwrite mediaelement-and-player setTrack to allow use of aria-pressed on closed captions button.
-*/
-
-window.mejs.MediaElementPlayer.prototype.setTrack = function (lang) {
-
-  const t = this;
-  let i;
-
-  if (lang === 'none') {
-    t.selectedTrack = null;
-    t.captionsButton.removeClass('mejs-captions-enabled');
-    t.captionsButton[0].firstChild.setAttribute('aria-pressed', false);
-  } else {
-    for (i = 0; i < t.tracks.length; i++) {
-      if (t.tracks[i].srclang === lang) {
-        if (t.selectedTrack === null) {
-          t.captionsButton.addClass('mejs-captions-enabled');
-          t.captionsButton[0].firstChild.setAttribute('aria-pressed', true);
-        }
-        t.selectedTrack = t.tracks[i];
-        t.captions.attr('lang', t.selectedTrack.srclang);
-        t.displayCaptions();
-        break;
-      }
-    }
-  }
-
-};
-
-/**
- * Fix for firefox fullscreen api
- * https://github.com/adaptlearning/adapt-contrib-media/issues/239
- */
-const mediaFeatures = window.mejs.MediaFeatures;
-if (mediaFeatures.hasMozNativeFullScreen) {
-  Object.assign(mediaFeatures, {
-    fullScreenEventName: document.exitFullscreen
-      ? 'fullscreenchange'
-      : 'mozfullscreenchange',
-    requestFullScreen: el => {
-      document.exitFullscreen
-        ? el.requestFullscreen()
-        : el.mozRequestFullScreen();
-    },
-    isFullScreen: () => {
-      return document.exitFullscreen
-        ? Boolean(document.fullscreenElement)
-        : document.mozFullScreen;
-    },
-    cancelFullScreen: el => {
-      document.exitFullscreen
-        ? document.exitFullscreen()
-        : document.mozCancelFullScreen();
-    }
-  });
-}
-
-/**
- * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix (Media issue #255)
-*/
-window.mejs.MediaElementPlayer.prototype.enterFullScreen = function () {
-  const t = this;
-
-  if (window.mejs.MediaFeatures.hasiOSFullScreen) {
-    t.media.webkitEnterFullscreen();
-    return;
-  }
-
-  // set it to not show scroll bars so 100% will work
-  $(document.documentElement).addClass('mejs-fullscreen');
-
-  // store sizing
-  t.normalHeight = t.container.height();
-  t.normalWidth = t.container.width();
-
-  // attempt to do true fullscreen
-  if (t.fullscreenMode === 'native-native' || t.fullscreenMode === 'plugin-native') {
-
-    window.mejs.MediaFeatures.requestFullScreen(t.container[0]);
-  }
-
-  // make full size
-  t.container
-    .addClass('mejs-container-fullscreen')
-    .width('100%')
-    .height('100%');
-
-  // Only needed for safari 5.1 native full screen, can cause display issues elsewhere
-  // Actually, it seems to be needed for IE8, too
-  t.containerSizeTimeout = setTimeout(function () {
-    t.container.css({ width: '100%', height: '100%' });
-    t.setControlsSize();
-  }, 500);
-
-  if (t.media.pluginType === 'native') {
-    t.$media
-      .width('100%')
-      .height('100%');
-  } else {
-    t.container.find('.mejs-shim')
-      .width('100%')
-      .height('100%');
-
-    setTimeout(function () {
-      const win = $(window);
-      const winW = win.width();
-      const winH = win.height();
-
-      t.media.setVideoSize(winW, winH);
-    }, 500);
-  }
-
-  t.layers.children('div')
-    .width('100%')
-    .height('100%');
-
-  if (t.fullscreenBtn) {
-    t.fullscreenBtn
-      .removeClass('mejs-fullscreen')
-      .addClass('mejs-unfullscreen');
-  }
-
-  t.setControlsSize();
-  t.isFullScreen = true;
-
-  t.container.find('.mejs-captions-text').css('font-size', screen.width / t.width * 1.00 * 100 + '%');
-  t.container.find('.mejs-captions-position').css('bottom', '45px');
-
-  t.container.trigger('enteredfullscreen');
-};
-
-/**
- * Force the default language so that the aria-label can be localised from Adapt
- * Note: Do not change these, their names and values are required for mapping in mejs
- */
-window.mejs.i18n.locale.language = 'en-US';
-window.mejs.i18n.locale.strings['en-US'] = {};
-const ariaLabelMappings = {
-  playText: 'Play',
-  pauseText: 'Pause',
-  stopText: 'Stop',
-  audioPlayerText: 'Audio Player',
-  videoPlayerText: 'Video Player',
-  tracksText: 'Captions/Subtitles',
-  timeSliderText: 'Time Slider',
-  muteText: 'Mute Toggle',
-  unmuteStatusText: 'Unmute',
-  muteStatusText: 'Mute',
-  volumeSliderText: 'Volume Slider',
-  fullscreenText: 'Fullscreen',
-  goFullscreenText: 'Go Fullscreen',
-  turnOffFullscreenText: 'Turn off Fullscreen',
-  noneText: 'None',
-  skipBackText: 'Skip back %1 seconds',
-  allyVolumeControlText: 'Use Up/Down Arrow keys to increase or decrease volume.',
-  progessHelpText: 'Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.'
-};
-
-Adapt.on('app:dataReady', () => {
-  // Populate the aria labels from the _global._components._media
-  const dynamicLabels = window.mejs.i18n.locale.strings['en-US'];
-  const fixedDefaults = window.mejs.MepDefaults;
-  const globals = Adapt.course.get('_globals')?._components?._media;
-  for (const k in ariaLabelMappings) {
-    dynamicLabels[ariaLabelMappings[k]] = globals[k] ?? ariaLabelMappings[k];
-    fixedDefaults[k] = dynamicLabels[ariaLabelMappings[k]];
-  }
-});
 
 class MediaView extends ComponentView {
 
@@ -231,8 +20,13 @@ class MediaView extends ComponentView {
   className() {
     let classes = super.className();
     const playerOptions = this.model.get('_playerOptions');
-    if (playerOptions?.toggleCaptionsButtonWhenOnlyOne) {
+    const captions = this.model.get('_media').cc;
+    if (playerOptions?.toggleCaptionsButtonWhenOnlyOne && captions?.length === 1) {
       classes += ' toggle-captions';
+    }
+    const offsetMediaControls = this.model.get('_offsetMediaControls');
+    if (offsetMediaControls) {
+      classes += ' offset-media-controls';
     }
     return classes;
   }
@@ -244,7 +38,7 @@ class MediaView extends ComponentView {
       'media:stop': this.onMediaStop
     });
 
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
+    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
     // set initial player state attributes
     this.model.set({
@@ -316,7 +110,7 @@ class MediaView extends ComponentView {
     }
 
     if (modelOptions.alwaysShowControls === undefined) {
-      modelOptions.alwaysShowControls = false;
+      modelOptions.alwaysShowControls = true;
     }
     if (modelOptions.hideVideoControlsOnLoad === undefined) {
       modelOptions.hideVideoControlsOnLoad = true;
@@ -410,7 +204,8 @@ class MediaView extends ComponentView {
     $(this.mediaElement).on({
       play: this.onMediaElementPlay,
       pause: this.onMediaElementPause,
-      ended: this.onMediaElementEnded
+      ended: this.onMediaElementEnded,
+      volumechange: this.onMediaVolumeChange
     });
 
     // occasionally the mejs code triggers a click of the captions language
@@ -508,6 +303,10 @@ class MediaView extends ComponentView {
     }
   }
 
+  onMediaVolumeChange(event) {
+    Adapt.trigger('media:volumeChange', this.model, this.mediaElement.muted, this.mediaElement.volume);
+  }
+
   onWidgetInview(event, isInView) {
     if (!isInView && !this.mediaElement.paused) this.mediaElement.player.pause();
   }
@@ -602,7 +401,7 @@ class MediaView extends ComponentView {
     if (this.mediaElement && this.mediaElement.player) {
       const playerId = this.mediaElement.player.id;
 
-      purge(this.$el[0]);
+      window.mejs.purge(this.$el[0]);
       this.mediaElement.player.remove();
 
       if (window.mejs.players[playerId]) {
@@ -616,7 +415,8 @@ class MediaView extends ComponentView {
         pause: this.onMediaElementPause,
         ended: this.onMediaElementEnded,
         seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate
+        timeupdate: this.onMediaElementTimeUpdate,
+        volumechange: this.onMediaVolumeChange
       });
 
       this.mediaElement.src = '';
@@ -691,6 +491,7 @@ class MediaView extends ComponentView {
       }).removeClass('inline-transcript-open');
       $button.attr('aria-expanded', false);
       $buttonText.html(this.model.get('_transcript').inlineTranscriptButton);
+      this.transcriptTriggers('closed');
 
       return;
     }
@@ -701,17 +502,23 @@ class MediaView extends ComponentView {
 
     $button.attr('aria-expanded', true);
     $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
-
-    if (this.model.get('_transcript')._setCompletionOnView !== false) {
-      Adapt.trigger('media:transcriptComplete', this);
-      this.setCompletionStatus();
-    }
+    this.transcriptTriggers('opened');
   }
 
-  onExternalTranscriptClicked(event) {
-    if (this.model.get('_transcript')._setCompletionOnView === false) return;
-    Adapt.trigger('media:transcriptComplete', this);
+  onExternalTranscriptClicked() {
+    this.transcriptTriggers('external');
+  }
+
+  transcriptTriggers(state) {
+    const setCompletionOnView = this.model.get('_transcript')._setCompletionOnView;
+    const isComplete = this.model.get('_isComplete');
+    const shouldComplete = (setCompletionOnView && !isComplete);
+
+    if (!shouldComplete) {
+      return Adapt.trigger('media:transcript', state, this);
+    }
     this.setCompletionStatus();
+    Adapt.trigger('media:transcript', 'complete', this);
   }
 
   /**
