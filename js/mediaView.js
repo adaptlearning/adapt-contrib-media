@@ -430,11 +430,11 @@ class MediaView extends ComponentView {
   /**
    * onPlayerReady
    * The success callback of MediaElementPlayer. Called as soon as the source is loaded.
-   * @param {*} mediaElement The wrapper that mimics all the native events/properties/methods for all renderers
-   * @param {*} node The original HTML video, audio or iframe tag where the media was loaded originally; if html5 is being used, media and node are the basically the same
-   * @param {*} instance Gives access to the methods associated to the MediaElementPlayer class. Available when using MediaElementPlayer.
+   * @param {*} media The wrapper that mimics all the native events/properties/methods for all renderers
+   * @param {*} node The HTML video, audio or iframe tag where the media was loaded originally. If html5 is being used, media and node are basically the same.
+   * @param {*} instance Gives access to the methods associated with the MediaElementPlayer class
    */
-  onPlayerReady(mediaElement, node, instance) {
+  onPlayerReady(media, node, instance) {
     // console.log(mediaElementPlayer);
     this.mediaElement = instance;
 
