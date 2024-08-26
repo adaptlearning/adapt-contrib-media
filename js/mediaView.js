@@ -427,9 +427,16 @@ class MediaView extends ComponentView {
     this.$('.mejs__container').width(this.$('.component__widget').width());
   }
 
-  onPlayerReady(media, domNode, mediaElementPlayer) {
+  /**
+   * onPlayerReady
+   * The success callback of MediaElementPlayer. Called as soon as the source is loaded.
+   * @param {*} mediaElement The wrapper that mimics all the native events/properties/methods for all renderers
+   * @param {*} node The original HTML video, audio or iframe tag where the media was loaded originally; if html5 is being used, media and node are the basically the same
+   * @param {*} instance Gives access to the methods associated to the MediaElementPlayer class. Available when using MediaElementPlayer.
+   */
+  onPlayerReady(mediaElement, node, instance) {
     // console.log(mediaElementPlayer);
-    this.mediaElement = mediaElementPlayer;
+    this.mediaElement = instance;
 
     // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
     const hasTouch = false;
