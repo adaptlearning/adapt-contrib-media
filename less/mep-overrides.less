@@ -17,18 +17,20 @@
 //   background-position: 0 0;
 // }
 
-// .mejs__container-fullscreen .mejs__mediaelement,
-// .mejs__container-fullscreen video {
-//   width: 100% !important;
-//   height: 100% !important;
-//   background-color: black;
-// }
+// Fullscreen fix
+.mejs__container-fullscreen .mejs__mediaelement,
+.mejs__container-fullscreen .mejs__mediaelement > div,
+.mejs__container-fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: @black;
+}
 
-// // Bug fix to contain video when in portrait mode
-// // --------------------------------------------------
-// .orientation-portrait .mejs__container-fullscreen video {
-//   object-fit: contain;
-// }
+// Bug fix to contain video when in portrait mode
+// --------------------------------------------------
+.orientation-portrait .mejs__container-fullscreen video {
+  object-fit: contain;
+}
 
 // // Bug fix for missing control icons on iOS touch devices
 // // required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
