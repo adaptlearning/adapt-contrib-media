@@ -202,6 +202,7 @@ if (mediaFeatures.hasMozNativeFullScreen) {
         : document.mozFullScreen;
     },
     cancelFullScreen: el => {
+      if (!mediaFeatures.isFullScreen()) return;
       document.exitFullscreen
         ? document.exitFullscreen()
         : document.mozCancelFullScreen();
