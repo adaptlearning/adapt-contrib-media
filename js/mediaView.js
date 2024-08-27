@@ -199,7 +199,7 @@ class MediaView extends ComponentView {
   listenForCaptionsChange() {
     if (!this.model.get('_useClosedCaptions')) return;
 
-    this.mediaElement.addEventListener('captionschange', e => {
+    this.mediaElement.addEventListener('captionschange', event => {
       const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
@@ -430,7 +430,7 @@ class MediaView extends ComponentView {
   }
 
   onSkipToTranscript() {
-    // need slight delay before focussing button to make it work when JAWS is running
+    // need slight delay before focusing button to make it work when JAWS is running
     // see https://github.com/adaptlearning/adapt_framework/issues/2427
     _.delay(() => {
       a11y.focus(this.$('.media__transcript-btn'));
