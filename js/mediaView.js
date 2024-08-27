@@ -199,15 +199,11 @@ class MediaView extends ComponentView {
   listenForCaptionsChange() {
     if (!this.model.get('_useClosedCaptions')) return;
 
-    const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
-      '.mejs__captions-button button' :
-      '.mejs__captions-selector';
-
-    this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
+    this.mediaElement.addEventListener('captionschange', e => {
       const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
-    }, 250)); // needs debouncing because the click event fires twice
+    });
 
     this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
   }
@@ -222,8 +218,13 @@ class MediaView extends ComponentView {
     if (view?.cid === this.cid) return; // ignore the event if we triggered it
 
     lang = this.checkForSupportedCCLanguage(lang);
+    if (this.mediaElementInstance.selectedTrack.srclang === lang) return;
 
-    this.mediaElementInstance.setTrack(lang);
+    const allTracks = this.mediaElementInstance.trackFiles;
+    const track = [...allTracks].filter((node) => {
+      return node.srclang === lang;
+    })[0];
+    this.mediaElementInstance.setTrack(track.id);
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
     const $inputs = this.$('.mejs__captions-selector input');
