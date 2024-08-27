@@ -3,7 +3,7 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-// import './mediaLibrariesOverrides';
+import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
 // import 'libraries/mediaelement-fullscreen-hook';
 
@@ -148,25 +148,7 @@ class MediaView extends ComponentView {
       modelOptions.alwaysShowControls = true;
     }
 
-    switch (media.type) {
-      case 'video/vimeo':
-        modelOptions.alwaysShowControls = false;
-        modelOptions.hideVideoControlsOnLoad = true;
-        modelOptions.features = [];
-        if (MediaView.froogaloopAdded) return callback();
-        $.getScript('assets/froogaloop.js')
-          .done(() => {
-            MediaView.froogaloopAdded = true;
-            callback();
-          })
-          .fail(() => {
-            MediaView.froogaloopAdded = false;
-            logging.error('Could not load froogaloop.js');
-          });
-        break;
-      default:
-        callback();
-    }
+    callback();
   }
 
   cleanUpPlayer() {
@@ -384,14 +366,6 @@ class MediaView extends ComponentView {
     const modelOptions = this.model.get('_playerOptions');
     delete modelOptions.success;
 
-    const media = this.model.get('_media');
-    if (media) {
-      switch (media.type) {
-        case 'video/vimeo':
-          this.$('iframe')[0].isRemoved = true;
-      }
-    }
-
     if (this.mediaElementInstance) {
       this.mediaElement.remove();
 
@@ -441,18 +415,9 @@ class MediaView extends ComponentView {
       this.setupPlayPauseToggle();
     }
 
-    this.addThirdPartyAfterFixes();
     this.cleanUpPlayerAfter();
     this.setReadyStatus();
     this.setupEventListeners();
-  }
-
-  addThirdPartyAfterFixes() {
-    const media = this.model.get('_media');
-    switch (media.type) {
-      case 'video/vimeo':
-        this.$('.mejs__container').attr('tabindex', 0);
-    }
   }
 
   cleanUpPlayerAfter() {
@@ -554,9 +519,6 @@ class MediaView extends ComponentView {
 
     Adapt.trigger('media', eventObj);
   }
-
 }
-
-MediaView.froogaloopAdded = false;
 
 export default MediaView;
