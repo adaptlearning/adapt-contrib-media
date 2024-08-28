@@ -428,12 +428,19 @@ class MediaView extends ComponentView {
     this.setupEventListeners();
   }
 
+  /**
+   * loadPlugins
+   * Loads any installed mejs plugins. https://github.com/mediaelement/mediaelement-plugins
+   */
   loadPlugins() {
-    $.getScript('libraries/plugins/speed.js', (data, textStatus) => {
-      // console.log(textStatus);
-    });
-    $.getScript('libraries/plugins/speed-i18n.js', (data, textStatus) => {
-      // console.log(textStatus);
+    const plugins = ['speed', 'jump-forward', 'skip-back'];
+    plugins.forEach(plugin => {
+      $.getScript(`libraries/plugins/${plugin}.js`).fail(() => {
+        logging.error(`${plugin} plugin failed to load`);
+      });
+      $.getScript(`libraries/plugins/${plugin}-i18n.js`).fail(() => {
+        logging.error(`${plugin} plugin failed to load`);
+      });
     });
   }
 
