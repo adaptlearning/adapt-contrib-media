@@ -6,8 +6,6 @@ import ComponentView from 'core/js/views/componentView';
 import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
 // import 'libraries/mediaelement-fullscreen-hook';
-// import 'libraries/plugins/speed-i18n.js';
-// import 'libraries/plugins/speed.js';
 
 class MediaView extends ComponentView {
 
