@@ -34,7 +34,6 @@ class MediaView extends ComponentView {
   }
 
   preRender() {
-    // this.loadPlugins();
     this.listenTo(Adapt, {
       'device:resize': this.onScreenSizeChanged,
       'device:changed': this.onDeviceChanged,
@@ -72,8 +71,6 @@ class MediaView extends ComponentView {
   }
 
   setupPlayer() {
-    // this.loadPlugins();
-
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
     const modelOptions = this.model.get('_playerOptions');
