@@ -6,6 +6,8 @@ import ComponentView from 'core/js/views/componentView';
 import './mediaLibrariesOverrides';
 import 'libraries/mediaelement-and-player';
 // import 'libraries/mediaelement-fullscreen-hook';
+// import 'libraries/plugins/speed-i18n.js';
+// import 'libraries/plugins/speed.js';
 
 class MediaView extends ComponentView {
 
@@ -32,6 +34,7 @@ class MediaView extends ComponentView {
   }
 
   preRender() {
+    // this.loadPlugins();
     this.listenTo(Adapt, {
       'device:resize': this.onScreenSizeChanged,
       'device:changed': this.onDeviceChanged,
@@ -45,6 +48,8 @@ class MediaView extends ComponentView {
       _isMediaEnded: false,
       _isMediaPlaying: false
     });
+
+    this.loadPlugins();
 
     if (!this.model.get('_media').source) return;
     const media = this.model.get('_media');
@@ -67,6 +72,8 @@ class MediaView extends ComponentView {
   }
 
   setupPlayer() {
+    // this.loadPlugins();
+
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
     const modelOptions = this.model.get('_playerOptions');
@@ -419,6 +426,15 @@ class MediaView extends ComponentView {
     this.cleanUpPlayerAfter();
     this.setReadyStatus();
     this.setupEventListeners();
+  }
+
+  loadPlugins() {
+    $.getScript('libraries/plugins/speed.js', (data, textStatus) => {
+      // console.log(textStatus);
+    });
+    $.getScript('libraries/plugins/speed-i18n.js', (data, textStatus) => {
+      // console.log(textStatus);
+    });
   }
 
   cleanUpPlayerAfter() {
