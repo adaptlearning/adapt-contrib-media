@@ -411,6 +411,8 @@ class MediaView extends ComponentView {
   onPlayerReady(media, node, instance) {
     this.mediaElement = media;
     this.mediaElementInstance = instance;
+    console.log(media);
+    console.log(instance);
 
     // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
     const hasTouch = false;

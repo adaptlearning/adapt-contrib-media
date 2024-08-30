@@ -22,9 +22,7 @@
     {{else}}
       <video aria-hidden="true" preload="none"
         {{#equals _aspectRatio "square"}} width="640" height="640"
-        {{else equals _aspectRatio "portrait"}} width="540" height="960"
-        {{else}} width="640" height="360"
-        {{/equals}}
+        {{else equals _aspectRatio "portrait"}} width="540" height="960"{{/equals}}
         {{#if _playsinline}} playsinline{{/if}} poster="{{_media.poster}}" style="max-width: 100%;" controls="controls">
         {{#if _media.source}}
           <source src="{{_media.source}}" type="{{_media.type}}"/>
