@@ -1299,7 +1299,7 @@ Object.assign(_player2.default.prototype, {
 
 	isNativeFullScreen: false,
 
-	isInIframe: false,
+	// isInIframe: false,
 
 	isPluginClickThroughCreated: false,
 
@@ -1312,7 +1312,7 @@ Object.assign(_player2.default.prototype, {
 			return;
 		}
 
-		player.isInIframe = _window2.default.location !== _window2.default.parent.location;
+		// player.isInIframe = _window2.default.location !== _window2.default.parent.location;
 
 		player.detectFullscreenMode();
 
@@ -1424,25 +1424,25 @@ Object.assign(_player2.default.prototype, {
 		if (t.fullscreenMode === 'native-native' || t.fullscreenMode === 'plugin-native') {
 			Features.requestFullScreen(t.getElement(t.container));
 
-			if (t.isInIframe) {
-				setTimeout(function checkFullscreen() {
+		// 	if (t.isInIframe) {
+		// 		setTimeout(function checkFullscreen() {
 
-					if (t.isNativeFullScreen) {
-						var percentErrorMargin = 0.002,
-						    windowWidth = _window2.default.innerWidth || _document2.default.documentElement.clientWidth || _document2.default.body.clientWidth,
-						    screenWidth = screen.width,
-						    absDiff = Math.abs(screenWidth - windowWidth),
-						    marginError = screenWidth * percentErrorMargin;
+		// 			if (t.isNativeFullScreen) {
+		// 				var percentErrorMargin = 0.002,
+		// 				    windowWidth = _window2.default.innerWidth || _document2.default.documentElement.clientWidth || _document2.default.body.clientWidth,
+		// 				    screenWidth = screen.width,
+		// 				    absDiff = Math.abs(screenWidth - windowWidth),
+		// 				    marginError = screenWidth * percentErrorMargin;
 
-						if (absDiff > marginError) {
-							t.exitFullScreen();
-						} else {
-							setTimeout(checkFullscreen, 500);
-						}
-					}
-				}, 1000);
-			}
-		}
+		// 				if (absDiff > marginError) {
+		// 					t.exitFullScreen();
+		// 				} else {
+		// 					setTimeout(checkFullscreen, 500);
+		// 				}
+		// 			}
+		// 		}, 1000);
+		// 	}
+		// }
 
 		t.getElement(t.container).style.width = '100%';
 		t.getElement(t.container).style.height = '100%';
