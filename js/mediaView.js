@@ -200,11 +200,13 @@ class MediaView extends ComponentView {
    */
   listenForCaptionsChange() {
     if (!this.model.get('_useClosedCaptions')) return;
+    this.setCaptionButtonState();
 
     this.mediaElement.addEventListener('captionschange', event => {
       const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
+      this.setCaptionButtonState();
     });
 
     this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
@@ -226,12 +228,21 @@ class MediaView extends ComponentView {
     const track = [...allTracks].filter((node) => {
       return node.srclang === lang;
     })[0];
+    if (!track) return;
     this.mediaElementInstance.setTrack(track.id);
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
     const $inputs = this.$('.mejs__captions-selector input');
     $inputs.filter(':checked').prop('checked', false);
     $inputs.filter(`[value="${lang}"]`).prop('checked', true);
+  }
+
+  setCaptionButtonState() {
+    // Allow use of aria-pressed on closed captions button
+    // https://github.com/adaptlearning/adapt-contrib-media/issues/250
+    const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
+    const $ccButton = this.$el.find('.mejs__captions-button > button');
+    $ccButton.attr('aria-pressed', srclang !== 'none');
   }
 
   /**
