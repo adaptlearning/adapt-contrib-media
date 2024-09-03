@@ -1,4 +1,4 @@
-// import Adapt from 'core/js/adapt';
+import Adapt from 'core/js/adapt';
 
 // /*
 //   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
