@@ -58,27 +58,11 @@
  */
 const features = window.mejs.Features;
 if (features.hasMozNativeFullScreen) {
-  Object.assign(features, {
-    // fullScreenEventName: document.exitFullscreen
-    //   ? 'fullscreenchange'
-    //   : 'mozfullscreenchange',
-    // requestFullScreen: el => {
-    //   document.exitFullscreen
-    //     ? el.requestFullscreen()
-    //     : el.mozRequestFullScreen();
-    // },
-    // isFullScreen: () => {
-    //   return document.exitFullscreen
-    //     ? Boolean(document.fullscreenElement)
-    //     : document.mozFullScreen;
-    // },
-    cancelFullScreen: el => {
-      if (!features.isFullScreen()) return;
-      document.exitFullscreen
-        ? document.exitFullscreen()
-        : document.mozCancelFullScreen();
-    }
-  });
+  const original = document.mozCancelFullScreen.bind(document);
+  document.mozCancelFullScreen = () => {
+    if (!document.mozFullScreenElement) return;
+    original();
+  };
 }
 
 /**
