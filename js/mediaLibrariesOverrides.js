@@ -53,6 +53,35 @@
 // };
 
 /**
+ * Fix for firefox fullscreen api
+ * https://github.com/adaptlearning/adapt-contrib-media/issues/239
+ */
+const features = window.mejs.Features;
+if (features.hasMozNativeFullScreen) {
+  Object.assign(features, {
+    // fullScreenEventName: document.exitFullscreen
+    //   ? 'fullscreenchange'
+    //   : 'mozfullscreenchange',
+    // requestFullScreen: el => {
+    //   document.exitFullscreen
+    //     ? el.requestFullscreen()
+    //     : el.mozRequestFullScreen();
+    // },
+    // isFullScreen: () => {
+    //   return document.exitFullscreen
+    //     ? Boolean(document.fullscreenElement)
+    //     : document.mozFullScreen;
+    // },
+    cancelFullScreen: el => {
+      if (!features.isFullScreen()) return;
+      document.exitFullscreen
+        ? document.exitFullscreen()
+        : document.mozCancelFullScreen();
+    }
+  });
+}
+
+/**
  * Overwrite mediaelement-and-player enterFullScreen to remove Chrome <17 bug fix
  * https://github.com/adaptlearning/adapt-contrib-media/issues/255
 */
@@ -60,7 +89,7 @@
 // window.mejs.MediaElementPlayer.prototype.enterFullScreen = function () {
 //   const t = this;
 
-//   if (window.mejs.MediaFeatures.hasiOSFullScreen) {
+//   if (window.mejs.features.hasiOSFullScreen) {
 //     t.media.webkitEnterFullscreen();
 //     return;
 //   }
@@ -75,7 +104,7 @@
 //   // attempt to do true fullscreen
 //   if (t.fullscreenMode === 'native-native' || t.fullscreenMode === 'plugin-native') {
 
-//     window.mejs.MediaFeatures.requestFullScreen(t.container[0]);
+//     window.mejs.features.requestFullScreen(t.container[0]);
 //   }
 
 //   // make full size
