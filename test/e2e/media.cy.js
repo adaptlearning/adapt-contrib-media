@@ -25,7 +25,7 @@ describe('Media', function () {
           cy.get('.media__transcript-body-inline').should('not.be.visible');
           cy.get('button.media__transcript-btn-inline').should('be.visible');
           cy.get('button.media__transcript-btn-inline').should('contain', mediaComponent._transcript.inlineTranscriptButton).click();
-          cy.get('.media__transcript-body-inline-inner').should('be.visible').should('contain', mediaComponent._transcript.inlineTranscriptBody);
+          cy.get('.media__transcript-body-inline-inner').should('be.visible').should('contain', stripHtml(mediaComponent._transcript.inlineTranscriptBody));
           cy.get('button.media__transcript-btn-inline').should('contain', mediaComponent._transcript.inlineTranscriptCloseButton).click();
           cy.get('.media__transcript-body-inline').should('not.be.visible');
         } else {
