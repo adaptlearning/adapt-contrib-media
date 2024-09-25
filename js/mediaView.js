@@ -3,9 +3,19 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-import './mediaLibrariesOverrides';
-import 'libraries/mediaelement-and-player';
+// import './mediaLibrariesOverrides';
 // import 'libraries/mediaelement-fullscreen-hook';
+import('libraries/mediaelement-and-player')
+  .then(() => {
+    return Promise.all([
+      import('libraries/plugins/speed'),
+      import('libraries/plugins/speed-i18n'),
+      import('libraries/plugins/jump-forward'),
+      import('libraries/plugins/jump-forward-i18n'),
+      import('libraries/plugins/skip-back'),
+      import('libraries/plugins/skip-back-i18n')
+    ]);
+  });
 
 class MediaView extends ComponentView {
 
@@ -45,8 +55,6 @@ class MediaView extends ComponentView {
       _isMediaEnded: false,
       _isMediaPlaying: false
     });
-
-    this.loadPlugins();
 
     if (!this.model.get('_media').source) return;
     const media = this.model.get('_media');
@@ -113,6 +121,11 @@ class MediaView extends ComponentView {
     }
 
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
+
+    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
+    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
+    // the removal of the default shortcut keys.
+    // modelOptions.enableKeyboard = false;
 
     this.addMediaTypeClass();
 
@@ -435,22 +448,6 @@ class MediaView extends ComponentView {
     this.cleanUpPlayerAfter();
     this.setReadyStatus();
     this.setupEventListeners();
-  }
-
-  /**
-   * loadPlugins
-   * Loads any installed mejs plugins. https://github.com/mediaelement/mediaelement-plugins
-   */
-  loadPlugins() {
-    const plugins = ['speed', 'jump-forward', 'skip-back'];
-    plugins.forEach(plugin => {
-      $.getScript(`libraries/plugins/${plugin}.js`).fail(() => {
-        logging.error(`${plugin} plugin failed to load`);
-      });
-      $.getScript(`libraries/plugins/${plugin}-i18n.js`).fail(() => {
-        logging.error(`${plugin} plugin failed to load`);
-      });
-    });
   }
 
   cleanUpPlayerAfter() {
