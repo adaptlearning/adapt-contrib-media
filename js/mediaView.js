@@ -7,14 +7,12 @@ import ComponentView from 'core/js/views/componentView';
 // import 'libraries/mediaelement-fullscreen-hook';
 import('libraries/mediaelement-and-player')
   .then(() => {
-    return Promise.all([
-      import('libraries/plugins/speed'),
-      import('libraries/plugins/speed-i18n'),
-      import('libraries/plugins/jump-forward'),
-      import('libraries/plugins/jump-forward-i18n'),
-      import('libraries/plugins/skip-back'),
-      import('libraries/plugins/skip-back-i18n')
-    ]);
+    import('libraries/plugins/speed');
+    import('libraries/plugins/speed-i18n');
+    import('libraries/plugins/jump-forward');
+    import('libraries/plugins/jump-forward-i18n');
+    import('libraries/plugins/skip-back');
+    import('libraries/plugins/skip-back-i18n');
   });
 
 class MediaView extends ComponentView {
