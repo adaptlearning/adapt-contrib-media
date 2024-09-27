@@ -67,8 +67,23 @@ class MediaView extends ComponentView {
   }
 
   postRender() {
+    // this.initLibraries();
     this.setupPlayer();
   }
+
+  // initLibraries() {
+  //   import('libraries/mediaelement-and-player')
+  //     .then(() => Promise.all([
+  //       import('libraries/plugins/speed'),
+  //       import('libraries/plugins/speed-i18n'),
+  //       import('libraries/plugins/jump-forward'),
+  //       import('libraries/plugins/jump-forward-i18n'),
+  //       import('libraries/plugins/skip-back'),
+  //       import('libraries/plugins/skip-back-i18n')
+  //     ]).then(() => {
+  //       this.setupPlayer();
+  //     }));
+  // }
 
   setupPlayer() {
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
@@ -335,24 +350,24 @@ class MediaView extends ComponentView {
   }
 
   // Overrides the default play/pause functionality to stop accidental playing on touch devices
-  setupPlayPauseToggle() {
-    // bit sneaky, but we don't have a this.mediaElement ref on iOS devices
-    const player = this.mediaElement;
+  // setupPlayPauseToggle() {
+  //   // bit sneaky, but we don't have a this.mediaElement ref on iOS devices
+  //   const player = this.mediaElement;
 
-    if (!player) {
-      logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
-      return;
-    }
+  //   if (!player) {
+  //     logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
+  //     return;
+  //   }
 
-    // stop the player dealing with this, we'll do it ourselves
-    player.options.clickToPlayPause = false;
+  //   // stop the player dealing with this, we'll do it ourselves
+  //   player.options.clickToPlayPause = false;
 
-    // play on 'big button' click
-    this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
+  //   // play on 'big button' click
+  //   this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
 
-    // pause on player click
-    this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
-  }
+  //   // pause on player click
+  //   this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
+  // }
 
   onMediaStop(view) {
     // Make sure this view isn't triggering media:stop
@@ -439,10 +454,10 @@ class MediaView extends ComponentView {
     // console.log(instance);
     // console.log(window.mejs);
 
-    const hasTouch = device.touch;
-    if (hasTouch) {
-      this.setupPlayPauseToggle();
-    }
+    // const hasTouch = device.touch;
+    // if (hasTouch) {
+    //   this.setupPlayPauseToggle();
+    // }
 
     this.cleanUpPlayerAfter();
     this.setReadyStatus();
