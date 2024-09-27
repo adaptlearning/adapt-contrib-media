@@ -6,7 +6,6 @@ import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import './mediaLibrariesOverrides';
-// import 'libraries/mediaelement-fullscreen-hook';
 import('libraries/mediaelement-and-player')
   .then(() => {
     import('libraries/plugins/speed');
