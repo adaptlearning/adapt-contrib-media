@@ -1,53 +1,51 @@
-define([
-  'core/js/adapt',
-  'core/js/device',
-  'libraries/mediaelement-and-player'
-], function(Adapt, device) {
-  var mepPrototype = $.extend({}, window.mejs.MediaElementPlayer.prototype);
+import Adapt from 'core/js/adapt';
+import device from 'core/js/device';
+import 'libraries/mediaelement-and-player';
 
-  $.extend(window.mejs.MediaElementPlayer.prototype, {
-    /**
-    * fixes a bug - https://github.com/adaptlearning/adapt_framework/issues/1478
-    * where the media player going into/coming out of full-screen mode would trigger inview on
-    * components below it; we therefore need to switch off inview when entering full screen mode
-    * and switch it back on again after exiting full screen mode
-    */
-    detectFullscreenMode: function() {
-      var vendorPrefix = this.getVendorPrefix();
-      var fsEventName = 'on' + vendorPrefix + 'fullscreenchange';
+const mepPrototype = Object.assign({}, window.mejs.MediaElementPlayer.prototype);
 
-      if (document[fsEventName] === null) {
-        document[fsEventName] = function fullScreenEventHandler() {
+Object.assign(window.mejs.MediaElementPlayer.prototype, {
+  /**
+  * fixes a bug - https://github.com/adaptlearning/adapt_framework/issues/1478
+  * where the media player going into/coming out of full-screen mode would trigger inview on
+  * components below it; we therefore need to switch off inview when entering full screen mode
+  * and switch it back on again after exiting full screen mode
+  */
+  detectFullscreenMode() {
+    const vendorPrefix = this.getVendorPrefix();
+    const fsEventName = 'on' + vendorPrefix + 'fullscreenchange';
 
-          var elementName = (vendorPrefix === '' ? 'fullscreenElement' : vendorPrefix + 'FullscreenElement');
+    if (document[fsEventName] === null) {
+      document[fsEventName] = function fullScreenEventHandler() {
 
-          if (document[elementName] !== null) {
-            $.inview.lock('mediaelement');
-            Adapt.trigger('media:fullscreen:enter');
-          } else {
-            $.inview.unlock('mediaelement');
-            Adapt.trigger('media:fullscreen:exit');
-          }
-        };
-      }
-      return mepPrototype.detectFullscreenMode.apply(this, arguments);
-    },
+        const elementName = (vendorPrefix === '' ? 'fullscreenElement' : vendorPrefix + 'FullscreenElement');
 
-    /**
-    * because the fullscreen events and properties are still vendor-prefixed in some browsers...
-    */
-    getVendorPrefix: function() {
-      var browser = device.browser;
-
-      if (browser === 'internet explorer') {
-        return 'ms';
-      }
-
-      if (browser === 'microsoft edge' || browser === 'safari') {
-        return 'webkit';
-      }
-
-      return ''; // Chrome, Opera and Firefox no longer require a vendor prefix
+        if (document[elementName] !== null) {
+          $.inview.lock('mediaelement');
+          Adapt.trigger('media:fullscreen:enter');
+        } else {
+          $.inview.unlock('mediaelement');
+          Adapt.trigger('media:fullscreen:exit');
+        }
+      };
     }
-  });
+    return mepPrototype.detectFullscreenMode.apply(this, arguments);
+  },
+
+  /**
+  * because the fullscreen events and properties are still vendor-prefixed in some browsers...
+  */
+  getVendorPrefix() {
+    const browser = device.browser;
+
+    if (browser === 'internet explorer') {
+      return 'ms';
+    }
+
+    if (browser === 'microsoft edge' || browser === 'safari') {
+      return 'webkit';
+    }
+
+    return ''; // Chrome, Opera and Firefox no longer require a vendor prefix
+  }
 });
