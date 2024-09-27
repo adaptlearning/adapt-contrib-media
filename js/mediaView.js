@@ -1,10 +1,11 @@
 import Adapt from 'core/js/adapt';
 import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
-import device from 'core/js/device';
+// import device from 'core/js/device';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-// import './mediaLibrariesOverrides';
+import 'libraries/mediaelement-and-player';
+import './mediaLibrariesOverrides';
 // import 'libraries/mediaelement-fullscreen-hook';
 import('libraries/mediaelement-and-player')
   .then(() => {
@@ -67,23 +68,8 @@ class MediaView extends ComponentView {
   }
 
   postRender() {
-    // this.initLibraries();
     this.setupPlayer();
   }
-
-  // initLibraries() {
-  //   import('libraries/mediaelement-and-player')
-  //     .then(() => Promise.all([
-  //       import('libraries/plugins/speed'),
-  //       import('libraries/plugins/speed-i18n'),
-  //       import('libraries/plugins/jump-forward'),
-  //       import('libraries/plugins/jump-forward-i18n'),
-  //       import('libraries/plugins/skip-back'),
-  //       import('libraries/plugins/skip-back-i18n')
-  //     ]).then(() => {
-  //       this.setupPlayer();
-  //     }));
-  // }
 
   setupPlayer() {
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
