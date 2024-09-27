@@ -74,6 +74,36 @@ class MediaView extends ComponentView {
   setupPlayer() {
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
 
+    const modelOptions = this.setupModelOptions();
+
+    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
+    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
+    // the removal of the default shortcut keys.
+    // modelOptions.enableKeyboard = false;
+
+    this.addMediaTypeClass();
+
+    this.addThirdPartyFixes(modelOptions, () => {
+      // create the player
+      this.$('audio, video').mediaelementplayer(modelOptions);
+      this.cleanUpPlayer();
+
+      const _media = this.model.get('_media');
+      // if no media is selected - set ready now, as success won't be called
+      if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
+        logging.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
+        this.setReadyStatus();
+        return;
+      }
+      // Check if we're streaming
+      if (!_media.source) return;
+      this.$('.media__widget').addClass('external-source');
+    });
+
+    this.addMejsButtonClass();
+  }
+
+  setupModelOptions() {
     const modelOptions = this.model.get('_playerOptions');
 
     if (modelOptions.features === undefined) {
@@ -117,31 +147,7 @@ class MediaView extends ComponentView {
 
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
 
-    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
-    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
-    // the removal of the default shortcut keys.
-    // modelOptions.enableKeyboard = false;
-
-    this.addMediaTypeClass();
-
-    this.addThirdPartyFixes(modelOptions, () => {
-      // create the player
-      this.$('audio, video').mediaelementplayer(modelOptions);
-      this.cleanUpPlayer();
-
-      const _media = this.model.get('_media');
-      // if no media is selected - set ready now, as success won't be called
-      if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
-        logging.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
-        this.setReadyStatus();
-        return;
-      }
-      // Check if we're streaming
-      if (!_media.source) return;
-      this.$('.media__widget').addClass('external-source');
-    });
-
-    this.addMejsButtonClass();
+    return modelOptions;
   }
 
   addMejsButtonClass() {
