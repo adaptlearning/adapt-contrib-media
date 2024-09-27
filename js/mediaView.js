@@ -68,11 +68,6 @@ class MediaView extends ComponentView {
 
   postRender() {
     this.setupPlayer();
-    this.addMejsButtonClass();
-  }
-
-  addMejsButtonClass() {
-    this.$('.mejs__overlay-button').addClass('icon');
   }
 
   setupPlayer() {
@@ -144,6 +139,12 @@ class MediaView extends ComponentView {
       if (!_media.source) return;
       this.$('.media__widget').addClass('external-source');
     });
+
+    this.addMejsButtonClass();
+  }
+
+  addMejsButtonClass() {
+    this.$('.mejs__overlay-button').addClass('icon');
   }
 
   addMediaTypeClass() {
