@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
+import device from 'core/js/device';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
 // import './mediaLibrariesOverrides';
@@ -437,8 +438,7 @@ class MediaView extends ComponentView {
     // console.log(instance);
     // console.log(window.mejs);
 
-    // const hasTouch = window.mejs.MediaFeatures.hasTouch; // v2.13.2 Removed breaking `hasTouch` detection
-    const hasTouch = false;
+    const hasTouch = device.touch;
     if (hasTouch) {
       this.setupPlayPauseToggle();
     }
