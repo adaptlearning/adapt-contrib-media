@@ -2,7 +2,6 @@ import Adapt from 'core/js/adapt';
 import wait from 'core/js/wait';
 import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
-// import device from 'core/js/device';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
 import './mediaLibrariesOverrides';
@@ -76,13 +75,7 @@ class MediaView extends ComponentView {
 
   setupPlayer() {
     if (!this.model.get('_playerOptions')) this.model.set('_playerOptions', {});
-
     const modelOptions = this.setupModelOptions();
-
-    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
-    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
-    // the removal of the default shortcut keys.
-    // modelOptions.enableKeyboard = false;
 
     this.addMediaTypeClass();
 
@@ -150,9 +143,11 @@ class MediaView extends ComponentView {
 
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
 
-    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
-    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
-    // the removal of the default shortcut keys.
+    /**
+     * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
+     * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
+     * the removal of the default shortcut keys.
+     */
     modelOptions.keyActions = [];
 
     return modelOptions;
@@ -349,26 +344,6 @@ class MediaView extends ComponentView {
     this.model.set('_maxViewed', event.target.currentTime);
   }
 
-  // Overrides the default play/pause functionality to stop accidental playing on touch devices
-  // setupPlayPauseToggle() {
-  //   // bit sneaky, but we don't have a this.mediaElement ref on iOS devices
-  //   const player = this.mediaElement;
-
-  //   if (!player) {
-  //     logging.warn('MediaView.setupPlayPauseToggle: OOPS! there is no player reference.');
-  //     return;
-  //   }
-
-  //   // stop the player dealing with this, we'll do it ourselves
-  //   player.options.clickToPlayPause = false;
-
-  //   // play on 'big button' click
-  //   this.$('.mejs__overlay-button').on('click', this.onOverlayClick);
-
-  //   // pause on player click
-  //   this.$('.mejs__mediaelement').on('click', this.onMediaElementClick);
-  // }
-
   onMediaStop(view) {
     // Make sure this view isn't triggering media:stop
     if (view?.cid === this.cid) return;
@@ -450,15 +425,6 @@ class MediaView extends ComponentView {
   onPlayerReady(media, node, instance) {
     this.mediaElement = media;
     this.mediaElementInstance = instance;
-    // console.log(media);
-    // console.log(instance);
-    // console.log(window.mejs);
-
-    // const hasTouch = device.touch;
-    // if (hasTouch) {
-    //   this.setupPlayPauseToggle();
-    // }
-
     this.cleanUpPlayerAfter();
     this.setReadyStatus();
     this.setupEventListeners();

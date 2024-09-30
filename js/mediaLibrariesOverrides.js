@@ -55,7 +55,7 @@ Adapt.on('app:dataReady', () => {
 
 /**
  * Fullscreen hook
- * fixes a bug - https://github.com/adaptlearning/adapt_framework/issues/1478
+ * Fixes a bug - https://github.com/adaptlearning/adapt_framework/issues/1478
  * where the media player going into/coming out of full-screen mode would trigger inview on
  * components below it; we therefore need to switch off inview when entering full screen mode
  * and switch it back on again after exiting full screen mode
@@ -85,8 +85,8 @@ Object.assign(window.mejs.MediaElementPlayer.prototype, {
   },
 
   /**
-* because the fullscreen events and properties are still vendor-prefixed in some browsers...
-*/
+  * because the fullscreen events and properties are still vendor-prefixed in some browsers...
+  */
   getVendorPrefix() {
     const browser = device.browser;
 
