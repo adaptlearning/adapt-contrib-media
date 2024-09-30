@@ -2,24 +2,6 @@ import Adapt from 'core/js/adapt';
 import device from 'core/js/device';
 import 'libraries/mediaelement-and-player';
 
-// /*
-//   * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One
-//   * is a duration integer the other is the player object. The default functions error on slider key press and so break
-//   * accessibility. Below is a correction.
-//   */
-
-// console.log(window.mejs.MepDefaults);
-// Object.assign(window.mejs.MepDefaults, {
-//   defaultSeekForwardInterval: duration => {
-//     if (typeof duration === 'object') return duration.duration * 0.05;
-//     return duration * 0.05;
-//   },
-//   defaultSeekBackwardInterval: duration => {
-//     if (typeof duration === 'object') return duration.duration * 0.05;
-//     return duration * 0.05;
-//   }
-// });
-
 /**
  * Fix for firefox fullscreen api
  * https://github.com/adaptlearning/adapt-contrib-media/issues/239

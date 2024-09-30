@@ -154,7 +154,6 @@ class MediaView extends ComponentView {
     // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
     // the removal of the default shortcut keys.
     modelOptions.keyActions = [];
-    modelOptions.enableKeyboard = false;
 
     return modelOptions;
   }
