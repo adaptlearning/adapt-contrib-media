@@ -3,17 +3,13 @@ import device from 'core/js/device';
 import 'libraries/mediaelement-and-player';
 
 // /*
-//   * Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
-//   * as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
-//   * the removal of the default shortcut keys.
-//   *
 //   * The default seek interval functions are passed two different data types from mejs which they handle incorrectly. One
 //   * is a duration integer the other is the player object. The default functions error on slider key press and so break
 //   * accessibility. Below is a correction.
 //   */
 
+// console.log(window.mejs.MepDefaults);
 // Object.assign(window.mejs.MepDefaults, {
-//   keyActions: [],
 //   defaultSeekForwardInterval: duration => {
 //     if (typeof duration === 'object') return duration.duration * 0.05;
 //     return duration * 0.05;

@@ -22,7 +22,6 @@ wait.for(async done => {
 });
 
 class MediaView extends ComponentView {
-
   events() {
     return {
       'click .js-media-inline-transcript-toggle': 'onToggleInlineTranscript',
@@ -150,6 +149,12 @@ class MediaView extends ComponentView {
     }
 
     modelOptions.iconSprite = 'assets/mejs-controls.svg';
+
+    // Default shortcut keys trap a screen reader user inside the player once in focus. These keys are unnecessary
+    // as one may traverse the player in a linear fashion without needing to know or use shortcut keys. Below is
+    // the removal of the default shortcut keys.
+    modelOptions.keyActions = [];
+    modelOptions.enableKeyboard = false;
 
     return modelOptions;
   }
