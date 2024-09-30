@@ -107,8 +107,8 @@ Object.assign(window.mejs.MediaElementPlayer.prototype, {
   },
 
   /**
-  * because the fullscreen events and properties are still vendor-prefixed in some browsers...
-  */
+* because the fullscreen events and properties are still vendor-prefixed in some browsers...
+*/
   getVendorPrefix() {
     const browser = device.browser;
 

@@ -1,20 +1,25 @@
 import Adapt from 'core/js/adapt';
+import wait from 'core/js/wait';
 import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 // import device from 'core/js/device';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
-import 'libraries/mediaelement-and-player';
 import './mediaLibrariesOverrides';
-import('libraries/mediaelement-and-player')
-  .then(() => {
-    import('libraries/plugins/speed');
-    import('libraries/plugins/speed-i18n');
-    import('libraries/plugins/jump-forward');
-    import('libraries/plugins/jump-forward-i18n');
-    import('libraries/plugins/skip-back');
-    import('libraries/plugins/skip-back-i18n');
-  });
+
+// instruct adapt to wait whilst loading client-side libraries
+wait.for(async done => {
+  // wait for window.mejs to load
+  await import('libraries/mediaelement-and-player');
+  // load plugins
+  import('libraries/plugins/speed');
+  import('libraries/plugins/speed-i18n');
+  import('libraries/plugins/jump-forward');
+  import('libraries/plugins/jump-forward-i18n');
+  import('libraries/plugins/skip-back');
+  import('libraries/plugins/skip-back-i18n');
+  done();
+});
 
 class MediaView extends ComponentView {
 
