@@ -4,12 +4,11 @@ import offlineStorage from 'core/js/offlineStorage';
 import a11y from 'core/js/a11y';
 import logging from 'core/js/logging';
 import ComponentView from 'core/js/views/componentView';
+import 'libraries/mediaelement-and-player';
 import './mediaLibrariesOverrides';
 
 // instruct adapt to wait whilst loading client-side libraries
 wait.for(async done => {
-  // wait for window.mejs to load
-  await import('libraries/mediaelement-and-player');
   // load plugins
   import('libraries/plugins/speed');
   import('libraries/plugins/speed-i18n');
