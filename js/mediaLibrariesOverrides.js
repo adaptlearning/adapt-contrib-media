@@ -85,19 +85,16 @@ Object.assign(window.mejs.MediaElementPlayer.prototype, {
   },
 
   /**
-  * because the fullscreen events and properties are still vendor-prefixed in some browsers...
+  * Fullscreen events and properties are still vendor-prefixed in some browsers.
+  * https://developer.mozilla.org/en-US/docs/Web/API/Document/fullscreenchange_event#browser_compatibility
   */
   getVendorPrefix() {
     const browser = device.browser;
 
-    if (browser === 'internet explorer') {
-      return 'ms';
-    }
-
-    if (browser === 'microsoft edge' || browser === 'safari') {
+    if (browser === 'safari') {
       return 'webkit';
     }
 
-    return ''; // Chrome, Opera and Firefox no longer require a vendor prefix
+    return '';
   }
 });
