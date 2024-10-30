@@ -6,7 +6,7 @@
 
 The component uses [MediaElement.js (v7.0.5)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.
 
-For playing YouTube and Vimeo videos, use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) or [Vimeo](https://github.com/adaptlearning/adapt-vimeo) components instead.
+For playing YouTube and Vimeo videos, use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) or [Vimeo](https://github.com/adaptlearning/adapt-vimeo) plugins instead. These formats are no longer supported by the Media plugin.
 
 [Visit the **Media** wiki](https://github.com/adaptlearning/adapt-contrib-media/wiki) for more information about its functionality and for explanations of key properties.
 
@@ -107,9 +107,9 @@ Defines the default volume as a percentage. This can be set with or without the 
 
 The media object will contain different values depending on the type of media: video or audio.
 
-For video it contains values for `mp4`, `webm`, `ogv`, `poster`, and `cc`. The properties `mp4`, `webm` and `ogv` are all optional, but at least one is required (see below for alternate properties for YouTube/Vimeo video).
+* For video, it contains values for `mp4`, `webm`, `ogv`, `poster`, and `cc`. The properties `mp4`, `webm` and `ogv` are all optional, but at least one is required.
 
-For audio it contains `mp3` and `ogg`. As with video, both are optional, but at least one is required.
+* For audio, it contains `mp3` and `ogg`. As with video, both are optional but at least one is required.
 
 The decision to include more than one file format is typically based on the browser/s used by the target audience. The most widely supported video file format is [mp4](http://caniuse.com/#feat=mpeg4) (specifically [H.264/MPEG-4 Part 10 AVC](https://en.wikipedia.org/wiki/H.264/MPEG-4_AVC)). The most widely supported audio format is mp3.
 
