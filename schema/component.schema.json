@@ -40,7 +40,6 @@
           "properties": {
             "mp4": {
               "type": "string",
-              "isObjectId": true,
               "title": "MP4 source",
               "_backboneForms": {
                 "type": "Asset",
@@ -49,7 +48,6 @@
             },
             "ogv": {
               "type": "string",
-              "isObjectId": true,
               "title": "OGV source",
               "_backboneForms": {
                 "type": "Asset",
@@ -58,7 +56,6 @@
             },
             "webm": {
               "type": "string",
-              "isObjectId": true,
               "title": "WebM source",
               "_backboneForms": {
                 "type": "Asset",
@@ -67,7 +64,6 @@
             },
             "mp3": {
               "type": "string",
-              "isObjectId": true,
               "title": "MP3 source",
               "_backboneForms": {
                 "type": "Asset",
@@ -94,7 +90,6 @@
             },
             "poster": {
               "type": "string",
-              "isObjectId": true,
               "title": "Poster frame",
               "description": "Image displayed before the video is played (except on Vimeo)",
               "_backboneForms": {
@@ -115,7 +110,7 @@
                   },
                   "src": {
                     "type": "string",
-                    "isObjectId": true,
+
                     "title": "WebVTT source",
                     "_backboneForms": {
                       "type": "Asset",
@@ -270,7 +265,6 @@
             },
             "transcriptLink": {
               "type": "string",
-              "isObjectId": true,
               "title": "Linked transcript file source",
               "_backboneForms": {
                 "type": "Asset",
