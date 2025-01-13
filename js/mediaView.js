@@ -10,12 +10,12 @@ import './mediaLibrariesOverrides';
 // instruct adapt to wait whilst loading client-side libraries
 wait.for(async done => {
   // load plugins
-  import('libraries/plugins/speed');
-  import('libraries/plugins/speed-i18n');
-  import('libraries/plugins/jump-forward');
-  import('libraries/plugins/jump-forward-i18n');
-  import('libraries/plugins/skip-back');
-  import('libraries/plugins/skip-back-i18n');
+  await import('libraries/plugins/speed');
+  await import('libraries/plugins/speed-i18n');
+  await import('libraries/plugins/jump-forward');
+  await import('libraries/plugins/jump-forward-i18n');
+  await import('libraries/plugins/skip-back');
+  await import('libraries/plugins/skip-back-i18n');
   done();
 });
 
@@ -49,7 +49,10 @@ class MediaView extends ComponentView {
       'media:stop': this.onMediaStop
     });
 
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementTimeUpdate', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
+    // android, force timeupdate handler to call after seeking handler in order to prevent forward scrubbing
+    this.onMediaElementTimeUpdate = _.debounce(this.onMediaElementTimeUpdate.bind(this), 0);
+
+    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
 
     // set initial player state attributes
     this.model.set({
@@ -114,12 +117,12 @@ class MediaView extends ComponentView {
       }
     }
 
-    /*
-    Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player
-    it will invoke the success callback prior to performing one last call to setPlayerSize.
-    This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that
-    we don't invoke setReadyStatus until the player is definitely finished rendering.
-    */
+    /**
+     * Unless we are on Android/iOS and using native controls, when MediaElementJS initializes the player
+     * it will invoke the success callback prior to performing one last call to setPlayerSize.
+     * This call to setPlayerSize is deferred by 50ms so we add a delay of 100ms here to ensure that
+     * we don't invoke setReadyStatus until the player is definitely finished rendering.
+     */
     modelOptions.success = _.debounce(this.onPlayerReady.bind(this), 100);
 
     if (this.model.get('_useClosedCaptions')) {
@@ -148,6 +151,19 @@ class MediaView extends ComponentView {
      * the removal of the default shortcut keys.
      */
     modelOptions.keyActions = [];
+
+    /**
+     * Convert string seek functions into compiled functions
+     */
+    if (typeof modelOptions.defaultSeekBackwardInterval === 'string') {
+      // eslint-disable-next-line no-new-func
+      modelOptions.defaultSeekBackwardInterval = new Function('media', `return ${modelOptions.defaultSeekBackwardInterval}`);
+    }
+
+    if (typeof modelOptions.defaultSeekForwardInterval === 'string') {
+      // eslint-disable-next-line no-new-func
+      modelOptions.defaultSeekForwardInterval = new Function('media', `return ${modelOptions.defaultSeekBackwardInterval}`);
+    }
 
     return modelOptions;
   }
@@ -330,8 +346,9 @@ class MediaView extends ComponentView {
     if (!maxViewed) {
       maxViewed = 0;
     }
-    if (event.target.currentTime <= maxViewed) return;
-    event.target.currentTime = maxViewed;
+    const target = event.currentTarget;
+    if (target.currentTime <= maxViewed) return;
+    target.currentTime = maxViewed;
   }
 
   onMediaElementTimeUpdate(event) {
@@ -339,8 +356,9 @@ class MediaView extends ComponentView {
     if (!maxViewed) {
       maxViewed = 0;
     }
-    if (event.target.currentTime <= maxViewed) return;
-    this.model.set('_maxViewed', event.target.currentTime);
+    const target = event.currentTarget;
+    if (target.currentTime <= maxViewed) return;
+    this.model.set('_maxViewed', target.currentTime);
   }
 
   onMediaStop(view) {

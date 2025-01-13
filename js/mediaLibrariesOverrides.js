@@ -1,5 +1,4 @@
 import Adapt from 'core/js/adapt';
-import device from 'core/js/device';
 import 'libraries/mediaelement-and-player';
 
 /**
@@ -61,40 +60,17 @@ Adapt.on('app:dataReady', () => {
  * and switch it back on again after exiting full screen mode
  */
 const mepPrototype = Object.assign({}, window.mejs.MediaElementPlayer.prototype);
-
 Object.assign(window.mejs.MediaElementPlayer.prototype, {
-  detectFullscreenMode() {
-    const vendorPrefix = this.getVendorPrefix();
-    const fsEventName = 'on' + vendorPrefix + 'fullscreenchange';
-
-    if (document[fsEventName] === null) {
-      document[fsEventName] = function fullScreenEventHandler() {
-
-        const elementName = (vendorPrefix === '' ? 'fullscreenElement' : vendorPrefix + 'FullscreenElement');
-
-        if (document[elementName] !== null) {
-          $.inview.lock('mediaelement');
-          Adapt.trigger('media:fullscreen:enter');
-        } else {
-          $.inview.unlock('mediaelement');
-          Adapt.trigger('media:fullscreen:exit');
-        }
-      };
-    }
-    return mepPrototype.detectFullscreenMode.apply(this, arguments);
+  enterFullScreen(...args) {
+    $.inview.lock('mediaelement');
+    Adapt.trigger('media:fullscreen:enter');
+    return mepPrototype.enterFullScreen.call(this, ...args);
   },
-
-  /**
-  * Fullscreen events and properties are still vendor-prefixed in some browsers.
-  * https://developer.mozilla.org/en-US/docs/Web/API/Document/fullscreenchange_event#browser_compatibility
-  */
-  getVendorPrefix() {
-    const browser = device.browser;
-
-    if (browser === 'safari') {
-      return 'webkit';
-    }
-
-    return '';
+  exitFullScreen(...args) {
+    setTimeout(() => {
+      $.inview.unlock('mediaelement');
+      Adapt.trigger('media:fullscreen:exit');
+    }, 250);
+    return mepPrototype.exitFullScreen.call(this, ...args);
   }
 });
