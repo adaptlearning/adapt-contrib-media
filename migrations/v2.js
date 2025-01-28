@@ -26,7 +26,7 @@ describe('Media - v2.0.6 to v2.1.0', async () => {
     return true;
   });
 
-  checkContent('Media - check _pauseWhenOffScreen attribute', async (content) => {
+  checkContent('Media - check _showVolumeControl attribute', async (content) => {
     const isValid = mediaComponents.filter(({ _showVolumeControl }) => _showVolumeControl);
     if (!isValid) throw new Error('Media - _showVolumeControl attribute missing');
     return true;

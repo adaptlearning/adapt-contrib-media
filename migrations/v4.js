@@ -28,8 +28,9 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     courseMediaGlobals.skipToTranscript = 'Skip to transcript';
     return true;
   });
-  checkContent('Media - check _pauseWhenOffScreen attribute', async (content) => {
-    const isValid = courseMediaGlobals.filter(({ ariaRegion }) => ariaRegion === originalAriaRegion);
+  checkContent('Media - check ariaRegion attribute', async (content) => {
+    console.log(courseMediaGlobals);
+    const isValid = courseMediaGlobals.filter(({ ariaRegion }) => ariaRegion !== originalAriaRegion);
     if (!isValid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
     return true;
   });
