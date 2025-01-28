@@ -16,32 +16,31 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     courseMediaGlobals = course._globals._components._media = {};
     return true;
   });
-  mutateContent('Narrative - modify global ariaRegion attribute default', async (content) => {
+  mutateContent('Media - modify global ariaRegion attribute default', async (content) => {
     if (courseMediaGlobals.ariaRegion === originalAriaRegion) courseMediaGlobals.ariaRegion = 'Media player{{#any _transcript._inlineTranscript _transcript._externalTranscript}} and transcript{{/any}}.';
     return true;
   });
-  mutateContent('Narrative - delete global transcriptButton attribute', async (content) => {
+  mutateContent('Media - delete global transcriptButton attribute', async (content) => {
     delete courseMediaGlobals.transcriptButton;
     return true;
   });
-  mutateContent('Narrative - add global skipToTranscript attribute', async (content) => {
+  mutateContent('Media - add global skipToTranscript attribute', async (content) => {
     courseMediaGlobals.skipToTranscript = 'Skip to transcript';
     return true;
   });
   checkContent('Media - check ariaRegion attribute', async (content) => {
-    console.log(courseMediaGlobals);
-    const isValid = courseMediaGlobals.filter(({ ariaRegion }) => ariaRegion !== originalAriaRegion);
-    if (!isValid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
+    const isValid = courseMediaGlobals.ariaRegion !== originalAriaRegion;
+    if (!isValid) throw new Error('Media - ariaRegion attribute incorrect');
     return true;
   });
   checkContent('Media - check global transcriptButton attribute has been removed', async (content) => {
-    const isInvalid = courseMediaGlobals.filter(({ transcriptButton }) => transcriptButton);
-    if (isInvalid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
+    const isInvalid = Object.hasOwn(courseMediaGlobals, 'transcriptButton');
+    if (isInvalid) throw new Error('Media - transcriptButton attribute still included');
     return true;
   });
   checkContent('Media - check global skipToTranscript attribute has been added', async (content) => {
-    const isValid = courseMediaGlobals.filter(({ skipToTranscript }) => skipToTranscript);
-    if (!isValid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
+    const isValid = Object.hasOwn(courseMediaGlobals, 'skipToTranscript');
+    if (!isValid) throw new Error('Media - skipToTranscript attribute missing');
     return true;
   });
   updatePlugin('Media - update to v4.1.0', { name: 'adapt-contrib-media', version: '4.0.0', framework: '>=3.3.0' });
@@ -53,14 +52,14 @@ describe('Media - v4.0.1 to v4.1.0', async () => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
     if (mediaComponents) return true;
   });
-  mutateContent('Narrative - add _pauseWhenOffScreen attribute to component', async (content) => {
+  mutateContent('Media - add _pauseWhenOffScreen attribute to component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
       mediaComponent._pauseWhenOffScreen = false;
     });
     return true;
   });
   checkContent('Media - check _pauseWhenOffScreen attribute', async (content) => {
-    const isValid = courseMediaGlobals.some(({ _pauseWhenOffScreen }) => _pauseWhenOffScreen === false);
+    const isValid = mediaComponents.some(({ _pauseWhenOffScreen }) => _pauseWhenOffScreen === false);
     if (!isValid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
     return true;
   });

@@ -7,7 +7,7 @@ describe('Media - v5.1.0 to v5.2.0', async () => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
     if (mediaComponents) return true;
   });
-  mutateContent('Narrative - add _aspectRatio attribute to component', async (content) => {
+  mutateContent('Media - add _aspectRatio attribute to component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
       mediaComponent._aspectRatio = 'landscape';
     });
@@ -30,81 +30,80 @@ describe('Media - v5.5.0 to v5.6.0', async () => {
   });
   mutateContent('Media - add globals if missing', async (content) => {
     course = content.find(({ _type }) => _type === 'course');
-    if (course?._globals?._components?._media) return true;
 
-    course._globals._components = course._globals._components || {};
-    courseMediaGlobals = course._globals._components._media = {};
+    course._globals._components = course._globals._components ?? {};
+    courseMediaGlobals = course._globals._components._media ?? {};
     return true;
   });
-  mutateContent('Narrative - add global playText attribute', async (content) => {
+  mutateContent('Media - add global playText attribute', async (content) => {
     courseMediaGlobals.playText = 'Play';
     return true;
   });
-  mutateContent('Narrative - add global pauseText attribute', async (content) => {
+  mutateContent('Media - add global pauseText attribute', async (content) => {
     courseMediaGlobals.pauseText = 'Pause';
     return true;
   });
-  mutateContent('Narrative - add global stopText attribute', async (content) => {
+  mutateContent('Media - add global stopText attribute', async (content) => {
     courseMediaGlobals.stopText = 'Stop';
     return true;
   });
-  mutateContent('Narrative - add global audioPlayerText attribute', async (content) => {
+  mutateContent('Media - add global audioPlayerText attribute', async (content) => {
     courseMediaGlobals.audioPlayerText = 'Audio Player';
     return true;
   });
-  mutateContent('Narrative - add global videoPlayerText attribute', async (content) => {
+  mutateContent('Media - add global videoPlayerText attribute', async (content) => {
     courseMediaGlobals.videoPlayerText = 'Video Player';
     return true;
   });
-  mutateContent('Narrative - add global tracksText attribute', async (content) => {
+  mutateContent('Media - add global tracksText attribute', async (content) => {
     courseMediaGlobals.tracksText = 'Captions/Subtitles';
     return true;
   });
-  mutateContent('Narrative - add global timeSliderText attribute', async (content) => {
+  mutateContent('Media - add global timeSliderText attribute', async (content) => {
     courseMediaGlobals.timeSliderText = 'Time Slider';
     return true;
   });
-  mutateContent('Narrative - add global muteText attribute', async (content) => {
+  mutateContent('Media - add global muteText attribute', async (content) => {
     courseMediaGlobals.muteText = 'Mute Toggle';
     return true;
   });
-  mutateContent('Narrative - add global unmuteStatusText attribute', async (content) => {
+  mutateContent('Media - add global unmuteStatusText attribute', async (content) => {
     courseMediaGlobals.unmuteStatusText = 'Unmute';
     return true;
   });
-  mutateContent('Narrative - add global muteStatusText attribute', async (content) => {
+  mutateContent('Media - add global muteStatusText attribute', async (content) => {
     courseMediaGlobals.muteStatusText = 'Mute';
     return true;
   });
-  mutateContent('Narrative - add global volumeSliderText attribute', async (content) => {
+  mutateContent('Media - add global volumeSliderText attribute', async (content) => {
     courseMediaGlobals.volumeSliderText = 'Volume Slider';
     return true;
   });
-  mutateContent('Narrative - add global fullscreenText attribute', async (content) => {
+  mutateContent('Media - add global fullscreenText attribute', async (content) => {
     courseMediaGlobals.fullscreenText = 'Fullscreen';
     return true;
   });
-  mutateContent('Narrative - add global goFullscreenText attribute', async (content) => {
+  mutateContent('Media - add global goFullscreenText attribute', async (content) => {
     courseMediaGlobals.goFullscreenText = 'Go Fullscreen';
     return true;
   });
-  mutateContent('Narrative - add global turnOffFullscreenText attribute', async (content) => {
+  mutateContent('Media - add global turnOffFullscreenText attribute', async (content) => {
     courseMediaGlobals.turnOffFullscreenText = 'Turn off Fullscreen';
     return true;
   });
-  mutateContent('Narrative - add global noneText attribute', async (content) => {
+  mutateContent('Media - add global noneText attribute', async (content) => {
     courseMediaGlobals.noneText = 'None';
     return true;
   });
-  mutateContent('Narrative - add global skipBackText attribute', async (content) => {
+  mutateContent('Media - add global skipBackText attribute', async (content) => {
     courseMediaGlobals.skipBackText = 'Skip back %1 seconds';
     return true;
   });
-  mutateContent('Narrative - add global allyVolumeControlText attribute', async (content) => {
+  mutateContent('Media - add global allyVolumeControlText attribute', async (content) => {
     courseMediaGlobals.allyVolumeControlText = 'Use Up/Down Arrow keys to increase or decrease volume.';
     return true;
   });
-  mutateContent('Narrative - add global progessHelpText attribute', async (content) => {
+  mutateContent('Media - add global progessHelpText attribute', async (content) => {
     courseMediaGlobals.progessHelpText = 'Use Left/Right Arrow keys to advance one second, Up/Down arrows to advance ten seconds.';
     return true;
   });

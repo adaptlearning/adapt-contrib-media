@@ -1,7 +1,28 @@
 import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
-let course, courseMediaGlobals, mediaComponents;
+
+describe('Media - v2.0.5 to v2.0.6', async () => {
+  let mediaComponents;
+  whereFromPlugin('Media - from v2.0.6', { name: 'adapt-contrib-media', version: '<2.0.6' });
+  whereContent('Media - where media', async (content) => {
+    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    if (mediaComponents) return true;
+  });
+  mutateContent('Media - add _playsinline attribute to media component', async (content) => {
+    mediaComponents.forEach(mediaComponent => {
+      mediaComponent._playsinline = false;
+    });
+    return true;
+  });
+  checkContent('Media - check _playsinline attribute', async (content) => {
+    const isValid = mediaComponents.filter(({ _playsinline }) => _playsinline);
+    if (!isValid) throw new Error('Media - _playsinline attribute missing');
+    return true;
+  });
+  updatePlugin('Media - update to v2.0.6', { name: 'adapt-contrib-media', version: '2.0.6', framework: '>=2.0.13' });
+});
 
 describe('Media - v2.0.6 to v2.1.0', async () => {
+  let mediaComponents;
   whereFromPlugin('Media - from v2.0.6', { name: 'adapt-contrib-media', version: '<2.1.0' });
   whereContent('Media - where media', async (content) => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
@@ -25,7 +46,6 @@ describe('Media - v2.0.6 to v2.1.0', async () => {
     });
     return true;
   });
-
   checkContent('Media - check _showVolumeControl attribute', async (content) => {
     const isValid = mediaComponents.filter(({ _showVolumeControl }) => _showVolumeControl);
     if (!isValid) throw new Error('Media - _showVolumeControl attribute missing');
