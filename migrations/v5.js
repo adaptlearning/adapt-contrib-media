@@ -1,11 +1,12 @@
 import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
-let course, mediaComponents;
+import _ from 'lodash';
 
 describe('Media - v5.1.0 to v5.2.0', async () => {
+  let mediaComponents;
   whereFromPlugin('Media - from v5.1.0', { name: 'adapt-contrib-media', version: '<5.2.0' });
   whereContent('Media - where media', async (content) => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
-    if (mediaComponents) return true;
+    return mediaComponents.length;
   });
   mutateContent('Media - add _aspectRatio attribute to component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
@@ -14,7 +15,7 @@ describe('Media - v5.1.0 to v5.2.0', async () => {
     return true;
   });
   checkContent('Media - check _aspectRatio attribute', async (content) => {
-    const isValid = mediaComponents.some(({ _aspectRatio }) => _aspectRatio === 'landscape');
+    const isValid = mediaComponents.every(({ _aspectRatio }) => _aspectRatio === 'landscape');
     if (!isValid) throw new Error('Media - _aspectRatio attribute missing');
     return true;
   });
@@ -22,17 +23,16 @@ describe('Media - v5.1.0 to v5.2.0', async () => {
 });
 
 describe('Media - v5.5.0 to v5.6.0', async () => {
-  let courseMediaGlobals;
+  let courseMediaGlobals, course, mediaComponents;
   whereFromPlugin('Media - from v5.5.0', { name: 'adapt-contrib-media', version: '<5.6.0' });
   whereContent('Media - where media', async (content) => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
-    if (mediaComponents) return true;
+    return mediaComponents.length;
   });
   mutateContent('Media - add globals if missing', async (content) => {
     course = content.find(({ _type }) => _type === 'course');
-
-    course._globals._components = course._globals._components ?? {};
-    courseMediaGlobals = course._globals._components._media ?? {};
+    if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
+    courseMediaGlobals = course._globals._components._media;
     return true;
   });
   mutateContent('Media - add global playText attribute', async (content) => {
@@ -110,92 +110,92 @@ describe('Media - v5.5.0 to v5.6.0', async () => {
 
   // Check contents
   checkContent('Media - check global playText attribute', async (content) => {
-    const isValid = 'playText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'playText');
     if (!isValid) throw new Error('Media - global playText attribute missing');
     return true;
   });
   checkContent('Media - check global pauseText attribute', async (content) => {
-    const isValid = 'pauseText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'pauseText');
     if (!isValid) throw new Error('Media - global pauseText attribute missing');
     return true;
   });
   checkContent('Media - check global stopText attribute', async (content) => {
-    const isValid = 'stopText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'stopText');
     if (!isValid) throw new Error('Media - global stopText attribute missing');
     return true;
   });
   checkContent('Media - check global audioPlayerText attribute', async (content) => {
-    const isValid = 'audioPlayerText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'audioPlayerText');
     if (!isValid) throw new Error('Media - global audioPlayerText attribute missing');
     return true;
   });
   checkContent('Media - check global videoPlayerText attribute', async (content) => {
-    const isValid = 'videoPlayerText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'videoPlayerText');
     if (!isValid) throw new Error('Media - global videoPlayerText attribute missing');
     return true;
   });
   checkContent('Media - check global tracksText attribute', async (content) => {
-    const isValid = 'tracksText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'tracksText');
     if (!isValid) throw new Error('Media - global tracksText attribute missing');
     return true;
   });
   checkContent('Media - check global timeSliderText attribute', async (content) => {
-    const isValid = 'timeSliderText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'timeSliderText');
     if (!isValid) throw new Error('Media - global timeSliderText attribute missing');
     return true;
   });
   checkContent('Media - check global muteText attribute', async (content) => {
-    const isValid = 'muteText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'muteText');
     if (!isValid) throw new Error('Media - global muteText attribute missing');
     return true;
   });
   checkContent('Media - check global unmuteStatusText attribute', async (content) => {
-    const isValid = 'unmuteStatusText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'unmuteStatusText');
     if (!isValid) throw new Error('Media - global unmuteStatusText attribute missing');
     return true;
   });
   checkContent('Media - check global muteStatusText attribute', async (content) => {
-    const isValid = 'muteStatusText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'muteStatusText');
     if (!isValid) throw new Error('Media - global muteStatusText attribute missing');
     return true;
   });
   checkContent('Media - check global volumeSliderText attribute', async (content) => {
-    const isValid = 'volumeSliderText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'volumeSliderText');
     if (!isValid) throw new Error('Media - global volumeSliderText attribute missing');
     return true;
   });
   checkContent('Media - check global fullscreenText attribute', async (content) => {
-    const isValid = 'fullscreenText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'fullscreenText');
     if (!isValid) throw new Error('Media - global fullscreenText attribute missing');
     return true;
   });
   checkContent('Media - check global goFullscreenText attribute', async (content) => {
-    const isValid = 'goFullscreenText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'goFullscreenText');
     if (!isValid) throw new Error('Media - global goFullscreenText attribute missing');
     return true;
   });
   checkContent('Media - check global turnOffFullscreenText attribute', async (content) => {
-    const isValid = 'turnOffFullscreenText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'turnOffFullscreenText');
     if (!isValid) throw new Error('Media - global turnOffFullscreenText attribute missing');
     return true;
   });
   checkContent('Media - check global noneText attribute', async (content) => {
-    const isValid = 'noneText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'noneText');
     if (!isValid) throw new Error('Media - global noneText attribute missing');
     return true;
   });
   checkContent('Media - check global skipBackText attribute', async (content) => {
-    const isValid = 'skipBackText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'skipBackText');
     if (!isValid) throw new Error('Media - global skipBackText attribute missing');
     return true;
   });
   checkContent('Media - check global allyVolumeControlText attribute', async (content) => {
-    const isValid = 'allyVolumeControlText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'allyVolumeControlText');
     if (!isValid) throw new Error('Media - global allyVolumeControlText attribute missing');
     return true;
   });
   checkContent('Media - check global progessHelpText attribute', async (content) => {
-    const isValid = 'progessHelpText' in courseMediaGlobals;
+    const isValid = _.has(courseMediaGlobals, 'progessHelpText');
     if (!isValid) throw new Error('Media - global progessHelpText attribute missing');
     return true;
   });

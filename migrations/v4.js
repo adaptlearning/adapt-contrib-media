@@ -1,19 +1,18 @@
 import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
-let course, courseMediaGlobals, mediaComponents;
+import _ from 'lodash';
 
 describe('Media - v3.0.1 to v4.0.0', async () => {
+  let course, courseMediaGlobals, mediaComponents;
   const originalAriaRegion = 'This is a media player component. Select the play / pause button to watch or listen.';
   whereFromPlugin('Media - from v3.0.1', { name: 'adapt-contrib-media', version: '<4.0.0' });
   whereContent('Media - where media', async (content) => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
-    if (mediaComponents) return true;
+    return mediaComponents.length;
   });
   mutateContent('Media - add globals if missing', async (content) => {
     course = content.find(({ _type }) => _type === 'course');
-    if (course?._globals?._components?._media) return true;
-
-    course._globals._components = course._globals._components || {};
-    courseMediaGlobals = course._globals._components._media = {};
+    if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
+    courseMediaGlobals = course._globals._components._media;
     return true;
   });
   mutateContent('Media - modify global ariaRegion attribute default', async (content) => {
@@ -34,12 +33,12 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     return true;
   });
   checkContent('Media - check global transcriptButton attribute has been removed', async (content) => {
-    const isInvalid = Object.hasOwn(courseMediaGlobals, 'transcriptButton');
+    const isInvalid = _.has(courseMediaGlobals, 'transcriptButton');
     if (isInvalid) throw new Error('Media - transcriptButton attribute still included');
     return true;
   });
   checkContent('Media - check global skipToTranscript attribute has been added', async (content) => {
-    const isValid = Object.hasOwn(courseMediaGlobals, 'skipToTranscript');
+    const isValid = _.has(courseMediaGlobals, 'skipToTranscript');
     if (!isValid) throw new Error('Media - skipToTranscript attribute missing');
     return true;
   });
@@ -47,10 +46,11 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
 });
 
 describe('Media - v4.0.1 to v4.1.0', async () => {
+  let mediaComponents;
   whereFromPlugin('Media - from v4.0.1', { name: 'adapt-contrib-media', version: '<4.1.0' });
   whereContent('Media - where media', async (content) => {
     mediaComponents = content.filter(({ _component }) => _component === 'media');
-    if (mediaComponents) return true;
+    return mediaComponents.length;
   });
   mutateContent('Media - add _pauseWhenOffScreen attribute to component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
@@ -59,7 +59,7 @@ describe('Media - v4.0.1 to v4.1.0', async () => {
     return true;
   });
   checkContent('Media - check _pauseWhenOffScreen attribute', async (content) => {
-    const isValid = mediaComponents.some(({ _pauseWhenOffScreen }) => _pauseWhenOffScreen === false);
+    const isValid = mediaComponents.every(({ _pauseWhenOffScreen }) => _pauseWhenOffScreen === false);
     if (!isValid) throw new Error('Media - _pauseWhenOffScreen attribute missing');
     return true;
   });
