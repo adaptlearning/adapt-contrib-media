@@ -42,7 +42,7 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     if (!isValid) throw new Error('Media - skipToTranscript attribute missing');
     return true;
   });
-  updatePlugin('Media - update to v4.1.0', { name: 'adapt-contrib-media', version: '4.0.0', framework: '>=3.3.0' });
+  updatePlugin('Media - update to v4.0.0', { name: 'adapt-contrib-media', version: '4.0.0', framework: '>=3.3.0' });
 });
 
 describe('Media - v4.0.1 to v4.1.0', async () => {
