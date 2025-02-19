@@ -1,4 +1,4 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getCourse, getComponents } from 'adapt-migrations';
 import _ from 'lodash';
 
 describe('Media - v3.0.1 to v4.0.0', async () => {
@@ -6,11 +6,11 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
   const originalAriaRegion = 'This is a media player component. Select the play / pause button to watch or listen.';
   whereFromPlugin('Media - from v3.0.1', { name: 'adapt-contrib-media', version: '<4.0.0' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add globals if missing', async (content) => {
-    course = content.find(({ _type }) => _type === 'course');
+    course = getCourse();
     if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
     courseMediaGlobals = course._globals._components._media;
     return true;
@@ -49,7 +49,7 @@ describe('Media - v4.0.1 to v4.1.0', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v4.0.1', { name: 'adapt-contrib-media', version: '<4.1.0' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _pauseWhenOffScreen attribute to component', async (content) => {

@@ -1,10 +1,11 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents } from 'adapt-migrations';
+import _ from 'lodash';
 
 describe('Media - v2.0.1 to v2.0.2', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.1', { name: 'adapt-contrib-media', version: '>= 2.0.0 <2.0.2' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _startLanguage attribute to media component', async (content) => {
@@ -25,7 +26,7 @@ describe('Media - v2.0.2 to v2.0.3', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.2', { name: 'adapt-contrib-media', version: '<2.0.3' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media').filter(({ _transcript }) => _transcript);
     return mediaComponents.length;
   });
   mutateContent('Media - add _setCompletionOnView attribute to media component transcript', async (content) => {
@@ -46,7 +47,7 @@ describe('Media - v2.0.3 to v2.0.4', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.3', { name: 'adapt-contrib-media', version: '<2.0.4' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _allowFullScreen attribute to media component', async (content) => {
@@ -67,18 +68,18 @@ describe('Media - v2.0.4 to v2.0.5', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.4', { name: 'adapt-contrib-media', version: '<2.0.5' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add webm attribute to media component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
-      mediaComponent.webm = '';
+      mediaComponent._media.webm = '';
     });
     return true;
   });
   checkContent('Media - check webm attribute', async (content) => {
-    const isValid = mediaComponents.every(({ _media }) => _media.webm !== undefined);
-    if (!isValid) throw new Error('Media - webm attribute missing');
+    const isInvalid = mediaComponents.some(({ _media }) => _media.webm === undefined);
+    if (isInvalid) throw new Error('Media - webm attribute missing');
     return true;
   });
   updatePlugin('Media - update to v2.0.5', { name: 'adapt-contrib-media', version: '2.0.5', framework: '>=2.0.0' });
@@ -88,7 +89,7 @@ describe('Media - v2.0.5 to v2.0.6', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.5', { name: 'adapt-contrib-media', version: '<2.0.6' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _playsinline attribute to media component', async (content) => {
@@ -109,7 +110,7 @@ describe('Media - v2.0.6 to v2.1.0', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v2.0.6', { name: 'adapt-contrib-media', version: '<2.1.0' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _showVolumeControl attribute to media component', async (content) => {

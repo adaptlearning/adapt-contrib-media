@@ -1,11 +1,11 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents, getCourse } from 'adapt-migrations';
 import _ from 'lodash';
 
 describe('Media - v5.1.0 to v5.2.0', async () => {
   let mediaComponents;
   whereFromPlugin('Media - from v5.1.0', { name: 'adapt-contrib-media', version: '<5.2.0' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add _aspectRatio attribute to component', async (content) => {
@@ -26,11 +26,11 @@ describe('Media - v5.5.0 to v5.6.0', async () => {
   let courseMediaGlobals, course, mediaComponents;
   whereFromPlugin('Media - from v5.5.0', { name: 'adapt-contrib-media', version: '<5.6.0' });
   whereContent('Media - where media', async (content) => {
-    mediaComponents = content.filter(({ _component }) => _component === 'media');
+    mediaComponents = getComponents('media');
     return mediaComponents.length;
   });
   mutateContent('Media - add globals if missing', async (content) => {
-    course = content.find(({ _type }) => _type === 'course');
+    course = getCourse();
     if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
     courseMediaGlobals = course._globals._components._media;
     return true;
