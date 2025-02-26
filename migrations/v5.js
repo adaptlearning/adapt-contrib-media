@@ -1,4 +1,4 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents, getCourse } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents, getCourse, testStopWhere, testSuccessWhere } from 'adapt-migrations';
 import _ from 'lodash';
 
 describe('Media - v5.1.0 to v5.2.0', async () => {
@@ -20,6 +20,23 @@ describe('Media - v5.1.0 to v5.2.0', async () => {
     return true;
   });
   updatePlugin('Media - update to v5.2.0', { name: 'adapt-contrib-media', version: '5.2.0', framework: '>=5.5.0' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.1.0' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.2.0' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.1.0' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v5.5.0 to v5.6.0', async () => {
@@ -201,4 +218,31 @@ describe('Media - v5.5.0 to v5.6.0', async () => {
   });
 
   updatePlugin('Media - update to v5.6.0', { name: 'adapt-contrib-media', version: '5.6.0', framework: '>=5.17.2' });
+
+  testSuccessWhere('media components with empty course', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.5.0' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course' }
+    ]
+  });
+
+  testSuccessWhere('media components with globals', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.5.0' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course', _globals: { _components: { _media: {} } } }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.6.0' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '5.5.0' }],
+    content: [{ _component: 'other' }]
+  });
 });

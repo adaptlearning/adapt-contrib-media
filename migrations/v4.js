@@ -1,4 +1,4 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getCourse, getComponents } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getCourse, getComponents, testStopWhere, testSuccessWhere } from 'adapt-migrations';
 import _ from 'lodash';
 
 describe('Media - v3.0.1 to v4.0.0', async () => {
@@ -11,7 +11,10 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
   });
   mutateContent('Media - add globals if missing', async (content) => {
     course = getCourse();
-    if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
+    if (!_.has(course, '_globals._components._media')) {
+      _.set(course, '_globals._components._media', {});
+      course._globals._components._media.ariaRegion = originalAriaRegion;
+    }
     courseMediaGlobals = course._globals._components._media;
     return true;
   });
@@ -43,6 +46,42 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     return true;
   });
   updatePlugin('Media - update to v4.0.0', { name: 'adapt-contrib-media', version: '4.0.0', framework: '>=3.3.0' });
+
+  testSuccessWhere('media components with empty course', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course' }
+    ]
+  });
+
+  testSuccessWhere('media components with globals', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course', _globals: { _components: { _media: { ariaRegion: originalAriaRegion, transcriptButton: 'transcript button' } } } }
+    ]
+  });
+
+  testSuccessWhere('media components with custom globals', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course', _globals: { _components: { _media: { ariaRegion: 'custom ariaRegion', transcriptButton: 'custom transcript button' } } } }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '4.0.0' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v4.0.1 to v4.1.0', async () => {
@@ -64,4 +103,21 @@ describe('Media - v4.0.1 to v4.1.0', async () => {
     return true;
   });
   updatePlugin('Media - update to v4.1.0', { name: 'adapt-contrib-media', version: '4.1.0', framework: '>=3.3.0' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '4.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '4.1.0' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '4.0.1' }],
+    content: [{ _component: 'other' }]
+  });
 });

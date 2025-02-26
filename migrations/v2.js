@@ -1,4 +1,4 @@
-import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents } from 'adapt-migrations';
+import { describe, whereContent, whereFromPlugin, mutateContent, checkContent, updatePlugin, getComponents, testStopWhere, testSuccessWhere } from 'adapt-migrations';
 import _ from 'lodash';
 
 describe('Media - v2.0.1 to v2.0.2', async () => {
@@ -20,6 +20,23 @@ describe('Media - v2.0.1 to v2.0.2', async () => {
     return true;
   });
   updatePlugin('Media - update to v2.0.2', { name: 'adapt-contrib-media', version: '2.0.2', framework: '>=2.0.0' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.2' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.1' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v2.0.2 to v2.0.3', async () => {
@@ -31,7 +48,7 @@ describe('Media - v2.0.2 to v2.0.3', async () => {
   });
   mutateContent('Media - add _setCompletionOnView attribute to media component transcript', async (content) => {
     mediaComponents.forEach(mediaComponent => {
-      mediaComponent._transcript._setCompletionOnView = false;
+      _.set(mediaComponent, '_transcript._setCompletionOnView', false);
     });
     return true;
   });
@@ -41,6 +58,23 @@ describe('Media - v2.0.2 to v2.0.3', async () => {
     return true;
   });
   updatePlugin('Media - update to v2.0.3', { name: 'adapt-contrib-media', version: '2.0.3', framework: '>=2.0.0' });
+
+  testSuccessWhere('media components with/without _transcript', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.2' }],
+    content: [
+      { _id: 'c-100', _component: 'media', _transcript: {} },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.3' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.2' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v2.0.3 to v2.0.4', async () => {
@@ -62,6 +96,23 @@ describe('Media - v2.0.3 to v2.0.4', async () => {
     return true;
   });
   updatePlugin('Media - update to v2.0.4', { name: 'adapt-contrib-media', version: '2.0.4', framework: '>=2.0.0' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.3' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.4' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.3' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v2.0.4 to v2.0.5', async () => {
@@ -73,7 +124,7 @@ describe('Media - v2.0.4 to v2.0.5', async () => {
   });
   mutateContent('Media - add webm attribute to media component', async (content) => {
     mediaComponents.forEach(mediaComponent => {
-      mediaComponent._media.webm = '';
+      _.set(mediaComponent, '_media.webm', '');
     });
     return true;
   });
@@ -83,6 +134,23 @@ describe('Media - v2.0.4 to v2.0.5', async () => {
     return true;
   });
   updatePlugin('Media - update to v2.0.5', { name: 'adapt-contrib-media', version: '2.0.5', framework: '>=2.0.0' });
+
+  testSuccessWhere('media components with/without _media', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.4' }],
+    content: [
+      { _id: 'c-100', _component: 'media', _media: {} },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.5' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.4' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v2.0.5 to v2.0.6', async () => {
@@ -104,6 +172,23 @@ describe('Media - v2.0.5 to v2.0.6', async () => {
     return true;
   });
   updatePlugin('Media - update to v2.0.6', { name: 'adapt-contrib-media', version: '2.0.6', framework: '>=2.0.13' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.5' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.6' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.5' }],
+    content: [{ _component: 'other' }]
+  });
 });
 
 describe('Media - v2.0.6 to v2.1.0', async () => {
@@ -148,4 +233,21 @@ describe('Media - v2.0.6 to v2.1.0', async () => {
   });
 
   updatePlugin('Media - update to v2.1.0', { name: 'adapt-contrib-media', version: '2.1.0', framework: '>=2.0.13' });
+
+  testSuccessWhere('correct version with media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.6' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.1.0' }]
+  });
+
+  testStopWhere('no media components', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '2.0.6' }],
+    content: [{ _component: 'other' }]
+  });
 });
