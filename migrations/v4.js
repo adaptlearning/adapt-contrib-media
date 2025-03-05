@@ -11,11 +11,9 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
   });
   mutateContent('Media - add globals if missing', async (content) => {
     course = getCourse();
-    if (!_.has(course, '_globals._components._media')) {
-      _.set(course, '_globals._components._media', {});
-      course._globals._components._media.ariaRegion = originalAriaRegion;
-    }
+    if (!_.has(course, '_globals._components._media')) _.set(course, '_globals._components._media', {});
     courseMediaGlobals = course._globals._components._media;
+    if (!_.has(courseMediaGlobals, 'ariaRegion')) courseMediaGlobals.ariaRegion = originalAriaRegion;
     return true;
   });
   mutateContent('Media - modify global ariaRegion attribute default', async (content) => {
@@ -56,7 +54,7 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
     ]
   });
 
-  testSuccessWhere('media components with globals', {
+  testSuccessWhere('media components with original globals', {
     fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
     content: [
       { _id: 'c-100', _component: 'media' },
@@ -71,6 +69,15 @@ describe('Media - v3.0.1 to v4.0.0', async () => {
       { _id: 'c-100', _component: 'media' },
       { _id: 'c-105', _component: 'media' },
       { _type: 'course', _globals: { _components: { _media: { ariaRegion: 'custom ariaRegion', transcriptButton: 'custom transcript button' } } } }
+    ]
+  });
+
+  testSuccessWhere('media components with empty globals', {
+    fromPlugins: [{ name: 'adapt-contrib-media', version: '3.0.1' }],
+    content: [
+      { _id: 'c-100', _component: 'media' },
+      { _id: 'c-105', _component: 'media' },
+      { _type: 'course', _globals: { _components: { _media: {} } } }
     ]
   });
 
