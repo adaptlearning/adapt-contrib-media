@@ -194,10 +194,12 @@ class MediaView extends ComponentView {
 
     // wrapper to check if preventForwardScrubbing is turned on.
     if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
-      $(this.mediaElement).on({
-        seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate
-      });
+      const timeSlider = this.$('.mejs__time-slider')[0];
+      if (timeSlider) {
+        timeSlider.style.pointerEvents = 'none';
+        timeSlider.addEventListener('input', (e) => e.preventDefault());
+        timeSlider.setAttribute('aria-disabled', 'true');
+      }
     }
 
     // handle other completion events in the event Listeners
