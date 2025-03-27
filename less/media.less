@@ -10,12 +10,14 @@
   // --------------------------------------------------
   // Skip to transcript button
   &__skip-to-transcript {
+    margin-bottom: @item-margin;
 
     html:not(.has-accessibility) & {
       .u-display-none;
     }
 
     &:not(:focus-visible) {
+      display: block;
       height: 0;
       padding: 0;
       margin: 0;
