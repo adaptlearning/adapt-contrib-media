@@ -516,7 +516,7 @@ class MediaView extends ComponentView {
   }
 
   /**
-   * This function ensures that users cannot skip ahead in the media until they have watched it fully.
+   * This function ensures that users cannot skip ahead in the media until they have watched it fully if `_preventForwardScrubbing` is enabled.
    */
   preventForwardScrubbing() {
     if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
