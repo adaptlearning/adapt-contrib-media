@@ -519,18 +519,16 @@ class MediaView extends ComponentView {
    * This function ensures that users cannot skip ahead in the media until they have watched it fully if `_preventForwardScrubbing` is enabled.
    */
   preventForwardScrubbing() {
-    if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
-      $(this.mediaElement).on({
-        seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate
-      });
-
-      const timeSlider = this.$('.mejs__time-slider')[0];
-      if (timeSlider) {
-        timeSlider.style.pointerEvents = 'none';
-        timeSlider.addEventListener('input', (e) => e.preventDefault());
-        timeSlider.setAttribute('aria-disabled', 'true');
-      }
+    if (!this.model.get('_preventForwardScrubbing') || this.model.get('_isComplete')) return;
+    $(this.mediaElement).on({
+      seeking: this.onMediaElementSeeking,
+      timeupdate: this.onMediaElementTimeUpdate
+    });
+    const timeSlider = this.$('.mejs__time-slider')[0];
+    if (timeSlider) {
+      timeSlider.style.pointerEvents = 'none';
+      timeSlider.addEventListener('input', (e) => e.preventDefault());
+      timeSlider.setAttribute('aria-disabled', 'true');
     }
   }
 
