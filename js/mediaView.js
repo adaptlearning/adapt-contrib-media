@@ -525,11 +525,10 @@ class MediaView extends ComponentView {
       timeupdate: this.onMediaElementTimeUpdate
     });
     const timeSlider = this.$('.mejs__time-slider')[0];
-    if (timeSlider) {
-      timeSlider.style.pointerEvents = 'none';
-      timeSlider.addEventListener('input', (e) => e.preventDefault());
-      timeSlider.setAttribute('aria-disabled', 'true');
-    }
+    if (!timeSlider) return;
+    timeSlider.style.pointerEvents = 'none';
+    timeSlider.addEventListener('input', (e) => e.preventDefault());
+    timeSlider.setAttribute('aria-disabled', 'true');
   }
 
   /**
