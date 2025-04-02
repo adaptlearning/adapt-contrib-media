@@ -192,13 +192,7 @@ class MediaView extends ComponentView {
       this.setupInviewCompletion('.component__widget');
     }
 
-    // wrapper to check if preventForwardScrubbing is turned on.
-    if ((this.model.get('_preventForwardScrubbing')) && (!this.model.get('_isComplete'))) {
-      $(this.mediaElement).on({
-        seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate
-      });
-    }
+    this.preventForwardScrubbing();
 
     // handle other completion events in the event Listeners
     $(this.mediaElement).on({
@@ -519,6 +513,22 @@ class MediaView extends ComponentView {
     }
     this.setCompletionStatus();
     Adapt.trigger('media:transcript', 'complete', this);
+  }
+
+  /**
+   * This function ensures that users cannot skip ahead in the media until they have watched it fully if `_preventForwardScrubbing` is enabled.
+   */
+  preventForwardScrubbing() {
+    if (!this.model.get('_preventForwardScrubbing') || this.model.get('_isComplete')) return;
+    $(this.mediaElement).on({
+      seeking: this.onMediaElementSeeking,
+      timeupdate: this.onMediaElementTimeUpdate
+    });
+    const timeSlider = this.$('.mejs__time-slider')[0];
+    if (!timeSlider) return;
+    timeSlider.style.pointerEvents = 'none';
+    timeSlider.addEventListener('input', (e) => e.preventDefault());
+    timeSlider.setAttribute('aria-disabled', 'true');
   }
 
   /**
