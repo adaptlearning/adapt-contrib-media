@@ -215,11 +215,25 @@ The attributes described above focus on the component's use with standard video.
 ### Accessibility
 
 The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
-<div float align=right><a href="#top">Back to Top</a></div>
 
 ## Events
 
 Whenever playback is initiated, the component will emit a `media:stop` event to notify other plugins that make use of audio or video that they should stop playback.
+
+## Adding plugins
+
+In addition to the [mejs plugins](https://github.com/mediaelement/mediaelement-plugins/tree/master?tab=readme-ov-file#available-plugins) included by default, additional plugins may be added. The general process is to:
+
+1. Find the [plugin](https://github.com/mediaelement/mediaelement-plugins/tree/master/dist) you want to include.
+2. Copy the plugin JS files into the *libraries/plugins* folder.
+3. Copy the plugin Less files (if they exist) into the *less* folder.
+4. Add any plugin Less override styles to *less/plugin-overrides.less*. For example, you may need to change the asset paths to work with Adapt.
+5. Add any image assets to the *assets/plugins* folder.
+6. Finally, import the JS in *js/mediaView.js*.
+
+You will now be able to add the plugin to the Media [configuration](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) in `_playerOptions.features`.
+
+<div float align=right><a href="#top">Back to Top</a></div>
 
 ----------------------------
 <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a></br>
