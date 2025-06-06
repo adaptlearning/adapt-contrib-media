@@ -87,8 +87,9 @@ class MediaView extends ComponentView {
       this.cleanUpPlayer();
 
       const _media = this.model.get('_media');
+      const sources = [_media.mp3, _media.mp4, _media.ogv, _media.webm, _media.source];
       // if no media is selected - set ready now, as success won't be called
-      if (!_media.mp3 && !_media.mp4 && !_media.ogv && !_media.webm && !_media.source) {
+      if (sources.every((source) => !source)) {
         logging.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
