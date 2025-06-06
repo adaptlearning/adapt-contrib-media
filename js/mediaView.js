@@ -94,6 +94,18 @@ class MediaView extends ComponentView {
         this.setReadyStatus();
         return;
       }
+      const isYouTube = false;
+      const isVimeo = false;
+      if (isYouTube) {
+        logging.warn('ERROR! YouTube is no longer supported. Please use adapt-youtube for ' + this.model.get('_id'));
+        this.setReadyStatus();
+        return;
+      }
+      if (isVimeo) {
+        logging.warn('ERROR! Vimeo is no longer supported. Please use adapt-vimeo for ' + this.model.get('_id'));
+        this.setReadyStatus();
+        return;
+      }
       // Check if we're streaming
       if (!_media.source) return;
       this.$('.media__widget').addClass('external-source');
