@@ -57,7 +57,8 @@ class MediaView extends ComponentView {
     // set initial player state attributes
     this.model.set({
       _isMediaEnded: false,
-      _isMediaPlaying: false
+      _isMediaPlaying: false,
+      _shouldSetSize: this.shouldSetSize
     });
 
     if (!this.model.get('_media').source) return;
@@ -393,6 +394,21 @@ class MediaView extends ComponentView {
 
     const isPaused = player.paused;
     if (!isPaused) player.pause();
+  }
+
+  shouldSetSize() {
+    // Do not set width and height properties on the <video> element
+    // if using native controls. This can break the aspect ratio.
+    const features = window.mejs.Features;
+    const playerOptions = this._playerOptions;
+    if (
+      (playerOptions.iPhoneUseNativeControls && features.isiPhone) ||
+      (playerOptions.iPadUseNativeControls && features.isiPad) ||
+      (playerOptions.AndroidUseNativeControls && features.isAndroid)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   remove() {
