@@ -82,27 +82,30 @@ class MediaView extends ComponentView {
     this.addMediaTypeClass();
 
     this.addThirdPartyFixes(modelOptions, () => {
-      // create the player
+      // Create the player
       this.$('audio, video').mediaelementplayer(modelOptions);
       this.cleanUpPlayer();
-
       const _media = this.model.get('_media');
       const sources = [_media.mp3, _media.mp4, _media.ogv, _media.webm, _media.source];
-      // if no media is selected - set ready now, as success won't be called
+      // If no media is specified, set ready now as success will not be called
       if (sources.every((source) => !source)) {
-        logging.warn('ERROR! No media is selected in components.json for component ' + this.model.get('_id'));
+        logging.warn('ERROR! No media is specified in components.json for component ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
-      const isYouTube = false;
-      const isVimeo = false;
+      // If YouTube is specified, set ready now as success will not be called
+      const youTubeRegex = /(youtube\.com|youtu\.be)/i;
+      const isYouTube = sources.some((source) => youTubeRegex.test(source));
       if (isYouTube) {
-        logging.warn('ERROR! YouTube is no longer supported. Please use adapt-youtube for ' + this.model.get('_id'));
+        logging.warn('ERROR! YouTube is no longer supported. Please use https://github.com/adaptlearning/adapt-youtube for ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
+      // If Vimeo is specified, set ready now as success will not be called
+      const vimeoRegex = /vimeo\.com/i;
+      const isVimeo = sources.some((source) => vimeoRegex.test(source));
       if (isVimeo) {
-        logging.warn('ERROR! Vimeo is no longer supported. Please use adapt-vimeo for ' + this.model.get('_id'));
+        logging.warn('ERROR! Vimeo is no longer supported. Please use https://github.com/adaptlearning/adapt-vimeo for ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
