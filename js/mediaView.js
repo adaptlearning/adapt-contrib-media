@@ -89,14 +89,14 @@ class MediaView extends ComponentView {
       const _media = this.model.get('_media');
       const sources = [_media.mp3, _media.mp4, _media.ogv, _media.webm, _media.source];
       // If no media is specified, set ready now as success will not be called
-      if (sources.every((source) => !source)) {
+      if (sources.every(source => !source)) {
         logging.warn('ERROR! No media is specified in components.json for component ' + this.model.get('_id'));
         this.setReadyStatus();
         return;
       }
       // If YouTube is specified, set ready now as success will not be called
       const youTubeRegex = /(youtube\.com|youtu\.be)/i;
-      const isYouTube = sources.some((source) => youTubeRegex.test(source));
+      const isYouTube = sources.some(source => youTubeRegex.test(source));
       if (isYouTube) {
         logging.warn('ERROR! YouTube is no longer supported. Please use https://github.com/adaptlearning/adapt-youtube for ' + this.model.get('_id'));
         this.setReadyStatus();
@@ -104,7 +104,7 @@ class MediaView extends ComponentView {
       }
       // If Vimeo is specified, set ready now as success will not be called
       const vimeoRegex = /vimeo\.com/i;
-      const isVimeo = sources.some((source) => vimeoRegex.test(source));
+      const isVimeo = sources.some(source => vimeoRegex.test(source));
       if (isVimeo) {
         logging.warn('ERROR! Vimeo is no longer supported. Please use https://github.com/adaptlearning/adapt-vimeo for ' + this.model.get('_id'));
         this.setReadyStatus();
