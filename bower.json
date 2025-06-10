@@ -1,13 +1,13 @@
 {
   "name": "adapt-contrib-media",
   "version": "6.8.2",
-  "framework": ">=5.19.1",
+  "framework": ">=5.42.7",
   "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
   "bugs": "https://github.com/adaptlearning/adapt-contrib-media/issues",
   "component": "media",
   "targetAttribute": "_media",
   "displayName": "Media",
-  "description": "Playback of video and audio with a Flash Player fallback",
+  "description": "A media playback component for both audio and video",
   "main": "/js/adapt-contrib-media.js",
   "keywords": [
     "adapt-plugin",

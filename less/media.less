@@ -3,6 +3,7 @@
   // --------------------------------------------------
   video {
     object-fit: fill;
+    object-position: center;
   }
   
   // Transcript
@@ -41,33 +42,14 @@
     display: none;
   }
 
-
-  // Cross browser bug fixes
-  // --------------------------------------------------
-  .me-plugin {
-    position: relative;
-    width: 100%;
-    height: 100% !important;
-  }
-
-  .me-plugin object {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .me-plugin embed {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
   // External source mejs overrides
   // --------------------------------------------------
-  &__widget.external-source .mejs-container {
+  &__widget.external-source .mejs__container {
     position: relative;
     overflow: hidden;
   }
 
-  &__widget.external-source .mejs-container iframe {
+  &__widget.external-source .mejs__container iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -75,22 +57,7 @@
     height: 100%;
   }
 
-  &__widget.external-source .mejs-overlay-play {
-    .u-display-none;
-  }
-
-  // Vimeo fixes
-  // --------------------------------------------------
-  &__widget.video-vimeo .mejs-controls {
-    .u-display-none;
-    height: 0 !important;
-  }
-
-  // Bug fix for CC button language selector still appearing when
-  // toggleCaptionsButtonWhenOnlyOne: true
-  // See https://github.com/adaptlearning/adapt_framework/issues/1883
-  // --------------------------------------------------
-  &.toggle-captions .mejs-captions-selector {
+  &__widget.external-source .mejs__overlay-play {
     .u-display-none;
   }
 }
