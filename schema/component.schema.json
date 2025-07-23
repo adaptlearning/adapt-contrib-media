@@ -114,7 +114,7 @@
                     "title": "WebVTT source",
                     "_backboneForms": {
                       "type": "Asset",
-                      "media": "text"
+                      "media": "other"
                     }
                   }
                 }
