@@ -268,7 +268,7 @@
               "title": "Linked transcript file source",
               "_backboneForms": {
                 "type": "Asset",
-                "media": "text"
+                "media": "other"
               }
             }
           }
