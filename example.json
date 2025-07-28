@@ -74,7 +74,7 @@
             "iPadUseNativeControls": false,
             "iPhoneUseNativeControls": false,
             "AndroidUseNativeControls": false,
-            "features": ["playpause","current","progress","duration","tracks","volume","fullscreen"],
+            "features": ["playpause","current","progress","duration","tracks","volume","fullscreen","speed","jumpforward","skipback"],
             "isVideo": true,
             "enableKeyboard": true,
             "pauseOtherPlayers": true,
