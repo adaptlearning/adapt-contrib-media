@@ -547,7 +547,6 @@ class MediaView extends ComponentView {
     // Create and setup the scrub blocker
     const scrubBlocker = this.createScrubBlocker($slider[0]);
 
-    // Setup event handlers
     this.setupScrubBlockerEvents(player, scrubBlocker, () => maxViewed, (newMax) => {
       maxViewed = newMax;
       this.model.set('_maxViewed', maxViewed);
@@ -563,7 +562,6 @@ class MediaView extends ComponentView {
     const scrubBlocker = document.createElement('div');
     scrubBlocker.className = 'mejs__time-slider-blocker';
 
-    // Setup flash animation
     const flashBlockedOverlay = () => {
       scrubBlocker.classList.add('mejs__time-slider-blocker-error');
       setTimeout(() => {
@@ -571,14 +569,12 @@ class MediaView extends ComponentView {
       }, 150);
     };
 
-    // Add interaction handling for blocked area
     scrubBlocker.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
       flashBlockedOverlay();
     });
 
-    // Add click handler to the entire slider for navigation to maxViewed
     sliderElement.addEventListener('click', (e) => {
       const rect = sliderElement.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -599,7 +595,6 @@ class MediaView extends ComponentView {
       }
     });
 
-    // Append to slider
     sliderElement.style.position = 'relative';
     sliderElement.appendChild(scrubBlocker);
     sliderElement.setAttribute('aria-disabled', 'true');
@@ -624,7 +619,6 @@ class MediaView extends ComponentView {
         player.currentTime = getMaxViewed();
         setSuppress(false);
 
-        // Flash the blocker to indicate restriction
         scrubBlocker.classList.add('mejs__time-slider-blocker-error');
         setTimeout(() => {
           scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
@@ -640,10 +634,8 @@ class MediaView extends ComponentView {
       if (forwardKeys.includes(e.code) && player.currentTime >= getMaxViewed()) {
         e.preventDefault();
 
-        // Navigate to maxViewed when trying to use forward keys
         player.currentTime = getMaxViewed();
 
-        // Flash the blocker
         scrubBlocker.classList.add('mejs__time-slider-blocker-error');
         setTimeout(() => {
           scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
@@ -651,7 +643,6 @@ class MediaView extends ComponentView {
       }
     });
 
-    // Cleanup when media ends
     player.addEventListener('ended', () => {
       this.model.set('_isComplete', true);
       scrubBlocker.remove();
