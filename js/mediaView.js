@@ -571,7 +571,14 @@ class MediaView extends ComponentView {
       }, 150);
     };
 
-    // Listen to the entire slider to detect blocked area clicks
+    // Add interaction handling for blocked area
+    scrubBlocker.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      flashBlockedOverlay();
+    });
+
+    // Add click handler to the entire slider for navigation to maxViewed
     sliderElement.addEventListener('click', (e) => {
       const rect = sliderElement.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -583,12 +590,10 @@ class MediaView extends ComponentView {
       const clickTime = clickPercent * duration;
       const maxViewed = this.model.get('_maxViewed') || 0;
 
-      // If clicking in the blocked area (beyond maxViewed)
+      // If clicking ahead of maxViewed, navigate to maxViewed and flash
       if (clickTime > maxViewed + 0.25) {
         e.preventDefault();
         e.stopImmediatePropagation();
-
-        // Navigate to maxViewed and flash
         player.currentTime = maxViewed;
         flashBlockedOverlay();
       }
@@ -603,7 +608,7 @@ class MediaView extends ComponentView {
   }
 
   setupScrubBlockerEvents(player, scrubBlocker, getMaxViewed, setMaxViewed, getSuppress, setSuppress) {
-    // Update progress and blocker size
+  // Update progress and blocker size
     player.addEventListener('timeupdate', () => {
       if (!getSuppress()) {
         const newMaxViewed = Math.max(getMaxViewed(), player.currentTime);
