@@ -541,7 +541,7 @@ class MediaView extends ComponentView {
     const $slider = this.$('.mejs__time-slider');
     if (!$slider.length) return;
 
-    let maxViewed = this.model.get('_maxViewed') || 0;
+    let maxViewed = this.model.get('_maxViewed') ?? 0;
     let suppress = false;
 
     // Create and setup the scrub blocker
@@ -610,10 +610,7 @@ class MediaView extends ComponentView {
       player.currentTime = getMaxViewed();
       setSuppress(false);
 
-      scrubBlocker.classList.add('mejs__time-slider-blocker-error');
-      setTimeout(() => {
-        scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
-      }, 150);
+      this.flashBlockedOverlay(scrubBlocker);
 
       this._showBlockedScrubMessage?.();
     });
