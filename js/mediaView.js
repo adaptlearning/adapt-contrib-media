@@ -559,20 +559,13 @@ class MediaView extends ComponentView {
   }
 
   createScrubBlocker(sliderElement) {
-    const scrubBlocker = document.createElement('div');
+    const scrubBlocker = document.createElement('span');
     scrubBlocker.className = 'mejs__time-slider-blocker';
-
-    const flashBlockedOverlay = () => {
-      scrubBlocker.classList.add('mejs__time-slider-blocker-error');
-      setTimeout(() => {
-        scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
-      }, 150);
-    };
 
     scrubBlocker.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
-      flashBlockedOverlay();
+      this.flashBlockedOverlay(scrubBlocker);
     });
 
     sliderElement.addEventListener('click', (e) => {
@@ -587,12 +580,11 @@ class MediaView extends ComponentView {
       const maxViewed = this.model.get('_maxViewed') || 0;
 
       // If clicking ahead of maxViewed, navigate to maxViewed and flash
-      if (clickTime > maxViewed + 0.25) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        player.currentTime = maxViewed;
-        flashBlockedOverlay();
-      }
+      if (clickTime <= maxViewed + 0.25) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      player.currentTime = maxViewed;
+      this.flashBlockedOverlay(scrubBlocker);
     });
 
     sliderElement.style.position = 'relative';
@@ -603,50 +595,51 @@ class MediaView extends ComponentView {
   }
 
   setupScrubBlockerEvents(player, scrubBlocker, getMaxViewed, setMaxViewed, getSuppress, setSuppress) {
-  // Update progress and blocker size
+    // Update progress and blocker size
     player.addEventListener('timeupdate', () => {
-      if (!getSuppress()) {
-        const newMaxViewed = Math.max(getMaxViewed(), player.currentTime);
-        setMaxViewed(newMaxViewed);
-        this.updateScrubBlocker(scrubBlocker, player, newMaxViewed);
-      }
+      if (getSuppress()) return;
+      const newMaxViewed = Math.max(getMaxViewed(), player.currentTime);
+      setMaxViewed(newMaxViewed);
+      this.updateScrubBlocker(scrubBlocker, player, newMaxViewed);
     });
 
     // Prevent forward seeking and navigate to maxViewed
     player.addEventListener('seeking', () => {
-      if (player.currentTime > getMaxViewed() + 0.25) {
-        setSuppress(true);
-        player.currentTime = getMaxViewed();
-        setSuppress(false);
+      if (player.currentTime <= getMaxViewed() + 0.25) return;
+      setSuppress(true);
+      player.currentTime = getMaxViewed();
+      setSuppress(false);
 
-        scrubBlocker.classList.add('mejs__time-slider-blocker-error');
-        setTimeout(() => {
-          scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
-        }, 150);
+      scrubBlocker.classList.add('mejs__time-slider-blocker-error');
+      setTimeout(() => {
+        scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
+      }, 150);
 
-        this._showBlockedScrubMessage?.();
-      }
+      this._showBlockedScrubMessage?.();
     });
 
     // Prevent keyboard forward navigation
     player.addEventListener('keydown', (e) => {
       const forwardKeys = ['ArrowRight', 'End', 'PageDown'];
-      if (forwardKeys.includes(e.code) && player.currentTime >= getMaxViewed()) {
-        e.preventDefault();
+      if (!forwardKeys.includes(e.code) || player.currentTime < getMaxViewed()) return;
+      e.preventDefault();
 
-        player.currentTime = getMaxViewed();
+      player.currentTime = getMaxViewed();
 
-        scrubBlocker.classList.add('mejs__time-slider-blocker-error');
-        setTimeout(() => {
-          scrubBlocker.classList.remove('mejs__time-slider-blocker-error');
-        }, 150);
-      }
+      this.flashBlockedOverlay(scrubBlocker);
     });
 
     player.addEventListener('ended', () => {
       this.model.set('_isComplete', true);
       scrubBlocker.remove();
     });
+  }
+
+  flashBlockedOverlay(e) {
+    e.classList.add('mejs__time-slider-blocker-error');
+    setTimeout(() => {
+      e.classList.remove('mejs__time-slider-blocker-error');
+    }, 150);
   }
 
   updateScrubBlocker(scrubBlocker, player, maxViewed) {
