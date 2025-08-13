@@ -41,6 +41,19 @@
   background-image: url(assets/background.png);
 }
 
+// Override default caption selector visibility behavior for better accessibility
+.mejs-controls .mejs-captions-button .mejs-captions-selector {
+  visibility: visible;
+
+  &[style*="display: block"] {
+    visibility: visible;
+  }
+
+  &[style*="display: none"] {
+    visibility: hidden;
+  }
+}
+
 .mejs-overlay-loading span {
   background-image: url(assets/loading.gif);
 }
@@ -81,4 +94,5 @@
 // --------------------------------------------------
 .mejs-offscreen {
   -webkit-clip-path: polygon(0 0, 0 0,0 0, 0 0);
+  clip-path: polygon(0 0, 0 0,0 0, 0 0);
 }

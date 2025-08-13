@@ -183,6 +183,20 @@ class MediaView extends ComponentView {
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
+
+    const $captionsButton = this.$('.mejs-captions-button button');
+    if ($captionsButton.length) {
+      // Re-add aria-controls for captions button if it was removed above
+      const mediaId = this.$('.mejs-container').attr('id');
+      if (mediaId) {
+        $captionsButton.attr('aria-controls', mediaId);
+      }
+
+      const $selector = this.$('.mejs-captions-selector');
+      if ($selector.length && !$selector.attr('aria-hidden')) {
+        $selector.attr('aria-hidden', 'true').css('display', 'none');
+      }
+    }
   }
 
   setupEventListeners() {
