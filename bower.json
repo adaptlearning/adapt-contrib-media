@@ -1,6 +1,6 @@
 {
   "name": "adapt-contrib-media",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "framework": ">=5.42.7",
   "homepage": "https://github.com/adaptlearning/adapt-contrib-media",
   "bugs": "https://github.com/adaptlearning/adapt-contrib-media/issues",
