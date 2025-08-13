@@ -400,7 +400,7 @@ class MediaView extends ComponentView {
     // Do not set width and height properties on the <video> element
     // if using native controls. This can break the aspect ratio.
     const features = window.mejs.Features;
-    const playerOptions = this._playerOptions;
+    const playerOptions = this.model?.get('_playerOptions') || {};
     if (
       (playerOptions.iPhoneUseNativeControls && features.isiPhone) ||
       (playerOptions.iPadUseNativeControls && features.isiPad) ||
