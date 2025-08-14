@@ -183,6 +183,20 @@ class MediaView extends ComponentView {
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
+
+    const $captionsButton = this.$('.mejs-captions-button button');
+    if ($captionsButton.length) {
+      // Re-add aria-controls for captions button if it was removed above
+      const mediaId = this.$('.mejs-container').attr('id');
+      if (mediaId) {
+        $captionsButton.attr('aria-controls', mediaId);
+      }
+
+      const $selector = this.$('.mejs-captions-selector');
+      if ($selector.length && !$selector.attr('aria-hidden')) {
+        $selector.attr('aria-hidden', 'true').css('display', 'none');
+      }
+    }
   }
 
   setupEventListeners() {
@@ -219,7 +233,7 @@ class MediaView extends ComponentView {
       '.mejs-captions-button button' :
       '.mejs-captions-selector';
 
-    this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
+    this.$(selector).on('change.mediaCaptionsChange', _.debounce(() => {
       const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
@@ -243,8 +257,8 @@ class MediaView extends ComponentView {
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
     const $inputs = this.$('.mejs-captions-selector input');
-    $inputs.filter(':checked').prop('checked', false);
-    $inputs.filter(`[value="${lang}"]`).prop('checked', true);
+    $inputs.filter(':checked').prop('checked', false).attr('aria-checked', 'false');
+    $inputs.filter(`[value="${lang}"]`).prop('checked', true).attr('aria-checked', 'true');
   }
 
   /**
@@ -378,7 +392,7 @@ class MediaView extends ComponentView {
       const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
         '.mejs-captions-button button' :
         '.mejs-captions-selector';
-      this.$(selector).off('click.mediaCaptionsChange');
+      this.$(selector).off('change.mediaCaptionsChange');
     }
 
     const modelOptions = this.model.get('_playerOptions');
