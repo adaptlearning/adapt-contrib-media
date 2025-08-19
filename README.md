@@ -235,11 +235,16 @@ In addition to the [mejs plugins](https://github.com/mediaelement/mediaelement-p
 
 You will now be able to add the plugin to the Media [configuration](https://github.com/adaptlearning/adapt-contrib-media/blob/master/example.json) in `_playerOptions.features`.
 
+## Dependencies
+
+Media v7.0.0 or higher requires Vanilla v9.25.0 or higher. This is due to the change in MediaElement.js class names (ex. `.mejs-container` is now `.mejs__container`).
+
 <div float align=right><a href="#top">Back to Top</a></div>
 
 ----------------------------
-<a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a></br>
-**Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)</br>
-**Accessibility support:** WAI AA</br>
-**RTL support:** Yes</br>
+<a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br>
+**Vanilla theme versions:** 9.25.0+<br>
+**Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)<br>
+**Accessibility support:** WAI AA<br>
+**RTL support:** Yes<br>
 **Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari 14 for macOS/iOS/iPadOS, Opera<br>
