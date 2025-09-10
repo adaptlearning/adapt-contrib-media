@@ -183,6 +183,35 @@ class MediaView extends ComponentView {
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs-overlay-play').attr('aria-hidden', 'true');
+
+    this.addCaptionsButtonA11y();
+  }
+
+  addCaptionsButtonA11y() {
+    const $captionsButton = this.$('.mejs-captions-button button');
+    if ($captionsButton.length === 0) return;
+    $captionsButton.attr('aria-disabled', 'false')
+      .attr('aria-expanded', 'false')
+      .attr('aria-haspopup', 'true');
+
+    const mediaId = this.$('.mejs-container').attr('id');
+    if (mediaId) {
+      $captionsButton.attr('aria-controls', mediaId);
+    }
+
+    // Library overrides for a11y
+    const $selector = this.$('.mejs-captions-selector');
+    if ($selector.length) {
+      $selector.attr('role', 'menu')
+        .attr('aria-hidden', 'true')
+        .css('display', 'none');
+
+      $selector.find('ul').attr('role', 'none');
+      $selector.find('ul li').attr('role', 'none');
+      $selector.find('ul li input')
+        .attr('role', 'menuitemradio')
+        .attr('aria-checked', 'true');
+    }
   }
 
   setupEventListeners() {
@@ -219,11 +248,105 @@ class MediaView extends ComponentView {
       '.mejs-captions-button button' :
       '.mejs-captions-selector';
 
-    this.$(selector).on('click.mediaCaptionsChange', _.debounce(() => {
+    this.$(selector).on('change.mediaCaptionsChange', _.debounce(() => {
       const srclang = this.mediaElement.player.selectedTrack ? this.mediaElement.player.selectedTrack.srclang : 'none';
       offlineStorage.set('captions', srclang);
       Adapt.trigger('media:captionsChange', this, srclang);
     }, 250)); // needs debouncing because the click event fires twice
+
+    // Proper accessibility implementation for captions dropdown
+    const $button = this.$('.mejs-captions-button button');
+    const $selector = this.$('.mejs-captions-selector');
+    let isOpen = false;
+
+    $button.on('mouseenter', () => {
+      if (isOpen) return;
+
+      isOpen = true;
+      $selector.css('display', 'block').attr('aria-hidden', 'false');
+      $button.attr('aria-expanded', 'true');
+    });
+
+    $button.on('click', (e) => {
+      e.preventDefault();
+      isOpen = !isOpen;
+
+      if (isOpen) {
+        $selector.css('display', 'block').attr('aria-hidden', 'false');
+        $button.attr('aria-expanded', 'true');
+        $selector.find('input[type=radio]').first().focus();
+      } else {
+        $selector.css('display', 'none').attr('aria-hidden', 'true');
+        $button.attr('aria-expanded', 'false');
+      }
+    });
+
+    $selector.on('keydown', 'input[type=radio]', function(e) {
+      const $radios = $selector.find('input[type=radio]');
+      const currentIndex = $radios.index(this);
+
+      switch(e.keyCode) {
+        case 27:
+          e.preventDefault();
+          isOpen = false;
+          $selector.css('display', 'none').attr('aria-hidden', 'true');
+          $button.attr('aria-expanded', 'false').focus();
+          break;
+        case 38:
+          e.preventDefault();
+          if (currentIndex > 0) {
+            $radios.eq(currentIndex - 1).focus();
+          }
+          break;
+        case 40:
+          e.preventDefault();
+          if (currentIndex < $radios.length - 1) {
+            $radios.eq(currentIndex + 1).focus();
+          }
+          break;
+        case 13:
+        case 32:
+          e.preventDefault();
+          $(this).prop('checked', true).trigger('change');
+          break;
+      }
+    });
+
+    $selector.on('change', 'input[type=radio]', (e) => {
+      const lang = $(e.target).val();
+      this.mediaElement.player.setTrack(lang);
+
+      const $radios = $selector.find('input[type=radio]');
+      $radios.attr('aria-checked', 'false');
+      $(e.target).attr('aria-checked', 'true');
+
+      isOpen = false;
+      $selector.css('display', 'none').attr('aria-hidden', 'true');
+      $button.attr('aria-expanded', 'false').focus();
+    });
+
+    $(document).on('click', (e) => {
+      if (!isOpen) return;
+      if ($button.is(e.target)) return;
+      if ($button.has(e.target).length !== 0) return;
+
+      isOpen = false;
+      $selector.css('display', 'none').attr('aria-hidden', 'true');
+      $button.attr('aria-expanded', 'false');
+    });
+
+    $button.on('mouseleave', () => {
+      setTimeout(() => {
+        if (!isOpen) return;
+        if ($selector.is(':hover')) return;
+        if ($button.is(':focus')) return;
+        if ($selector.find(':focus').length) return;
+
+        isOpen = false;
+        $selector.css('display', 'none').attr('aria-hidden', 'true');
+        $button.attr('aria-expanded', 'false');
+      }, 100);
+    });
 
     this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
   }
@@ -243,8 +366,8 @@ class MediaView extends ComponentView {
 
     // because calling player.setTrack doesn't update the cc button's languages popup...
     const $inputs = this.$('.mejs-captions-selector input');
-    $inputs.filter(':checked').prop('checked', false);
-    $inputs.filter(`[value="${lang}"]`).prop('checked', true);
+    $inputs.filter(':checked').prop('checked', false).attr('aria-checked', 'false');
+    $inputs.filter(`[value="${lang}"]`).prop('checked', true).attr('aria-checked', 'true');
   }
 
   /**
@@ -378,7 +501,7 @@ class MediaView extends ComponentView {
       const selector = this.model.get('_playerOptions').toggleCaptionsButtonWhenOnlyOne ?
         '.mejs-captions-button button' :
         '.mejs-captions-selector';
-      this.$(selector).off('click.mediaCaptionsChange');
+      this.$(selector).off('change.mediaCaptionsChange');
     }
 
     const modelOptions = this.model.get('_playerOptions');

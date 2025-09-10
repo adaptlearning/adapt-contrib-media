@@ -4897,8 +4897,6 @@ if (typeof jQuery != 'undefined') {
 				$('<div class="mejs-button mejs-captions-button">' +
 					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
 					'<div class="mejs-captions-selector">' +
-					'<ul>' +
-					'<li>' +
 					'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
 					'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') + '</label>' +
 					'</li>' +
@@ -4941,7 +4939,6 @@ if (typeof jQuery != 'undefined') {
 				player.captionsButton.on('mouseleave focusout', function () {
 					$(this).find(".mejs-captions-selector").addClass("mejs-offscreen");
 				});
-
 			}
 
 			if (!player.options.alwaysShowControls) {
@@ -5024,6 +5021,11 @@ if (typeof jQuery != 'undefined') {
 
 			var t = this,
 				i;
+
+			t.captionsButton.find('input[type=radio]').each(function() {
+				var isChecked = $(this).val() === lang;
+				$(this).prop('checked', isChecked).attr('aria-checked', isChecked ? 'true' : 'false');
+			});
 
 			if (lang == 'none') {
 				t.selectedTrack = null;
@@ -5120,7 +5122,7 @@ if (typeof jQuery != 'undefined') {
 
 			// auto select
 			if (t.options.startLanguage == lang) {
-				$('#' + t.id + '_captions_' + lang).prop('checked', true).trigger('click');
+				$('#' + t.id + '_captions_' + lang).prop('checked', true).attr('aria-checked', 'true').trigger('click');
 			}
 
 			t.adjustLanguageBox();
@@ -5142,7 +5144,7 @@ if (typeof jQuery != 'undefined') {
 
 			t.captionsButton.find('ul').append(
 				$('<li>' +
-					'<input type="radio" name="' + t.id + '_captions" id="' + t.id + '_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
+					'<input type="radio" name="' + t.id + '_captions" id="' + t.id + '_captions_' + lang + '" value="' + lang + '" disabled="disabled" aria-checked="false" />' +
 					'<label for="' + t.id + '_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
 					'</li>')
 			);

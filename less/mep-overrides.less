@@ -41,6 +41,43 @@
   background-image: url(assets/background.png);
 }
 
+// // Override default caption selector visibility behavior for better accessibility
+// .mejs-controls .mejs-captions-button {
+//   .mejs-captions-selector {
+//     visibility: visible;
+
+//     &[style*="display: block"] {
+//       visibility: visible;
+//     }
+
+//     &[style*="display: none"] {
+//       visibility: hidden;
+//     }
+//   }
+
+//   // Improve focus visibility for the captions button
+//   button {
+//     &:focus {
+//       outline: 2px solid #fff;
+//       outline-offset: 2px;
+//       background-color: rgba(255, 255, 255, 0.2);
+//     }
+
+//     &:focus:not(:focus-visible) {
+//       // Hide focus outline for mouse users on browsers that support :focus-visible
+//       outline: none;
+//       background-color: transparent;
+//     }
+
+//     &:focus-visible {
+//       // Show focus outline only for keyboard users
+//       outline: 2px solid #fff;
+//       outline-offset: 2px;
+//       background-color: rgba(255, 255, 255, 0.2);
+//     }
+//   }
+// }
+
 .mejs-overlay-loading span {
   background-image: url(assets/loading.gif);
 }
@@ -76,9 +113,124 @@
   object-fit: contain;
 }
 
-// Bug fix for missing control icons on iOS touch devices
-// required for Safari/Chrome iOS 11. Ref: https://caniuse.com/#feat=css-clip-path
+// Accessibility improvements for captions selector focus indicators
 // --------------------------------------------------
-.mejs-offscreen {
-  -webkit-clip-path: polygon(0 0, 0 0,0 0, 0 0);
-}
+// .mejs-controls .mejs-captions-button .mejs-captions-selector {
+//   // Ensure the selector container is properly focusable
+//   &[style*="display: block"] {
+//     z-index: 9999 !important;
+//   }
+
+//   ul {
+//     // Ensure proper focus ring spacing
+//     padding: 4px !important;
+
+//     li {
+//       // Ensure proper positioning for focus outline
+//       position: relative;
+//       margin: 2px 0;
+//       padding: 1px;
+//     }
+
+//     input[type="radio"] {
+//       // Ensure radio buttons are focusable and visible
+//       // Force radio buttons to be visible for focus
+//       position: relative !important;
+//       opacity: 1 !important;
+//       clip: auto !important;
+//       width: auto !important;
+//       height: auto !important;
+//       margin: 4px 8px 4px 4px !important;
+
+//       &:focus {
+//         outline: 3px solid #fff !important;
+//         outline-offset: 2px !important;
+//         box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5),
+//           0 0 8px rgba(255, 255, 255, 0.6) !important;
+//         background-color: rgba(255, 255, 255, 0.2) !important;
+//       }
+
+//       // Hide focus outline for mouse users on browsers that support :focus-visible
+//       &:focus:not(:focus-visible) {
+//         outline: none !important;
+//         box-shadow: none !important;
+//         background-color: transparent !important;
+//       }
+
+//       // Show focus outline only for keyboard users
+//       &:focus-visible {
+//         outline: 3px solid #fff !important;
+//         outline-offset: 2px !important;
+//         box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5),
+//           0 0 8px rgba(255, 255, 255, 0.6) !important;
+//         background-color: rgba(255, 255, 255, 0.2) !important;
+//       }
+
+//       // Show checked state more clearly with focus
+//       &:checked {
+//         // Add a visible indicator for checked state
+//         &::after {
+//           content: "";
+//           position: absolute;
+//           left: 8px;
+//           top: 6px;
+//           width: 4px;
+//           height: 4px;
+//           background-color: #fff;
+//           border-radius: 50%;
+//         }
+//       }
+
+//       // Combined focus and checked state
+//       &:focus:checked,
+//       &:focus-visible:checked {
+//         outline: 3px solid #ffff00 !important;
+//         outline-offset: 2px !important;
+//         box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7),
+//           0 0 12px rgba(255, 255, 0, 0.8) !important;
+//         background-color: rgba(255, 255, 0, 0.15) !important;
+//       }
+//     }
+
+//     label {
+//       // Ensure labels have proper interactive styling
+//       cursor: pointer;
+//       transition: background-color 0.15s ease;
+//       border-radius: 2px;
+//       padding: 2px 4px;
+//       display: block;
+
+//       // Focus styling for when label receives focus via radio button
+//       input[type="radio"]:focus + &,
+//       input[type="radio"]:focus-visible + & {
+//         background-color: rgba(255, 255, 255, 0.25) !important;
+//         text-shadow: 0 0 3px rgba(0, 0, 0, 0.9) !important;
+//         border: 1px solid rgba(255, 255, 255, 0.5) !important;
+//         outline: 1px solid #fff !important;
+//         outline-offset: 1px !important;
+//       }
+
+//       // Checked state styling
+//       input[type="radio"]:checked + & {
+//         font-weight: bold;
+//         background-color: rgba(255, 255, 255, 0.15);
+//         color: #fff;
+//       }
+
+//       // Combined checked and focused state
+//       input[type="radio"]:focus:checked + &,
+//       input[type="radio"]:focus-visible:checked + & {
+//         background-color: rgba(255, 255, 0, 0.2) !important;
+//         color: #fff !important;
+//         font-weight: bold;
+//         border: 1px solid rgba(255, 255, 0, 0.7) !important;
+//         outline: 1px solid #ffff00 !important;
+//       }
+
+//       // Hover state
+//       &:hover {
+//         background-color: rgba(255, 255, 255, 0.1);
+//       }
+//     }
+//   }
+// }
