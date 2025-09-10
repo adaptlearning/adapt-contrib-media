@@ -4895,11 +4895,9 @@ if (typeof jQuery != 'undefined') {
 			player.captionsText = player.captions.find('.mejs-captions-text');
 			player.captionsButton =
 				$('<div class="mejs-button mejs-captions-button">' +
-					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '" aria-haspopup="true" aria-expanded="false"></button>' +
-					'<div class="mejs-captions-selector" role="menu" aria-hidden="true" style="display: none;">' +
-					'<ul role="none">' +
-					'<li role="none">' +
-					'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" role="menuitemradio" aria-checked="true" />' +
+					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
+					'<div class="mejs-captions-selector">' +
+					'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
 					'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') + '</label>' +
 					'</li>' +
 					'</ul>' +
@@ -4927,95 +4925,20 @@ if (typeof jQuery != 'undefined') {
 					player.setTrack(lang);
 				});
 			} else {
-				// Proper accessibility implementation for captions dropdown
-				var $button = player.captionsButton.find('button');
-				var $selector = player.captionsButton.find('.mejs-captions-selector');
-				var isOpen = false;
+				// hover or keyboard focus
+				player.captionsButton.on('mouseenter focusin', function () {
+					$(this).find('.mejs-captions-selector').removeClass('mejs-offscreen');
+				})
 
-				$button.on('click', function(e) {
-					e.preventDefault();
-					isOpen = !isOpen;
+					// handle clicks to the language radio buttons
+					.on('click', 'input[type=radio]', function () {
+						lang = this.value;
+						player.setTrack(lang);
+					});
 
-					if (isOpen) {
-						$selector.css('display', 'block').attr('aria-hidden', 'false');
-						$button.attr('aria-expanded', 'true');
-						$selector.find('input[type=radio]').first().focus();
-					} else {
-						$selector.css('display', 'none').attr('aria-hidden', 'true');
-						$button.attr('aria-expanded', 'false');
-					}
+				player.captionsButton.on('mouseleave focusout', function () {
+					$(this).find(".mejs-captions-selector").addClass("mejs-offscreen");
 				});
-
-				$selector.on('keydown', 'input[type=radio]', function(e) {
-					var $radios = $selector.find('input[type=radio]');
-					var currentIndex = $radios.index(this);
-
-					switch(e.keyCode) {
-						case 27:
-							e.preventDefault();
-							isOpen = false;
-							$selector.css('display', 'none').attr('aria-hidden', 'true');
-							$button.attr('aria-expanded', 'false').focus();
-							break;
-						case 38:
-							e.preventDefault();
-							if (currentIndex > 0) {
-								$radios.eq(currentIndex - 1).focus();
-							}
-							break;
-						case 40:
-							e.preventDefault();
-							if (currentIndex < $radios.length - 1) {
-								$radios.eq(currentIndex + 1).focus();
-							}
-							break;
-						case 13:
-						case 32:
-							e.preventDefault();
-							$(this).prop('checked', true).trigger('change');
-							break;
-					}
-				});
-
-				player.captionsButton.on('change', 'input[type=radio]', function () {
-					lang = this.value;
-					player.setTrack(lang);
-
-					var $radios = $selector.find('input[type=radio]');
-					$radios.attr('aria-checked', 'false');
-					$(this).attr('aria-checked', 'true');
-
-					isOpen = false;
-					$selector.css('display', 'none').attr('aria-hidden', 'true');
-					$button.attr('aria-expanded', 'false').focus();
-				});
-
-				$(document).on('click', function(e) {
-					if (isOpen && !player.captionsButton.is(e.target) && player.captionsButton.has(e.target).length === 0) {
-						isOpen = false;
-						$selector.css('display', 'none').attr('aria-hidden', 'true');
-						$button.attr('aria-expanded', 'false');
-					}
-				});
-
-				player.captionsButton.on('mouseenter', function () {
-					if (!isOpen) {
-						isOpen = true;
-						$selector.css('display', 'block').attr('aria-hidden', 'false');
-						$button.attr('aria-expanded', 'true');
-					}
-				});
-
-				player.captionsButton.on('mouseleave', function () {
-					setTimeout(function() {
-						if (isOpen && !$selector.is(':hover') && !$button.is(':focus') && !$selector.find(':focus').length) {
-							isOpen = false;
-							$selector.css('display', 'none').attr('aria-hidden', 'true');
-							$button.attr('aria-expanded', 'false');
-						}
-					}, 100);
-				});
-
 			}
 
 			if (!player.options.alwaysShowControls) {
@@ -5194,7 +5117,6 @@ if (typeof jQuery != 'undefined') {
 			t.captionsButton
 				.find('input[value=' + lang + ']')
 				.prop('disabled', false)
-				.attr('aria-disabled', 'false')
 				.siblings('label')
 				.html(label);
 
@@ -5221,8 +5143,8 @@ if (typeof jQuery != 'undefined') {
 			}
 
 			t.captionsButton.find('ul').append(
-				$('<li role="none">' +
-					'<input type="radio" name="' + t.id + '_captions" id="' + t.id + '_captions_' + lang + '" value="' + lang + '" disabled="disabled" role="menuitemradio" aria-checked="false" />' +
+				$('<li>' +
+					'<input type="radio" name="' + t.id + '_captions" id="' + t.id + '_captions_' + lang + '" value="' + lang + '" disabled="disabled" aria-checked="false" />' +
 					'<label for="' + t.id + '_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
 					'</li>')
 			);
