@@ -324,6 +324,7 @@ class MediaView extends ComponentView {
 
     if (this.completionEvent !== 'play') return;
     this.setCompletionStatus();
+    this.setTranscriptCompletionAria();
   }
 
   onMediaElementPause(event) {
@@ -341,6 +342,7 @@ class MediaView extends ComponentView {
 
     if (this.completionEvent === 'ended') {
       this.setCompletionStatus();
+      this.setTranscriptCompletionAria();
     }
   }
 
@@ -528,7 +530,14 @@ class MediaView extends ComponentView {
       return Adapt.trigger('media:transcript', state, this);
     }
     this.setCompletionStatus();
+    this.setTranscriptCompletionAria();
     Adapt.trigger('media:transcript', 'complete', this);
+  }
+
+  setTranscriptCompletionAria() {
+    // apply completion aria label to transcript button
+    const completedLabel = `${this.model.get('_globals')._accessibility._ariaLabels.complete}. `;
+    this.$('.media__transcript-btn').prepend($('<span class="aria-label">' + completedLabel + '</span>'));
   }
 
   /**
