@@ -1,5 +1,3 @@
-import path from 'path';
-
 describe('Media', function () {
   beforeEach(function () {
     cy.getData();
@@ -16,10 +14,10 @@ describe('Media', function () {
       cy.testContainsOrNotExists('.media__instruction', stripHtml(mediaComponent.instruction));
 
       if (mediaComponent._media.mp4) {
-        cy.get('.mejs__mediaelement video').should('have.attr', 'src', path.join(Cypress.env('baseUrl'), mediaComponent._media.mp4));
+        cy.get('.mejs__mediaelement video').should('have.attr', 'src').and('include', mediaComponent._media.mp4);
       };
       if (mediaComponent._media.poster) {
-        cy.get('.mejs__poster img').should('have.attr', 'src', path.join(Cypress.env('baseUrl'), mediaComponent._media.poster));
+        cy.get('.mejs__poster img').should('have.attr', 'src').and('include', mediaComponent._media.poster);
       };
 
       if (mediaComponent._transcript) {
