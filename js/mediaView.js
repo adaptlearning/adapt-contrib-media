@@ -249,6 +249,8 @@ class MediaView extends ComponentView {
    */
   listenForCaptionsChange() {
     if (!this.model.get('_useClosedCaptions')) return;
+    if (!this.mediaElement) return;
+
     this.setCaptionButtonState();
 
     this.mediaElement.addEventListener('captionschange', event => {
