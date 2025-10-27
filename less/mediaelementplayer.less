@@ -511,23 +511,6 @@ Reference: http://blog.rrwd.nl/2015/04/04/the-screen-reader-text-class-why-and-h
     width: 0;
 }
 
-.mejs__time-slider-blocker {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 0;
-  background-color: transparent;
-  pointer-events: auto;
-  z-index: 9999;
-  cursor: not-allowed;
-  transition: background-color 0.15s ease;
-  
-  &.mejs__time-slider-blocker-error {
-    background-color: fade(@validation-error, 30%);
-  }
-}
-
 .mejs__long-video .mejs__time-float {
     margin-left: -1.4375rem;
     width: 4rem;
