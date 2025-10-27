@@ -26,3 +26,22 @@
 .mejs__button.mejs__jump-forward-button > button {
   background-size: contain;
 }
+
+// Time slider blocker for validation errors
+// --------------------------------------------------
+.mejs__time-slider-blocker {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 0;
+  background-color: transparent;
+  pointer-events: auto;
+  z-index: 9999;
+  cursor: not-allowed;
+  transition: background-color 0.15s ease;
+  
+  &.mejs__time-slider-blocker-error {
+    background-color: fade(@validation-error, 30%);
+  }
+}
