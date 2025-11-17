@@ -9,6 +9,12 @@ import 'libraries/mediaelement-fullscreen-hook';
 
 class MediaView extends ComponentView {
 
+  preinitialize() {
+    this.model.set('_playerOptions', {
+      toggleCaptionsButtonWhenOnlyOne: true
+    });
+  }
+
   events() {
     return {
       'click .js-media-inline-transcript-toggle': 'onToggleInlineTranscript',
