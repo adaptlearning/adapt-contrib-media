@@ -91,7 +91,7 @@ If set to `true`, playback will automatically be paused when the media component
 
 ### \_preventForwardScrubbing (boolean)
 
-If set to `true`, the component will *attempt* to prevent learners from 'skipping ahead' in media (both audio and video).  Learners can skip backwards, and back up to the `maxViewed` time tracked by `updateTime`. Note: This does not apply to full screen iOS/iPadOs - and learners using certain browsers (Internet Explorer, for example) may be able to circumvent this rule by using video play speed options. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting.
+If set to `true`, learners will not be able to skip ahead in media (both audio and video) until they have watched/listened to it in full at least once. Learners can skip backwards, but only up to the furthest point they have previously reached. Note: This does not apply to full screen on iOS/iPadOS. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting. The default is `false`.
 
 ### \_offsetMediaControls (boolean)
 
