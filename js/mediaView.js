@@ -7,6 +7,8 @@ import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import './mediaLibrariesOverrides';
 
+const FORWARD_SCRUBBING_KEYS = ['ArrowRight', 'End', 'PageDown'];
+
 // instruct adapt to wait whilst loading client-side libraries
 wait.for(async done => {
   // load plugins
@@ -445,9 +447,37 @@ class MediaView extends ComponentView {
         volumechange: this.onMediaVolumeChange
       });
 
+      // Clean up forward scrubbing prevention listeners
+      if (this._onScrubTimeUpdate) {
+        this.mediaElement.removeEventListener('timeupdate', this._onScrubTimeUpdate);
+      }
+      if (this._onScrubSeeking) {
+        this.mediaElement.removeEventListener('seeking', this._onScrubSeeking);
+      }
+      if (this._onScrubKeyDown) {
+        this.mediaElement.removeEventListener('keydown', this._onScrubKeyDown);
+      }
+      if (this._onScrubEnded) {
+        this.mediaElement.removeEventListener('ended', this._onScrubEnded);
+      }
+
       this.mediaElement.src = '';
       $(this.mediaElement.pluginElement).remove();
       delete this.mediaElement;
+    }
+
+    // Clean up scrub blocker DOM element and listeners
+    if (this._scrubBlocker) {
+      if (this._onBlockerPointerDown) {
+        this._scrubBlocker.removeEventListener('pointerdown', this._onBlockerPointerDown);
+      }
+      this._scrubBlocker.remove();
+      delete this._scrubBlocker;
+    }
+
+    const $slider = this.$('.mejs__time-slider');
+    if ($slider.length && this._onSliderClick) {
+      $slider[0].removeEventListener('click', this._onSliderClick);
     }
 
     super.remove();
@@ -535,57 +565,54 @@ class MediaView extends ComponentView {
    * This function ensures that users cannot skip ahead in the media until they have watched it fully if `_preventForwardScrubbing` is enabled.
    */
   preventForwardScrubbing() {
-    if (!this.model.get('_preventForwardScrubbing') || this.model.get('_isComplete')) return;
+    const isEnabled = this.model.get('_preventForwardScrubbing');
+    const isComplete = this.model.get('_isComplete');
+    if (!isEnabled || isComplete) return;
 
-    const player = this.mediaElement;
     const $slider = this.$('.mejs__time-slider');
     if (!$slider.length) return;
 
-    let maxViewed = this.model.get('_maxViewed') ?? 0;
-    let suppress = false;
+    this._maxViewed = this.model.get('_maxViewed') ?? 0;
+    this._suppressSeek = false;
 
     // Create and setup the scrub blocker
-    const scrubBlocker = this.createScrubBlocker($slider[0]);
+    this._scrubBlocker = this.createScrubBlocker($slider[0]);
 
-    this.setupScrubBlockerEvents(player, scrubBlocker, () => maxViewed, (newMax) => {
-      maxViewed = newMax;
-      this.model.set('_maxViewed', maxViewed);
-    }, () => suppress, (newSuppress) => {
-      suppress = newSuppress;
-    });
+    this.setupScrubBlockerEvents();
 
     // Initialize the blocker size
-    this.updateScrubBlocker(scrubBlocker, player, maxViewed);
+    this.updateScrubBlocker();
   }
 
   createScrubBlocker(sliderElement) {
     const scrubBlocker = document.createElement('span');
     scrubBlocker.className = 'mejs__time-slider-blocker';
 
-    scrubBlocker.addEventListener('pointerdown', (e) => {
+    this._onBlockerPointerDown = (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
       this.flashBlockedOverlay(scrubBlocker);
-    });
+    };
 
-    sliderElement.addEventListener('click', (e) => {
+    this._onSliderClick = (e) => {
       const rect = sliderElement.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const sliderWidth = rect.width;
       const clickPercent = clickX / sliderWidth;
-
-      const player = this.mediaElement;
-      const duration = player.duration;
+      const duration = this.mediaElement.duration;
       const clickTime = clickPercent * duration;
-      const maxViewed = this.model.get('_maxViewed') || 0;
+      const isClickingAhead = clickTime > this._maxViewed + 0.25;
 
-      // If clicking ahead of maxViewed, navigate to maxViewed and flash
-      if (clickTime <= maxViewed + 0.25) return;
+      if (!isClickingAhead) return;
+
       e.preventDefault();
       e.stopImmediatePropagation();
-      player.currentTime = maxViewed;
+      this.mediaElement.currentTime = this._maxViewed;
       this.flashBlockedOverlay(scrubBlocker);
-    });
+    };
+
+    scrubBlocker.addEventListener('pointerdown', this._onBlockerPointerDown);
+    sliderElement.addEventListener('click', this._onSliderClick);
 
     sliderElement.style.position = 'relative';
     sliderElement.appendChild(scrubBlocker);
@@ -594,42 +621,50 @@ class MediaView extends ComponentView {
     return scrubBlocker;
   }
 
-  setupScrubBlockerEvents(player, scrubBlocker, getMaxViewed, setMaxViewed, getSuppress, setSuppress) {
+  setupScrubBlockerEvents() {
     // Update progress and blocker size
-    player.addEventListener('timeupdate', () => {
-      if (getSuppress()) return;
-      const newMaxViewed = Math.max(getMaxViewed(), player.currentTime);
-      setMaxViewed(newMaxViewed);
-      this.updateScrubBlocker(scrubBlocker, player, newMaxViewed);
-    });
+    this._onScrubTimeUpdate = () => {
+      if (this._suppressSeek) return;
+      this._maxViewed = Math.max(this._maxViewed, this.mediaElement.currentTime);
+      this.model.set('_maxViewed', this._maxViewed);
+      this.updateScrubBlocker();
+    };
 
     // Prevent forward seeking and navigate to maxViewed
-    player.addEventListener('seeking', () => {
-      if (player.currentTime <= getMaxViewed() + 0.25) return;
-      setSuppress(true);
-      player.currentTime = getMaxViewed();
-      setSuppress(false);
+    this._onScrubSeeking = () => {
+      const isSeekingAhead = this.mediaElement.currentTime > this._maxViewed + 0.25;
+      if (!isSeekingAhead) return;
 
-      this.flashBlockedOverlay(scrubBlocker);
+      this._suppressSeek = true;
+      this.mediaElement.currentTime = this._maxViewed;
+      this._suppressSeek = false;
 
+      this.flashBlockedOverlay(this._scrubBlocker);
       this._showBlockedScrubMessage?.();
-    });
+    };
 
     // Prevent keyboard forward navigation
-    player.addEventListener('keydown', (e) => {
-      const forwardKeys = ['ArrowRight', 'End', 'PageDown'];
-      if (!forwardKeys.includes(e.code) || player.currentTime < getMaxViewed()) return;
+    this._onScrubKeyDown = (e) => {
+      const isForwardKey = FORWARD_SCRUBBING_KEYS.includes(e.code);
+      const isAtMaxViewed = this.mediaElement.currentTime >= this._maxViewed;
+      const shouldPrevent = isForwardKey && isAtMaxViewed;
+
+      if (!shouldPrevent) return;
+
       e.preventDefault();
+      this.mediaElement.currentTime = this._maxViewed;
+      this.flashBlockedOverlay(this._scrubBlocker);
+    };
 
-      player.currentTime = getMaxViewed();
-
-      this.flashBlockedOverlay(scrubBlocker);
-    });
-
-    player.addEventListener('ended', () => {
+    this._onScrubEnded = () => {
       this.model.set('_isComplete', true);
-      scrubBlocker.remove();
-    });
+      this._scrubBlocker?.remove();
+    };
+
+    this.mediaElement.addEventListener('timeupdate', this._onScrubTimeUpdate);
+    this.mediaElement.addEventListener('seeking', this._onScrubSeeking);
+    this.mediaElement.addEventListener('keydown', this._onScrubKeyDown);
+    this.mediaElement.addEventListener('ended', this._onScrubEnded);
   }
 
   flashBlockedOverlay(e) {
@@ -639,12 +674,15 @@ class MediaView extends ComponentView {
     }, 150);
   }
 
-  updateScrubBlocker(scrubBlocker, player, maxViewed) {
-    const duration = player.duration;
-    if (!duration || duration === Infinity) return;
+  updateScrubBlocker() {
+    if (!this._scrubBlocker) return;
 
-    const percentViewed = 1 - maxViewed / duration;
-    scrubBlocker.style.width = `${percentViewed * 100}%`;
+    const duration = this.mediaElement.duration;
+    const isValidDuration = duration && duration !== Infinity;
+    if (!isValidDuration) return;
+
+    const percentViewed = 1 - this._maxViewed / duration;
+    this._scrubBlocker.style.width = `${percentViewed * 100}%`;
   }
 
   /**
