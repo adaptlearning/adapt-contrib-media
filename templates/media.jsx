@@ -119,7 +119,7 @@ export default function Media(props) {
               }
               <span
                 className='media__transcript-btn-text'
-                dangerouslySetInnerHTML={{ __html: compile(inlineButtonText) }}
+                dangerouslySetInnerHTML={{ __html: compile(inlineButtonText || '') }}
               />
               <span className='media__transcript-btn-icon'>
                 <span className='icon' aria-hidden='true' />
@@ -139,7 +139,7 @@ export default function Media(props) {
               }
               <span
                 className='media__transcript-btn-text'
-                dangerouslySetInnerHTML={{ __html: compile(_transcript.transcriptLinkButton || _transcript.transcriptLink) }}
+                dangerouslySetInnerHTML={{ __html: compile(_transcript.transcriptLinkButton || _transcript.transcriptLink || '') }}
               />
               <span className='media__transcript-btn-icon'>
                 <span className='icon' aria-hidden='true' />
