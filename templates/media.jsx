@@ -26,8 +26,9 @@ function MediaPlayer(props) {
         <video
           aria-hidden='true'
           preload='none'
-          {...(_shouldSetSize && _videoDimensions)}
-          {...(_playsinline && { playsInline: true })}
+          width={_shouldSetSize ? _videoDimensions?.width : undefined}
+          height={_shouldSetSize ? _videoDimensions?.height : undefined}
+          playsInline={_playsinline || undefined}
           poster={_media?.poster}
           style={{ maxWidth: '100%' }}
           controls='controls'
