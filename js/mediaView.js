@@ -45,11 +45,7 @@ class MediaView extends ComponentView {
     // android, force timeupdate handler to call after seeking handler in order to prevent forward scrubbing
     this.onMediaElementTimeUpdate = _.debounce(this.onMediaElementTimeUpdate.bind(this), 0);
 
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
-
-    this.onToggleInlineTranscript = this.onToggleInlineTranscript.bind(this);
-    this.onExternalTranscriptClicked = this.onExternalTranscriptClicked.bind(this);
-    this.onSkipToTranscript = this.onSkipToTranscript.bind(this);
+    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview', 'onToggleInlineTranscript', 'onExternalTranscriptClicked', 'onSkipToTranscript');
 
     const _transcript = this.model.get('_transcript');
 
