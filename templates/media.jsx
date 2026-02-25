@@ -114,12 +114,13 @@ export default function Media(props) {
             >
               {_isComplete && completedLabel &&
                 <span className='aria-label'>
-                  {completedLabel}.{' '}
+                  {completedLabel}.
                 </span>
               }
-              <span className='media__transcript-btn-text'>
-                {inlineButtonText}
-              </span>
+              <span
+                className='media__transcript-btn-text'
+                dangerouslySetInnerHTML={{ __html: compile(inlineButtonText) }}
+              />
               <span className='media__transcript-btn-icon'>
                 <span className='icon' aria-hidden='true' />
               </span>
@@ -133,12 +134,13 @@ export default function Media(props) {
             >
               {_isComplete && completedLabel &&
                 <span className='aria-label'>
-                  {completedLabel}.{' '}
+                  {completedLabel}.
                 </span>
               }
-              <span className='media__transcript-btn-text'>
-                {_transcript.transcriptLinkButton || _transcript.transcriptLink}
-              </span>
+              <span
+                className='media__transcript-btn-text'
+                dangerouslySetInnerHTML={{ __html: compile(_transcript.transcriptLinkButton || _transcript.transcriptLink) }}
+              />
               <span className='media__transcript-btn-icon'>
                 <span className='icon' aria-hidden='true' />
               </span>
