@@ -16,7 +16,7 @@ function MediaPlayer(props) {
       {_media?.mp3 ? (
         <>
           {_media.poster &&
-            <img className='media_poster is-audio' src={_media.poster} />
+            <img className='media__poster is-audio' src={_media.poster} />
           }
           <audio src={_media.mp3} type='audio/mp3' style={{ width: '100%', height: '100%' }} />
         </>
@@ -31,7 +31,7 @@ function MediaPlayer(props) {
           playsInline={_playsinline || undefined}
           poster={_media?.poster}
           style={{ maxWidth: '100%' }}
-          controls='controls'
+          controls
         >
           {_media?.source ? (
             <source src={_media.source} type={_media.type} />
@@ -110,7 +110,7 @@ export default function Media(props) {
             <button
               className='media__transcript-btn media__transcript-btn-inline js-media-inline-transcript-toggle'
               onClick={onToggleInlineTranscript}
-            aria-expanded={!!_isInlineTranscriptOpen}
+              aria-expanded={!!_isInlineTranscriptOpen}
             >
               {_isComplete && completedLabel &&
                 <span className='aria-label'>
