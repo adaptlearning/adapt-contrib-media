@@ -511,9 +511,9 @@ class MediaView extends ComponentView {
 
     const $body = this.$('.media__transcript-body-inline').stop(true, true);
     if (isOpen) {
-      $body.slideUp(() => $(window).resize());
+      $body.slideUp(() => Adapt.trigger('device:resize'));
     } else {
-      $body.slideDown(() => $(window).resize());
+      $body.slideDown(() => Adapt.trigger('device:resize'));
     }
 
     this.transcriptTriggers(isOpen ? 'closed' : 'opened');
