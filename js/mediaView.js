@@ -58,7 +58,7 @@ class MediaView extends ComponentView {
     this.model.set({
       _isMediaEnded: false,
       _isMediaPlaying: false,
-      _shouldSetSize: this.shouldSetSize
+      _shouldSetSize: this.shouldSetSize()
     });
 
     if (!this.model.get('_media').source) return;
