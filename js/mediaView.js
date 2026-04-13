@@ -54,7 +54,7 @@ class MediaView extends ComponentView {
       _isMediaEnded: false,
       _isMediaPlaying: false,
       _isInlineTranscriptOpen: false,
-      _shouldSetSize: this.shouldSetSize,
+      _shouldSetSize: this.shouldSetSize(),
       _videoDimensions: this.getVideoDimensions(),
       _hasTranscript: _transcript?._inlineTranscript || _transcript?._externalTranscript,
       transcriptRegionLabel: _transcript?.inlineTranscriptButton || _transcript?.transcriptLink,
