@@ -9,7 +9,7 @@
         "displayTitle": "Title of the media component",
         "body": "This is optional body text.",
         "instruction": "Select the play button to start the video.",
-        "_comment": "_setCompletionOn = inview | play | ended",
+        "_comment": "_setCompletionOn = inview | play | ended (must be 'ended' if using _preventForwardScrubbing)",
         "_setCompletionOn": "play",
         "_useClosedCaptions": true,
         "_allowFullScreen": true,

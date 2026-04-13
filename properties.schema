@@ -366,10 +366,10 @@
       "type": "boolean",
       "required": false,
       "default": false,
-      "title": "Attempt to prevent media scrubbing?",
+      "title": "Prevent media scrubbing?",
       "inputType": "Checkbox",
       "validators": [],
-      "help": "If enabled, will attempt to prevent users from skipping ahead in audio/video."
+      "help": "If enabled, learners will not be able to skip ahead in audio/video until they have watched/listened to it in full at least once. Ensure '_setCompletionOn' is set to 'ended' when using this setting."
     },
     "_offsetMediaControls": {
       "type": "boolean",
