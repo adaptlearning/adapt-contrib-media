@@ -16,7 +16,7 @@ function MediaPlayer(props) {
       {_media?.mp3 ? (
         <>
           {_media.poster &&
-            <img className='media__poster is-audio' src={_media.poster} />
+            <img className='media__poster is-audio' src={_media.poster} alt='' aria-hidden='true' />
           }
           <audio src={_media.mp3} type='audio/mp3' style={{ width: '100%', height: '100%' }} />
         </>
