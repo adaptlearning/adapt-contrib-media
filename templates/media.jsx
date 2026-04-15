@@ -13,7 +13,7 @@ function MediaPlayer(props) {
   return (
     <div className='component__widget media__widget'>
 
-      {((_media?.mp3 || _media?.ogg) & _media.poster) &&
+      {((_media?.mp3 || _media?.ogg) && _media.poster) &&
         <img className='media__poster is-audio' src={_media.poster} alt='' aria-hidden='true' />
       }
 
