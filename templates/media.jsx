@@ -20,14 +20,17 @@ function MediaPlayer(props) {
       {_media?.mp3
         ? (
           <>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <audio src={_media.mp3} type='audio/mp3' style={{ width: '100%', height: '100%' }} />
           </>
         )
         : _media?.ogg
           ? (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
             <audio src={_media.ogg} type='audio/ogg' style={{ width: '100%', height: '100%' }} />
           )
           : (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
             <video
               aria-hidden='true'
               preload='none'
