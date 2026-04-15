@@ -17,52 +17,41 @@ function MediaPlayer(props) {
         <img className='media__poster is-audio' src={_media.poster} alt='' aria-hidden='true' />
       }
 
+      {/* eslint-disable jsx-a11y/media-has-caption */}
       {_media?.mp3
-        ? (
-          <>
-            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-            <audio src={_media.mp3} type='audio/mp3' style={{ width: '100%', height: '100%' }} />
-          </>
-        )
+        ? <audio src={_media.mp3} type='audio/mp3' style={{ width: '100%', height: '100%' }} />
         : _media?.ogg
-          ? (
-            // eslint-disable-next-line jsx-a11y/media-has-caption
-            <audio src={_media.ogg} type='audio/ogg' style={{ width: '100%', height: '100%' }} />
-          )
-          : (
-            // eslint-disable-next-line jsx-a11y/media-has-caption
-            <video
-              aria-hidden='true'
-              preload='none'
-              width={_shouldSetSize ? _videoDimensions?.width : undefined}
-              height={_shouldSetSize ? _videoDimensions?.height : undefined}
-              playsInline={_playsinline || undefined}
-              poster={_media?.poster}
-              style={{ maxWidth: '100%' }}
-              controls
-            >
-              {_media?.source
-                ? (
-                  <source src={_media.source} type={_media.type} />
-                )
-                : (
-                  <>
-                    {_media?.mp4 && <source src={_media.mp4} type='video/mp4' />}
-                    {_media?.ogv && <source src={_media.ogv} type='video/ogg' />}
-                    {_media?.webm && <source src={_media.webm} type='video/webm' />}
-                  </>
-                )}
-              {_useClosedCaptions && _media?.cc?.map((track, index) =>
-                <track
-                  key={index}
-                  kind='subtitles'
-                  src={track.src}
-                  type='text/vtt'
-                  srcLang={track.srclang}
-                />
-              )}
-            </video>
-          )}
+          ? <audio src={_media.ogg} type='audio/ogg' style={{ width: '100%', height: '100%' }} />
+          : <video
+            aria-hidden='true'
+            preload='none'
+            width={_shouldSetSize ? _videoDimensions?.width : undefined}
+            height={_shouldSetSize ? _videoDimensions?.height : undefined}
+            playsInline={_playsinline || undefined}
+            poster={_media?.poster}
+            style={{ maxWidth: '100%' }}
+            controls
+          >
+            {_media?.source
+              ? <source src={_media.source} type={_media.type} />
+              : <>
+                {_media?.mp4 && <source src={_media.mp4} type='video/mp4' />}
+                {_media?.ogv && <source src={_media.ogv} type='video/ogg' />}
+                {_media?.webm && <source src={_media.webm} type='video/webm' />}
+              </>
+            }
+            {_useClosedCaptions && _media?.cc?.map((track, index) =>
+              <track
+                key={index}
+                kind='subtitles'
+                src={track.src}
+                type='text/vtt'
+                srcLang={track.srclang}
+              />
+            )}
+          </video>
+      }
+      {/* eslint-enable jsx-a11y/media-has-caption */}
 
     </div>
   );
