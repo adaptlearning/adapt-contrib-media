@@ -51,10 +51,10 @@ class MediaView extends ComponentView {
       'media:stop': this.onMediaStop
     });
 
-    // android, force timeupdate handler to call after seeking handler in order to prevent forward scrubbing
-    this.onMediaElementTimeUpdate = _.debounce(this.onMediaElementTimeUpdate.bind(this), 0);
-
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview');
+    _.bindAll(this,
+      'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview',
+      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubKeyDown', 'onScrubEnded', 'onBlockerPointerDown', 'onSliderClick', 'onCaptionsChange'
+    );
 
     // set initial player state attributes
     this.model.set({
@@ -253,12 +253,7 @@ class MediaView extends ComponentView {
     if (!this.model.get('_useClosedCaptions')) return;
     this.setCaptionButtonState();
 
-    this.mediaElement.addEventListener('captionschange', event => {
-      const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
-      offlineStorage.set('captions', srclang);
-      Adapt.trigger('media:captionsChange', this, srclang);
-      this.setCaptionButtonState();
-    });
+    this.mediaElement.addEventListener('captionschange', this.onCaptionsChange);
 
     this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
   }
@@ -294,6 +289,15 @@ class MediaView extends ComponentView {
     const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
     const $ccButton = this.$el.find('.mejs__captions-button > button');
     $ccButton.attr('aria-pressed', srclang !== 'none');
+  }
+
+  onCaptionsChange() {
+    const srclang = this.mediaElementInstance.selectedTrack
+      ? this.mediaElementInstance.selectedTrack.srclang
+      : 'none';
+    offlineStorage.set('captions', srclang);
+    Adapt.trigger('media:captionsChange', this, srclang);
+    this.setCaptionButtonState();
   }
 
   /**
@@ -352,26 +356,6 @@ class MediaView extends ComponentView {
 
   onWidgetInview(event, isInView) {
     if (!isInView && !this.mediaElement.paused) this.mediaElement.pause();
-  }
-
-  onMediaElementSeeking(event) {
-    let maxViewed = this.model.get('_maxViewed');
-    if (!maxViewed) {
-      maxViewed = 0;
-    }
-    const target = event.currentTarget;
-    if (target.currentTime <= maxViewed) return;
-    target.currentTime = maxViewed;
-  }
-
-  onMediaElementTimeUpdate(event) {
-    let maxViewed = this.model.get('_maxViewed');
-    if (!maxViewed) {
-      maxViewed = 0;
-    }
-    const target = event.currentTarget;
-    if (target.currentTime <= maxViewed) return;
-    this.model.set('_maxViewed', target.currentTime);
   }
 
   onMediaStop(view) {
@@ -442,16 +426,15 @@ class MediaView extends ComponentView {
         play: this.onMediaElementPlay,
         pause: this.onMediaElementPause,
         ended: this.onMediaElementEnded,
-        seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate,
         volumechange: this.onMediaVolumeChange
       });
 
       // Clean up forward scrubbing prevention listeners
-      this.mediaElement.removeEventListener('timeupdate', this._onScrubTimeUpdate);
-      this.mediaElement.removeEventListener('seeking', this._onScrubSeeking);
-      this.mediaElement.removeEventListener('keydown', this._onScrubKeyDown);
-      this.mediaElement.removeEventListener('ended', this._onScrubEnded);
+      this.mediaElement.removeEventListener('timeupdate', this.onScrubTimeUpdate);
+      this.mediaElement.removeEventListener('seeking', this.onScrubSeeking);
+      this.mediaElement.removeEventListener('keydown', this.onScrubKeyDown);
+      this.mediaElement.removeEventListener('ended', this.onScrubEnded);
+      this.mediaElement.removeEventListener('captionschange', this.onCaptionsChange);
 
       this.mediaElement.src = '';
       $(this.mediaElement.pluginElement).remove();
@@ -460,16 +443,14 @@ class MediaView extends ComponentView {
 
     // Clean up scrub blocker DOM element and listeners
     if (this._scrubBlocker) {
-      if (this._onBlockerPointerDown) {
-        this._scrubBlocker.removeEventListener('pointerdown', this._onBlockerPointerDown);
-      }
+      this._scrubBlocker.removeEventListener('pointerdown', this.onBlockerPointerDown);
       this._scrubBlocker.remove();
       delete this._scrubBlocker;
     }
 
-    const $slider = this.$('.mejs__time-slider');
-    if ($slider.length && this._onSliderClick) {
-      $slider[0].removeEventListener('click', this._onSliderClick);
+    if (this._sliderElement) {
+      this._sliderElement.removeEventListener('click', this.onSliderClick);
+      delete this._sliderElement;
     }
 
     super.remove();
@@ -576,14 +557,30 @@ class MediaView extends ComponentView {
     this.updateScrubBlocker();
   }
   
-  _onBlockerPointerDown (e) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    this.flashBlockedOverlay(scrubBlocker);
+  createScrubBlocker(sliderElement) {
+    this._sliderElement = sliderElement;
+
+    const scrubBlocker = document.createElement('span');
+    scrubBlocker.className = 'mejs__time-slider-blocker';
+
+    scrubBlocker.addEventListener('pointerdown', this.onBlockerPointerDown);
+    sliderElement.addEventListener('click', this.onSliderClick);
+
+    sliderElement.style.position = 'relative';
+    sliderElement.appendChild(scrubBlocker);
+    sliderElement.setAttribute('aria-disabled', 'true');
+
+    return scrubBlocker;
   }
 
-  _onSliderClick (e) {
-    const rect = sliderElement.getBoundingClientRect();
+  onBlockerPointerDown(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    this.flashBlockedOverlay(this._scrubBlocker);
+  }
+
+  onSliderClick(e) {
+    const rect = this._sliderElement.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const sliderWidth = rect.width;
     const clickPercent = clickX / sliderWidth;
@@ -596,24 +593,18 @@ class MediaView extends ComponentView {
     e.preventDefault();
     e.stopImmediatePropagation();
     this.mediaElement.currentTime = this._maxViewed;
-    this.flashBlockedOverlay(scrubBlocker);
+    this.flashBlockedOverlay(this._scrubBlocker);
   }
 
-  createScrubBlocker(sliderElement) {
-    const scrubBlocker = document.createElement('span');
-    scrubBlocker.className = 'mejs__time-slider-blocker';
-
-    scrubBlocker.addEventListener('pointerdown', this._onBlockerPointerDown);
-    sliderElement.addEventListener('click', this._onSliderClick);
-
-    sliderElement.style.position = 'relative';
-    sliderElement.appendChild(scrubBlocker);
-    sliderElement.setAttribute('aria-disabled', 'true');
-
-    return scrubBlocker;
+  setupScrubBlockerEvents() {
+    this.mediaElement.addEventListener('timeupdate', this.onScrubTimeUpdate);
+    this.mediaElement.addEventListener('seeking', this.onScrubSeeking);
+    this.mediaElement.addEventListener('keydown', this.onScrubKeyDown);
+    this.mediaElement.addEventListener('ended', this.onScrubEnded);
   }
-  
-  onScrubTimeUpdate () {
+
+  // Update progress and blocker size
+  onScrubTimeUpdate() {
     if (this._suppressSeek) return;
     this._maxViewed = Math.max(this._maxViewed, this.mediaElement.currentTime);
     this.model.set('_maxViewed', this._maxViewed);
@@ -621,20 +612,21 @@ class MediaView extends ComponentView {
   }
 
   // Prevent forward seeking and navigate to maxViewed
-  onScrubSeeking () {
+  onScrubSeeking() {
     const isSeekingAhead = this.mediaElement.currentTime > this._maxViewed + 0.25;
     if (!isSeekingAhead) return;
 
     this._suppressSeek = true;
+    this.mediaElement.addEventListener('seeked', () => {
+      this._suppressSeek = false;
+    }, { once: true });
     this.mediaElement.currentTime = this._maxViewed;
-    this._suppressSeek = false;
 
     this.flashBlockedOverlay(this._scrubBlocker);
-    this._showBlockedScrubMessage?.();
   }
 
   // Prevent keyboard forward navigation
-  _onScrubKeyDown (e) {
+  onScrubKeyDown(e) {
     const isForwardKey = FORWARD_SCRUBBING_KEYS.includes(e.code);
     const isAtMaxViewed = this.mediaElement.currentTime >= this._maxViewed;
     const shouldPrevent = isForwardKey && isAtMaxViewed;
@@ -646,23 +638,15 @@ class MediaView extends ComponentView {
     this.flashBlockedOverlay(this._scrubBlocker);
   }
 
-  _onScrubEnded () {
-    this.model.set('_isComplete', true);
+  onScrubEnded() {
+    this.setCompletionStatus();
     this._scrubBlocker?.remove();
   }
 
-  setupScrubBlockerEvents() {
-    // Update progress and blocker size
-    this.mediaElement.addEventListener('timeupdate', this._onScrubTimeUpdate);
-    this.mediaElement.addEventListener('seeking', this._onScrubSeeking);
-    this.mediaElement.addEventListener('keydown', this._onScrubKeyDown);
-    this.mediaElement.addEventListener('ended', this._onScrubEnded);
-  }
-
-  flashBlockedOverlay(e) {
-    e.classList.add('mejs__time-slider-blocker-error');
+  flashBlockedOverlay(element) {
+    element.classList.add('mejs__time-slider-blocker-error');
     setTimeout(() => {
-      e.classList.remove('mejs__time-slider-blocker-error');
+      element.classList.remove('mejs__time-slider-blocker-error');
     }, 150);
   }
 
