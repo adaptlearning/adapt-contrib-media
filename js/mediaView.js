@@ -448,18 +448,10 @@ class MediaView extends ComponentView {
       });
 
       // Clean up forward scrubbing prevention listeners
-      if (this._onScrubTimeUpdate) {
-        this.mediaElement.removeEventListener('timeupdate', this._onScrubTimeUpdate);
-      }
-      if (this._onScrubSeeking) {
-        this.mediaElement.removeEventListener('seeking', this._onScrubSeeking);
-      }
-      if (this._onScrubKeyDown) {
-        this.mediaElement.removeEventListener('keydown', this._onScrubKeyDown);
-      }
-      if (this._onScrubEnded) {
-        this.mediaElement.removeEventListener('ended', this._onScrubEnded);
-      }
+      this.mediaElement.removeEventListener('timeupdate', this._onScrubTimeUpdate);
+      this.mediaElement.removeEventListener('seeking', this._onScrubSeeking);
+      this.mediaElement.removeEventListener('keydown', this._onScrubKeyDown);
+      this.mediaElement.removeEventListener('ended', this._onScrubEnded);
 
       this.mediaElement.src = '';
       $(this.mediaElement.pluginElement).remove();
