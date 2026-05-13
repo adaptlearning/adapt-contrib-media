@@ -575,33 +575,33 @@ class MediaView extends ComponentView {
     // Initialize the blocker size
     this.updateScrubBlocker();
   }
+  
+  _onBlockerPointerDown (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    this.flashBlockedOverlay(scrubBlocker);
+  }
+
+  _onSliderClick (e) {
+    const rect = sliderElement.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const sliderWidth = rect.width;
+    const clickPercent = clickX / sliderWidth;
+    const duration = this.mediaElement.duration;
+    const clickTime = clickPercent * duration;
+    const isClickingAhead = clickTime > this._maxViewed + 0.25;
+
+    if (!isClickingAhead) return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    this.mediaElement.currentTime = this._maxViewed;
+    this.flashBlockedOverlay(scrubBlocker);
+  }
 
   createScrubBlocker(sliderElement) {
     const scrubBlocker = document.createElement('span');
     scrubBlocker.className = 'mejs__time-slider-blocker';
-
-    this._onBlockerPointerDown = (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      this.flashBlockedOverlay(scrubBlocker);
-    };
-
-    this._onSliderClick = (e) => {
-      const rect = sliderElement.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const sliderWidth = rect.width;
-      const clickPercent = clickX / sliderWidth;
-      const duration = this.mediaElement.duration;
-      const clickTime = clickPercent * duration;
-      const isClickingAhead = clickTime > this._maxViewed + 0.25;
-
-      if (!isClickingAhead) return;
-
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      this.mediaElement.currentTime = this._maxViewed;
-      this.flashBlockedOverlay(scrubBlocker);
-    };
 
     scrubBlocker.addEventListener('pointerdown', this._onBlockerPointerDown);
     sliderElement.addEventListener('click', this._onSliderClick);
@@ -612,47 +612,47 @@ class MediaView extends ComponentView {
 
     return scrubBlocker;
   }
+  
+  onScrubTimeUpdate () {
+    if (this._suppressSeek) return;
+    this._maxViewed = Math.max(this._maxViewed, this.mediaElement.currentTime);
+    this.model.set('_maxViewed', this._maxViewed);
+    this.updateScrubBlocker();
+  }
+
+  // Prevent forward seeking and navigate to maxViewed
+  onScrubSeeking () {
+    const isSeekingAhead = this.mediaElement.currentTime > this._maxViewed + 0.25;
+    if (!isSeekingAhead) return;
+
+    this._suppressSeek = true;
+    this.mediaElement.currentTime = this._maxViewed;
+    this._suppressSeek = false;
+
+    this.flashBlockedOverlay(this._scrubBlocker);
+    this._showBlockedScrubMessage?.();
+  }
+
+  // Prevent keyboard forward navigation
+  _onScrubKeyDown (e) {
+    const isForwardKey = FORWARD_SCRUBBING_KEYS.includes(e.code);
+    const isAtMaxViewed = this.mediaElement.currentTime >= this._maxViewed;
+    const shouldPrevent = isForwardKey && isAtMaxViewed;
+
+    if (!shouldPrevent) return;
+
+    e.preventDefault();
+    this.mediaElement.currentTime = this._maxViewed;
+    this.flashBlockedOverlay(this._scrubBlocker);
+  }
+
+  _onScrubEnded () {
+    this.model.set('_isComplete', true);
+    this._scrubBlocker?.remove();
+  }
 
   setupScrubBlockerEvents() {
     // Update progress and blocker size
-    this._onScrubTimeUpdate = () => {
-      if (this._suppressSeek) return;
-      this._maxViewed = Math.max(this._maxViewed, this.mediaElement.currentTime);
-      this.model.set('_maxViewed', this._maxViewed);
-      this.updateScrubBlocker();
-    };
-
-    // Prevent forward seeking and navigate to maxViewed
-    this._onScrubSeeking = () => {
-      const isSeekingAhead = this.mediaElement.currentTime > this._maxViewed + 0.25;
-      if (!isSeekingAhead) return;
-
-      this._suppressSeek = true;
-      this.mediaElement.currentTime = this._maxViewed;
-      this._suppressSeek = false;
-
-      this.flashBlockedOverlay(this._scrubBlocker);
-      this._showBlockedScrubMessage?.();
-    };
-
-    // Prevent keyboard forward navigation
-    this._onScrubKeyDown = (e) => {
-      const isForwardKey = FORWARD_SCRUBBING_KEYS.includes(e.code);
-      const isAtMaxViewed = this.mediaElement.currentTime >= this._maxViewed;
-      const shouldPrevent = isForwardKey && isAtMaxViewed;
-
-      if (!shouldPrevent) return;
-
-      e.preventDefault();
-      this.mediaElement.currentTime = this._maxViewed;
-      this.flashBlockedOverlay(this._scrubBlocker);
-    };
-
-    this._onScrubEnded = () => {
-      this.model.set('_isComplete', true);
-      this._scrubBlocker?.remove();
-    };
-
     this.mediaElement.addEventListener('timeupdate', this._onScrubTimeUpdate);
     this.mediaElement.addEventListener('seeking', this._onScrubSeeking);
     this.mediaElement.addEventListener('keydown', this._onScrubKeyDown);
