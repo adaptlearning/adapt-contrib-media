@@ -247,4 +247,4 @@ Media v7.0.0 or higher requires Vanilla v9.25.0 or higher. This is due to the ch
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-media/graphs/contributors)<br>
 **Accessibility support:** WAI AA<br>
 **RTL support:** Yes<br>
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari 14 for macOS/iOS/iPadOS, Opera<br>
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari for macOS/iOS/iPadOS, Opera<br>
