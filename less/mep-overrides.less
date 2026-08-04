@@ -26,3 +26,35 @@
 .mejs__button.mejs__jump-forward-button > button {
   background-size: contain;
 }
+
+// Keyboard visibility of the captions and chapters menus
+// --------------------------------------------------
+// MediaElement leaves the visually-hidden `.mejs__offscreen` class applied to
+// these menus while they hold focus, so a keyboard user tabs into a live list
+// of radios and arrows through options with nothing visible on screen.
+// Reveal the menu whenever focus is anywhere inside its button, mirroring the
+// existing hover behaviour.
+// Upstream: https://github.com/mediaelement/mediaelement/issues/2949
+// `.mejs__captions-button-toggle` is excluded because in that mode the button
+// is a plain on/off toggle: MediaElement still builds the list but binds no
+// handlers to it, so revealing it would surface an inert menu.
+.mejs__captions-button:not(.mejs__captions-button-toggle):focus-within > .mejs__captions-selector,
+.mejs__chapters-button:focus-within > .mejs__chapters-selector {
+  // Undo `.mejs__offscreen` only. Width, border, overflow and the negative
+  // right margin that centres the menu all come from the more specific
+  // `.mejs__captions-button > .mejs__captions-selector` rule and still apply.
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+// The radio inputs sit off screen so that only their labels show, which leaves
+// the focused option with no visible focus indicator once the menu is revealed.
+.mejs__captions-selector-list-item:has(:focus-visible),
+.mejs__chapters-selector-list-item:has(:focus-visible) {
+  outline: 0.125rem solid @white;
+  outline-offset: -0.125rem;
+}
