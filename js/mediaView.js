@@ -22,13 +22,6 @@ wait.for(async done => {
 });
 
 class MediaView extends ComponentView {
-  events() {
-    return {
-      'click .js-media-inline-transcript-toggle': 'onToggleInlineTranscript',
-      'click .js-media-external-transcript-click': 'onExternalTranscriptClicked',
-      'click .js-skip-to-transcript': 'onSkipToTranscript'
-    };
-  }
 
   className() {
     let classes = super.className();
@@ -53,14 +46,22 @@ class MediaView extends ComponentView {
 
     _.bindAll(this,
       'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview',
-      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubKeyDown', 'onScrubEnded', 'onBlockerPointerDown', 'onSliderClick', 'onCaptionsChange'
+      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubKeyDown', 'onScrubEnded', 'onBlockerPointerDown', 'onSliderClick', 'onCaptionsChange',
+      'onToggleInlineTranscript', 'onExternalTranscriptClicked', 'onSkipToTranscript'
     );
+
+    const _transcript = this.model.get('_transcript');
 
     // set initial player state attributes
     this.model.set({
       _isMediaEnded: false,
       _isMediaPlaying: false,
-      _shouldSetSize: this.shouldSetSize
+      _isInlineTranscriptOpen: false,
+      _shouldSetSize: this.shouldSetSize(),
+      _videoDimensions: this.getVideoDimensions(),
+      _hasTranscript: _transcript?._inlineTranscript || _transcript?._externalTranscript,
+      transcriptRegionLabel: _transcript?.inlineTranscriptButton || _transcript?.transcriptLink,
+      inlineButtonText: _transcript?.inlineTranscriptButton || _transcript?.transcriptLink
     });
 
     if (!this.model.get('_media').source) return;
@@ -251,6 +252,8 @@ class MediaView extends ComponentView {
    */
   listenForCaptionsChange() {
     if (!this.model.get('_useClosedCaptions')) return;
+    if (!this.mediaElement) return;
+
     this.setCaptionButtonState();
 
     this.mediaElement.addEventListener('captionschange', this.onCaptionsChange);
@@ -382,11 +385,18 @@ class MediaView extends ComponentView {
     if (!isPaused) player.pause();
   }
 
+  getVideoDimensions() {
+    const aspectRatio = this.model.get('_aspectRatio');
+    if (aspectRatio === 'square') return { width: 640, height: 640 };
+    if (aspectRatio === 'portrait') return { width: 540, height: 960 };
+    return { width: 640, height: 360 };
+  }
+
   shouldSetSize() {
     // Do not set width and height properties on the <video> element
     // if using native controls. This can break the aspect ratio.
     const features = window.mejs.Features;
-    const playerOptions = this._playerOptions;
+    const playerOptions = this.model?.get('_playerOptions') || {};
     if (
       (playerOptions.iPhoneUseNativeControls && features.isiPhone) ||
       (playerOptions.iPadUseNativeControls && features.isiPad) ||
@@ -494,31 +504,27 @@ class MediaView extends ComponentView {
 
   onToggleInlineTranscript(event) {
     if (event) event.preventDefault();
-    const $transcriptBodyContainer = this.$('.media__transcript-body-inline');
-    const $button = this.$('.media__transcript-btn-inline');
-    const $buttonText = this.$('.media__transcript-btn-inline .media__transcript-btn-text');
+    const isOpen = this.model.get('_isInlineTranscriptOpen');
+    const _transcript = this.model.get('_transcript');
+    this.model.set({
+      _isInlineTranscriptOpen: !isOpen,
+      inlineButtonText: isOpen
+        ? (_transcript?.inlineTranscriptButton || _transcript?.transcriptLink)
+        : _transcript?.inlineTranscriptCloseButton
+    });
 
-    if ($transcriptBodyContainer.hasClass('inline-transcript-open')) {
-      $transcriptBodyContainer.stop(true, true).slideUp(() => {
-        $(window).resize();
-      }).removeClass('inline-transcript-open');
-      $button.attr('aria-expanded', false);
-      $buttonText.html(this.model.get('_transcript').inlineTranscriptButton);
-      this.transcriptTriggers('closed');
-
-      return;
+    const $body = this.$('.media__transcript-body-inline').stop(true, true);
+    if (isOpen) {
+      $body.slideUp(() => Adapt.trigger('device:resize'));
+    } else {
+      $body.slideDown(() => Adapt.trigger('device:resize'));
     }
 
-    $transcriptBodyContainer.stop(true, true).slideDown(() => {
-      $(window).resize();
-    }).addClass('inline-transcript-open');
-
-    $button.attr('aria-expanded', true);
-    $buttonText.html(this.model.get('_transcript').inlineTranscriptCloseButton);
-    this.transcriptTriggers('opened');
+    this.transcriptTriggers(isOpen ? 'closed' : 'opened');
   }
 
   onExternalTranscriptClicked() {
+    window.open(this.model.get('_transcript').transcriptLink);
     this.transcriptTriggers('external');
   }
 
@@ -703,5 +709,7 @@ class MediaView extends ComponentView {
     Adapt.trigger('media', eventObj);
   }
 }
+
+MediaView.template = 'media.jsx';
 
 export default MediaView;
