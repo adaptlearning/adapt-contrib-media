@@ -27,8 +27,13 @@
   background-size: contain;
 }
 
-// Time slider blocker for validation errors
+// Forward scrubbing blocker
 // --------------------------------------------------
+// Overlays the not-yet-viewed portion of the time slider when
+// `_preventForwardScrubbing` is enabled. Self-contained fallback so the
+// component compiles against themes which don't define @validation-error.
+@media-scrub-blocker-error: red;
+
 .mejs__time-slider-blocker {
   position: absolute;
   top: 0;
@@ -37,11 +42,16 @@
   width: 0;
   background-color: transparent;
   pointer-events: auto;
-  z-index: 9999;
+  z-index: 2;
   cursor: not-allowed;
   transition: background-color 0.15s ease;
-  
-  &.mejs__time-slider-blocker-error {
-    background-color: fade(@validation-error, 30%);
+
+  .dir-rtl & {
+    right: auto;
+    left: 0;
+  }
+
+  &.is-blocked {
+    background-color: fade(@media-scrub-blocker-error, 30%);
   }
 }

@@ -200,7 +200,7 @@
         },
         "_preventForwardScrubbing": {
           "type": "boolean",
-          "title": "Prevent media scrubbing?",
+          "title": "Prevent media scrubbing",
           "description": "If enabled, learners will not be able to skip ahead in audio/video until they have watched/listened to it in full at least once. Ensure '_setCompletionOn' is set to 'ended' when using this setting.",
           "default": false
         },

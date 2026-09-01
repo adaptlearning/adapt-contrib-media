@@ -91,7 +91,9 @@ If set to `true`, playback will automatically be paused when the media component
 
 ### \_preventForwardScrubbing (boolean)
 
-If set to `true`, learners will not be able to skip ahead in media (both audio and video) until they have watched/listened to it in full at least once. Learners can skip backwards, but only up to the furthest point they have previously reached. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting. The default is `false`. Note: This feature may not work with native player controls.
+If set to `true`, learners will not be able to skip ahead in media (both audio and video) until they have watched/listened to it in full at least once. Learners can skip backwards, but only up to the furthest point they have previously reached. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting. The default is `false`.
+
+Note: this feature may not work with native player controls. The furthest viewed position is held for the duration of the session only - it is not saved to the LMS, so a learner who resumes the course in a new session will need to view the media again from the start.
 
 ### \_offsetMediaControls (boolean)
 
