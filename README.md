@@ -93,7 +93,7 @@ If set to `true`, playback will automatically be paused when the media component
 
 If set to `true`, learners will not be able to skip ahead in media (both audio and video) until they have watched/listened to it in full at least once. Learners can skip backwards, but only up to the furthest point they have previously reached. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting. The default is `false`.
 
-Note: this feature may not work with native player controls. The furthest viewed position is held for the duration of the session only - it is not saved to the LMS, so a learner who resumes the course in a new session will need to view the media again from the start.
+Note: this feature requires the `progress` player feature (present by default) and may not work with native player controls. The furthest viewed position is held for the duration of the session only - it is not saved to the LMS, so a learner who resumes the course in a new session will need to view the media again from the start.
 
 ### \_offsetMediaControls (boolean)
 
@@ -218,7 +218,7 @@ The attributes described above focus on the component's use with standard video.
 
 ### Accessibility
 
-The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
+The media component has three elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"`, `"skipToTranscript"` and `"scrubbingBlocked"` (announced when `_preventForwardScrubbing` blocks an attempt to skip ahead). These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
 
 ## Events
 

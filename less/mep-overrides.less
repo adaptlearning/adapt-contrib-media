@@ -30,25 +30,39 @@
 // Forward scrubbing blocker
 // --------------------------------------------------
 // Overlays the not-yet-viewed portion of the time slider when
-// `_preventForwardScrubbing` is enabled. Self-contained fallback so the
-// component compiles against themes which don't define @validation-error.
-@media-scrub-blocker-error: red;
+// `_preventForwardScrubbing` is enabled.
+//
+// Deliberately a plain colour rather than the theme's @validation-error: this
+// plugin must compile against themes which don't define that variable. Themes
+// wanting their own colour should override the `.is-blocked` rule below.
+@media-scrub-blocker-error: #ff0000;
 
 .mejs__time-slider-blocker {
   position: absolute;
   top: 0;
+  // `right` is correct in both directions: mediaelement locks .mejs__time-rail
+  // to `direction: ltr` and fills progress from the left via
+  // `transform-origin: 0 0`, so the unviewed portion is always on the right.
   right: 0;
   height: 100%;
-  width: 0;
+  // fails safe: with `preload="none"` the duration is unknown until the media
+  // loads, so the whole bar stays blocked until updateScrubBlocker() can narrow
+  // it. `_maxViewed` is 0 at that point, so full width is the correct state.
+  width: 100%;
   background-color: transparent;
   pointer-events: auto;
-  z-index: 2;
+  // must sit above .mejs__time-hovered (10) and .mejs__time-handle-content (11)
+  // or the drag handle stays clickable through the blocked region
+  z-index: 12;
   cursor: not-allowed;
   transition: background-color 0.15s ease;
 
-  .dir-rtl & {
-    right: auto;
-    left: 0;
+  .disable-animation & {
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 
   &.is-blocked {
