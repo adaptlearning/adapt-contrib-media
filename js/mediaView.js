@@ -363,7 +363,7 @@ class MediaView extends ComponentView {
     // playback has settled, so store the furthest viewed position. Set
     // silently: nothing listens for this attribute, and a change event would
     // trigger a needless JSX re-render of the component.
-    if (this._maxViewed === undefined) return;
+    if (this._maxViewed === undefined || this.model.get('_isComplete')) return;
     this.model.set('_maxViewed', this._maxViewed, { silent: true });
   }
 
