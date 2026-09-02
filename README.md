@@ -218,7 +218,9 @@ The attributes described above focus on the component's use with standard video.
 
 ### Accessibility
 
-The media component has three elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"`, `"skipToTranscript"` and `"scrubbingBlocked"` (announced when `_preventForwardScrubbing` blocks an attempt to skip ahead). These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
+The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
+
+The `"scrubbingBlocked"` global is not a label. It is the text announced to screen reader users when `_preventForwardScrubbing` prevents an attempt to skip ahead, and is written to a live region rather than applied to an element. It can be customised or localised in the same `globals` object.
 
 ## Events
 

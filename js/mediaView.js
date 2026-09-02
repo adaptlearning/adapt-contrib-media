@@ -64,7 +64,7 @@ class MediaView extends ComponentView {
 
     _.bindAll(this,
       'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview',
-      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubSeeked', 'onScrubKeyDown', 'onScrubEnded', 'onBlockerPointerDown', 'updateScrubBlocker', 'onCaptionsChange',
+      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubSeeked', 'onScrubKeyDown', 'onScrubEnded', 'onIsCompleteChanged', 'onBlockerPointerDown', 'updateScrubBlocker', 'onCaptionsChange',
       'onToggleInlineTranscript', 'onExternalTranscriptClicked', 'onSkipToTranscript'
     );
 
@@ -564,6 +564,10 @@ class MediaView extends ComponentView {
       return;
     }
 
+    if (this.completionEvent !== 'ended') {
+      logging.warn(`adapt-contrib-media: _preventForwardScrubbing expects _setCompletionOn "ended" but found "${this.completionEvent}" on ${this.model.get('_id')} - the restriction will lift as soon as the component completes`);
+    }
+
     this._maxViewed = this.model.get('_maxViewed') ?? 0;
     this._suppressSeek = false;
 
@@ -571,7 +575,25 @@ class MediaView extends ComponentView {
 
     this.setupScrubBlockerEvents();
 
+    // the restriction must lift however the component completes - `_setCompletionOn`
+    // of "play" or "inview", or the transcript's `_setCompletionOnView` - not only
+    // when the media reaches its end. `listenTo` rather than `listenToOnce`:
+    // a reset fires `change:_isComplete` with `false`, which would otherwise spend
+    // the one-shot binding and leave the blocker stuck. Cleaned up by
+    // `stopListening()` in remove().
+    this.listenTo(this.model, 'change:_isComplete', this.onIsCompleteChanged);
+
     this.updateScrubBlocker();
+  }
+
+  /**
+   * Lifts the forward-scrubbing restriction as soon as the component is marked
+   * complete by any route. Ignores the `false` transition a reset produces.
+   */
+  onIsCompleteChanged() {
+    if (!this.model.get('_isComplete')) return;
+    this.stopListening(this.model, 'change:_isComplete');
+    this.removeScrubBlocker();
   }
 
   /**
@@ -754,8 +776,11 @@ class MediaView extends ComponentView {
    * the page without ever pausing.
    */
   removeScrubBlocker() {
-    // silent: a change event here would re-render the view mid-teardown
-    if (this._maxViewed !== undefined) {
+    // silent: a change event here would re-render the view mid-teardown.
+    // Skipped once complete: a later `reset()` clears `_isComplete` but not
+    // `_maxViewed`, so persisting it here would leave the restriction
+    // pre-satisfied on the next visit.
+    if (this._maxViewed !== undefined && !this.model.get('_isComplete')) {
       this.model.set('_maxViewed', this._maxViewed, { silent: true });
     }
 
