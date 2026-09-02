@@ -91,7 +91,9 @@ If set to `true`, playback will automatically be paused when the media component
 
 ### \_preventForwardScrubbing (boolean)
 
-If set to `true`, the component will *attempt* to prevent learners from 'skipping ahead' in media (both audio and video).  Learners can skip backwards, and back up to the `maxViewed` time tracked by `updateTime`. Note: This does not apply to full screen iOS/iPadOs - and learners using certain browsers (Internet Explorer, for example) may be able to circumvent this rule by using video play speed options. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting.
+If set to `true`, learners will not be able to skip ahead in media (both audio and video) until they have watched/listened to it in full at least once. Learners can skip backwards, but only up to the furthest point they have previously reached. Once the learner has completed the media component, this restriction will no longer be enforced. You should therefore ensure the `_setCompletionOn` setting is set to `"ended"` when using this setting. The default is `false`.
+
+Note: this feature requires the `progress` player feature (present by default) and may not work with native player controls. The furthest viewed position is held for the duration of the session only - it is not saved to the LMS, so a learner who resumes the course in a new session will need to view the media again from the start.
 
 ### \_offsetMediaControls (boolean)
 
@@ -217,6 +219,8 @@ The attributes described above focus on the component's use with standard video.
 ### Accessibility
 
 The media component has two elements that have been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: `"ariaRegion"` and `"skipToTranscript"`. These labels are not visible elements. They are utilized by assistive technology such as screen readers. Should the labels need to be customised or localised, they can be found within the `globals` object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-media/blob/master/properties.schema).
+
+The `"scrubbingBlocked"` global is not a label. It is the text announced to screen reader users when `_preventForwardScrubbing` prevents an attempt to skip ahead, and is written to a live region rather than applied to an element. It can be customised or localised in the same `globals` object.
 
 ## Events
 
