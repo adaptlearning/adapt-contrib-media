@@ -7,6 +7,26 @@ import ComponentView from 'core/js/views/componentView';
 import 'libraries/mediaelement-and-player';
 import './mediaLibrariesOverrides';
 
+// Keys which move the playhead forwards in mediaelement's own slider handler.
+// mediaelement handles ArrowLeft/ArrowRight/Home/End only - it has no
+// PageUp/PageDown seeking - and 'Home' seeks to 0, so is always permitted.
+const FORWARD_SCRUBBING_KEYS = ['ArrowRight', 'End'];
+// Fraction of the duration mediaelement seeks per arrow key press, used only
+// when the player's own option cannot be read.
+const FALLBACK_SEEK_FRACTION = 0.05;
+// Pointer events which would otherwise reach mediaelement's own drag handling.
+const BLOCKED_POINTER_EVENTS = ['pointerdown', 'mousedown', 'touchstart'];
+// Tolerance, in seconds, applied when comparing the playhead to the furthest
+// viewed position. `timeupdate` only fires around 4 times a second, so the
+// playhead can legitimately sit slightly ahead of `_maxViewed`.
+const SCRUB_TOLERANCE = 0.25;
+// Duration, in milliseconds, of the blocked-scrub visual flash.
+const SCRUB_BLOCKED_FLASH_DURATION = 150;
+// Minimum interval, in milliseconds, between blocked-scrub announcements.
+const SCRUB_ANNOUNCE_THROTTLE = 1000;
+// Fallback delay, in milliseconds, after which a corrective seek is assumed done.
+const SUPPRESS_SEEK_TIMEOUT = 1000;
+
 // instruct adapt to wait whilst loading client-side libraries
 wait.for(async done => {
   // load plugins
@@ -42,10 +62,11 @@ class MediaView extends ComponentView {
       'media:stop': this.onMediaStop
     });
 
-    // android, force timeupdate handler to call after seeking handler in order to prevent forward scrubbing
-    this.onMediaElementTimeUpdate = _.debounce(this.onMediaElementTimeUpdate.bind(this), 0);
-
-    _.bindAll(this, 'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onMediaElementSeeking', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview', 'onToggleInlineTranscript', 'onExternalTranscriptClicked', 'onSkipToTranscript');
+    _.bindAll(this,
+      'onMediaElementPlay', 'onMediaElementPause', 'onMediaElementEnded', 'onMediaVolumeChange', 'onOverlayClick', 'onMediaElementClick', 'onWidgetInview',
+      'onScrubTimeUpdate', 'onScrubSeeking', 'onScrubSeeked', 'onScrubKeyDown', 'onScrubEnded', 'onIsCompleteChanged', 'onBlockerPointerDown', 'updateScrubBlocker', 'onCaptionsChange',
+      'onToggleInlineTranscript', 'onExternalTranscriptClicked', 'onSkipToTranscript'
+    );
 
     const _transcript = this.model.get('_transcript');
 
@@ -179,7 +200,7 @@ class MediaView extends ComponentView {
 
     if (typeof modelOptions.defaultSeekForwardInterval === 'string') {
       // eslint-disable-next-line no-new-func
-      modelOptions.defaultSeekForwardInterval = new Function('media', `return ${modelOptions.defaultSeekBackwardInterval}`);
+      modelOptions.defaultSeekForwardInterval = new Function('media', `return ${modelOptions.defaultSeekForwardInterval}`);
     }
 
     return modelOptions;
@@ -253,12 +274,7 @@ class MediaView extends ComponentView {
 
     this.setCaptionButtonState();
 
-    this.mediaElement.addEventListener('captionschange', event => {
-      const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
-      offlineStorage.set('captions', srclang);
-      Adapt.trigger('media:captionsChange', this, srclang);
-      this.setCaptionButtonState();
-    });
+    this.mediaElement.addEventListener('captionschange', this.onCaptionsChange);
 
     this.listenTo(Adapt, 'media:captionsChange', this.onCaptionsChanged);
   }
@@ -294,6 +310,15 @@ class MediaView extends ComponentView {
     const srclang = this.mediaElementInstance.selectedTrack ? this.mediaElementInstance.selectedTrack.srclang : 'none';
     const $ccButton = this.$el.find('.mejs__captions-button > button');
     $ccButton.attr('aria-pressed', srclang !== 'none');
+  }
+
+  onCaptionsChange() {
+    const srclang = this.mediaElementInstance.selectedTrack
+      ? this.mediaElementInstance.selectedTrack.srclang
+      : 'none';
+    offlineStorage.set('captions', srclang);
+    Adapt.trigger('media:captionsChange', this, srclang);
+    this.setCaptionButtonState();
   }
 
   /**
@@ -334,6 +359,12 @@ class MediaView extends ComponentView {
     this.$('.mejs__container').off('inview', this.onWidgetInview);
 
     this.model.set('_isMediaPlaying', false);
+
+    // playback has settled, so store the furthest viewed position. Set
+    // silently: nothing listens for this attribute, and a change event would
+    // trigger a needless JSX re-render of the component.
+    if (this._maxViewed === undefined || this.model.get('_isComplete')) return;
+    this.model.set('_maxViewed', this._maxViewed, { silent: true });
   }
 
   onMediaElementEnded(event) {
@@ -352,26 +383,6 @@ class MediaView extends ComponentView {
 
   onWidgetInview(event, isInView) {
     if (!isInView && !this.mediaElement.paused) this.mediaElement.pause();
-  }
-
-  onMediaElementSeeking(event) {
-    let maxViewed = this.model.get('_maxViewed');
-    if (!maxViewed) {
-      maxViewed = 0;
-    }
-    const target = event.currentTarget;
-    if (target.currentTime <= maxViewed) return;
-    target.currentTime = maxViewed;
-  }
-
-  onMediaElementTimeUpdate(event) {
-    let maxViewed = this.model.get('_maxViewed');
-    if (!maxViewed) {
-      maxViewed = 0;
-    }
-    const target = event.currentTarget;
-    if (target.currentTime <= maxViewed) return;
-    this.model.set('_maxViewed', target.currentTime);
   }
 
   onMediaStop(view) {
@@ -421,6 +432,9 @@ class MediaView extends ComponentView {
   }
 
   remove() {
+    // must run before the media element and its listeners are torn down below
+    this.removeScrubBlocker();
+
     this.$('.mejs__overlay-button').off('click', this.onOverlayClick);
     this.$('.mejs__mediaelement').off('click', this.onMediaElementClick);
     this.$('.mejs__container').off('inview', this.onWidgetInview);
@@ -449,10 +463,10 @@ class MediaView extends ComponentView {
         play: this.onMediaElementPlay,
         pause: this.onMediaElementPause,
         ended: this.onMediaElementEnded,
-        seeking: this.onMediaElementSeeking,
-        timeupdate: this.onMediaElementTimeUpdate,
         volumechange: this.onMediaVolumeChange
       });
+
+      this.mediaElement.removeEventListener('captionschange', this.onCaptionsChange);
 
       this.mediaElement.src = '';
       $(this.mediaElement.pluginElement).remove();
@@ -540,11 +554,264 @@ class MediaView extends ComponentView {
    * This function ensures that users cannot skip ahead in the media until they have watched it fully if `_preventForwardScrubbing` is enabled.
    */
   preventForwardScrubbing() {
-    if (!this.model.get('_preventForwardScrubbing') || this.model.get('_isComplete')) return;
-    $(this.mediaElement).on({
-      seeking: this.onMediaElementSeeking,
-      timeupdate: this.onMediaElementTimeUpdate
+    const isEnabled = this.model.get('_preventForwardScrubbing');
+    const isComplete = this.model.get('_isComplete');
+    if (!isEnabled || isComplete) return;
+
+    const $slider = this.$('.mejs__time-slider');
+    if (!$slider.length) {
+      logging.warn('adapt-contrib-media: _preventForwardScrubbing requires the "progress" player feature - the setting will be ignored');
+      return;
+    }
+
+    if (this.completionEvent !== 'ended') {
+      logging.warn(`adapt-contrib-media: _preventForwardScrubbing expects _setCompletionOn "ended" but found "${this.completionEvent}" on ${this.model.get('_id')} - the restriction will lift as soon as the component completes`);
+    }
+
+    this._maxViewed = this.model.get('_maxViewed') ?? 0;
+    this._suppressSeek = false;
+
+    this._scrubBlocker = this.createScrubBlocker($slider[0]);
+
+    this.setupScrubBlockerEvents();
+
+    // the restriction must lift however the component completes - `_setCompletionOn`
+    // of "play" or "inview", or the transcript's `_setCompletionOnView` - not only
+    // when the media reaches its end. `listenTo` rather than `listenToOnce`:
+    // a reset fires `change:_isComplete` with `false`, which would otherwise spend
+    // the one-shot binding and leave the blocker stuck. Cleaned up by
+    // `stopListening()` in remove().
+    this.listenTo(this.model, 'change:_isComplete', this.onIsCompleteChanged);
+
+    this.updateScrubBlocker();
+  }
+
+  /**
+   * Lifts the forward-scrubbing restriction as soon as the component is marked
+   * complete by any route. Ignores the `false` transition a reset produces.
+   */
+  onIsCompleteChanged() {
+    if (!this.model.get('_isComplete')) return;
+    this.stopListening(this.model, 'change:_isComplete');
+    this.removeScrubBlocker();
+  }
+
+  /**
+   * Creates the overlay which covers the not-yet-viewed portion of the time
+   * slider, along with the live region used to announce blocked attempts.
+   * @param {HTMLElement} sliderElement The mejs time slider element
+   * @returns {HTMLElement} The blocker element
+   */
+  createScrubBlocker(sliderElement) {
+    this._sliderElement = sliderElement;
+
+    const scrubBlocker = document.createElement('span');
+    scrubBlocker.className = 'mejs__time-slider-blocker';
+    scrubBlocker.setAttribute('aria-hidden', 'true');
+    // mediaelement binds mousedown/touchstart to the slider, and the blocker is
+    // its child - stopping these on the blocker prevents them bubbling up and
+    // starting a drag-seek. pointerdown alone is not enough: its compatibility
+    // suppression of mousedown is inconsistent across browsers.
+    BLOCKED_POINTER_EVENTS.forEach(name => scrubBlocker.addEventListener(name, this.onBlockerPointerDown));
+    sliderElement.appendChild(scrubBlocker);
+
+    // the live region must not be a descendant of the slider - `role="slider"`
+    // is a leaf role, so text inside it isn't reliably announced and can be
+    // folded into the slider's accessible name
+    this._scrubLiveRegion = document.createElement('div');
+    this._scrubLiveRegion.className = 'aria-label';
+    this._scrubLiveRegion.setAttribute('aria-live', 'polite');
+    this.$('.media__widget')[0]?.appendChild(this._scrubLiveRegion);
+
+    return scrubBlocker;
+  }
+
+  setupScrubBlockerEvents() {
+    this.mediaElement.addEventListener('timeupdate', this.onScrubTimeUpdate);
+    this.mediaElement.addEventListener('seeking', this.onScrubSeeking);
+    this.mediaElement.addEventListener('ended', this.onScrubEnded);
+    // with `preload="none"` the duration is unknown at setup, so the blocker
+    // would stay zero-width - and the rail unprotected - until first playback
+    this.mediaElement.addEventListener('loadedmetadata', this.updateScrubBlocker);
+    this.mediaElement.addEventListener('durationchange', this.updateScrubBlocker);
+
+    // mediaelement binds its own keydown to the slider during setup and seeks
+    // from a `setTimeout`, so a listener on the slider cannot pre-empt it.
+    // Capturing on an ancestor runs first and lets the event be stopped before
+    // it ever reaches mediaelement's handler.
+    this._captureElement = this.$('.mejs__container')[0];
+    this._captureElement?.addEventListener('keydown', this.onScrubKeyDown, true);
+  }
+
+  onBlockerPointerDown(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    this.onScrubBlocked();
+  }
+
+  /**
+   * Tracks the furthest viewed position. `_maxViewed` is kept on the view for
+   * the hot path and only written to the model when playback settles, to avoid
+   * firing change events several times a second.
+   */
+  onScrubTimeUpdate() {
+    if (this._suppressSeek) return;
+    this._maxViewed = Math.max(this._maxViewed, this.mediaElement.currentTime);
+    this.updateScrubBlocker();
+  }
+
+  onScrubSeeking() {
+    const isSeekingAhead = this.mediaElement.currentTime > this._maxViewed + SCRUB_TOLERANCE;
+    if (!isSeekingAhead) return;
+
+    this._suppressSeek = true;
+    this.mediaElement.addEventListener('seeked', this.onScrubSeeked, { once: true });
+    // some renderers never emit `seeked` for a no-op correction, which would
+    // latch the flag and freeze `_maxViewed` for the rest of the session
+    clearTimeout(this._suppressSeekTimeout);
+    this._suppressSeekTimeout = setTimeout(this.onScrubSeeked, SUPPRESS_SEEK_TIMEOUT);
+    this.mediaElement.currentTime = this._maxViewed;
+
+    this.onScrubBlocked();
+  }
+
+  onScrubSeeked() {
+    clearTimeout(this._suppressSeekTimeout);
+    this._suppressSeek = false;
+  }
+
+  /**
+   * Prevents keyboard seeks which would move the playhead beyond the furthest
+   * viewed position. Gated on the target position rather than the current one,
+   * so rewinding first cannot be used to jump ahead.
+   * @param {KeyboardEvent} event
+   */
+  onScrubKeyDown(event) {
+    // mediaelement also seeks from a document-level handler whenever focus is
+    // anywhere inside the player, so this must not be scoped to the slider
+    if (!FORWARD_SCRUBBING_KEYS.includes(event.key)) return;
+
+    const duration = this.mediaElement?.duration;
+    if (!duration || duration === Infinity) return;
+
+    const targetTime = event.key === 'End'
+      ? duration
+      : this.mediaElement.currentTime + this.getSeekForwardInterval(duration);
+
+    if (targetTime <= this._maxViewed + SCRUB_TOLERANCE) return;
+
+    // stop the event before mediaelement's own slider handler can seek
+    event.preventDefault();
+    event.stopPropagation();
+    this.onScrubBlocked();
+  }
+
+  /**
+   * The seek distance of a single forward key press. `defaultSeekForwardInterval`
+   * is author-configurable, so it may not be a usable function.
+   * @param {number} duration
+   * @returns {number}
+   */
+  getSeekForwardInterval(duration) {
+    const interval = this.mediaElementInstance?.options?.defaultSeekForwardInterval;
+    if (typeof interval !== 'function') return duration * FALLBACK_SEEK_FRACTION;
+    try {
+      const value = interval(this.mediaElement);
+      if (typeof value !== 'number' || !isFinite(value)) return duration * FALLBACK_SEEK_FRACTION;
+      return value;
+    } catch (e) {
+      return duration * FALLBACK_SEEK_FRACTION;
+    }
+  }
+
+  onScrubEnded() {
+    this.removeScrubBlocker();
+  }
+
+  /**
+   * Provides feedback that a forward scrub was rejected. The colour flash is
+   * paired with an announcement so the rejection isn't communicated by colour
+   * alone. The live region is cleared first, because assigning identical text
+   * is not re-announced by assistive technology.
+   */
+  onScrubBlocked() {
+    this._scrubBlocker?.classList.add('is-blocked');
+    clearTimeout(this._scrubBlockedTimeout);
+    this._scrubBlockedTimeout = setTimeout(() => {
+      this._scrubBlocker?.classList.remove('is-blocked');
+    }, SCRUB_BLOCKED_FLASH_DURATION);
+
+    if (!this._scrubLiveRegion) return;
+    // throttle so a held key cannot produce a burst of announcements
+    const now = Date.now();
+    if (now - (this._scrubAnnouncedAt ?? 0) < SCRUB_ANNOUNCE_THROTTLE) return;
+    this._scrubAnnouncedAt = now;
+
+    const globals = Adapt.course.get('_globals')?._components?._media ?? {};
+    const text = globals.scrubbingBlocked;
+    if (!text) return;
+
+    this._scrubLiveRegion.textContent = '';
+    cancelAnimationFrame(this._scrubAnnounceFrame);
+    this._scrubAnnounceFrame = requestAnimationFrame(() => {
+      if (!this._scrubLiveRegion) return;
+      this._scrubLiveRegion.textContent = text;
     });
+  }
+
+  updateScrubBlocker() {
+    if (!this._scrubBlocker) return;
+
+    const duration = this.mediaElement?.duration;
+    const isValidDuration = duration && duration !== Infinity;
+    if (!isValidDuration) return;
+
+    const percentRemaining = 1 - this._maxViewed / duration;
+    this._scrubBlocker.style.width = `${Math.max(0, percentRemaining) * 100}%`;
+  }
+
+  /**
+   * Tears down the blocker and restores the slider to its normal state. The
+   * furthest viewed position is persisted here because the learner can leave
+   * the page without ever pausing.
+   */
+  removeScrubBlocker() {
+    // silent: a change event here would re-render the view mid-teardown.
+    // Skipped once complete: a later `reset()` clears `_isComplete` but not
+    // `_maxViewed`, so persisting it here would leave the restriction
+    // pre-satisfied on the next visit.
+    if (this._maxViewed !== undefined && !this.model.get('_isComplete')) {
+      this.model.set('_maxViewed', this._maxViewed, { silent: true });
+    }
+
+    clearTimeout(this._scrubBlockedTimeout);
+    clearTimeout(this._suppressSeekTimeout);
+    cancelAnimationFrame(this._scrubAnnounceFrame);
+
+    this.mediaElement?.removeEventListener('timeupdate', this.onScrubTimeUpdate);
+    this.mediaElement?.removeEventListener('seeking', this.onScrubSeeking);
+    this.mediaElement?.removeEventListener('seeked', this.onScrubSeeked);
+    this.mediaElement?.removeEventListener('ended', this.onScrubEnded);
+    this.mediaElement?.removeEventListener('loadedmetadata', this.updateScrubBlocker);
+    this.mediaElement?.removeEventListener('durationchange', this.updateScrubBlocker);
+
+    if (this._captureElement) {
+      this._captureElement.removeEventListener('keydown', this.onScrubKeyDown, true);
+      delete this._captureElement;
+    }
+
+    delete this._sliderElement;
+
+    if (this._scrubBlocker) {
+      BLOCKED_POINTER_EVENTS.forEach(name => this._scrubBlocker.removeEventListener(name, this.onBlockerPointerDown));
+      this._scrubBlocker.remove();
+      delete this._scrubBlocker;
+    }
+
+    if (this._scrubLiveRegion) {
+      this._scrubLiveRegion.remove();
+      delete this._scrubLiveRegion;
+    }
   }
 
   /**

@@ -37,6 +37,15 @@
                         "translatable": true
                       }
                     },
+                    "scrubbingBlocked": {
+                      "type": "string",
+                      "title": "Scrubbing blocked announcement",
+                      "description": "Announced to screen reader users when an attempt to skip ahead is prevented by _preventForwardScrubbing",
+                      "default": "You cannot skip ahead until you have viewed this media in full.",
+                      "_adapt": {
+                        "translatable": true
+                      }
+                    },
                     "playText": {
                       "type": "string",
                       "title": "Play",
