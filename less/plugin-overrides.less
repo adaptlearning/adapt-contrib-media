@@ -21,3 +21,31 @@
   line-height: normal;
   position: relative;
 }
+
+// Speed
+// Keyboard visibility of the speed menu
+// https://github.com/mediaelement/mediaelement-plugins/tree/master/src/speed
+// --------------------------------------------------
+// The menu is only revealed on hover, and `visibility: hidden` also makes its
+// radios unfocusable, so keyboard users cannot reach the speed options at all.
+// MediaElement does remove the visually-hidden `.mejs__offscreen` class on
+// focus, but that alone leaves the menu hidden. Reveal it whenever focus is
+// anywhere inside the button, mirroring the existing hover behaviour.
+// Upstream: https://github.com/mediaelement/mediaelement/issues/2949
+.mejs__speed-button:focus-within > .mejs__speed-selector,
+.mejs-speed-button:focus-within > .mejs-speed-selector {
+  visibility: visible;
+  clip: auto;
+  clip-path: none;
+  margin: 0;
+}
+
+// The radio inputs sit off screen so that only their labels show, which leaves
+// the focused option with no visible focus indicator once the menu is revealed.
+// The outline goes on the list item rather than the label because the label is
+// wider than the menu, so an outline on it would be clipped on the right.
+.mejs__speed-selector-list-item:has(:focus-visible),
+.mejs-speed-selector-list-item:has(:focus-visible) {
+  outline: 0.125rem solid @white;
+  outline-offset: -0.125rem;
+}
