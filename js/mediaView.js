@@ -76,6 +76,7 @@ class MediaView extends ComponentView {
       _isMediaPlaying: false,
       _isInlineTranscriptOpen: false,
       _shouldSetSize: this.shouldSetSize(),
+      _isNativeControls: this.isNativeControls(),
       _videoDimensions: this.getVideoDimensions(),
       _hasTranscript: _transcript?._inlineTranscript || _transcript?._externalTranscript,
       transcriptRegionLabel: _transcript?.inlineTranscriptButton || _transcript?.transcriptLink,
@@ -238,6 +239,10 @@ class MediaView extends ComponentView {
       'aria-label': containerLabel
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
+    if (this.model.get('_isNativeControls')) {
+      // the native player is the only player, so it must stay in the tab order and accessibility tree
+      this.$('video').removeAttr('tabindex aria-hidden');
+    }
     this.$('.mejs__overlay-play').attr('aria-hidden', 'true');
   }
 
@@ -419,16 +424,22 @@ class MediaView extends ComponentView {
   shouldSetSize() {
     // Do not set width and height properties on the <video> element
     // if using native controls. This can break the aspect ratio.
+    return !this.isNativeControls();
+  }
+
+  /**
+   * Whether the device's native player is used instead of the custom controls,
+   * as set by `_playerOptions.iPhoneUseNativeControls`, `iPadUseNativeControls` or `AndroidUseNativeControls`
+   * @returns {boolean}
+   */
+  isNativeControls() {
     const features = window.mejs.Features;
     const playerOptions = this.model?.get('_playerOptions') || {};
-    if (
+    return Boolean(
       (playerOptions.iPhoneUseNativeControls && features.isiPhone) ||
       (playerOptions.iPadUseNativeControls && features.isiPad) ||
       (playerOptions.AndroidUseNativeControls && features.isAndroid)
-    ) {
-      return false;
-    }
-    return true;
+    );
   }
 
   remove() {
