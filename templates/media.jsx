@@ -7,6 +7,7 @@ function MediaPlayer(props) {
     _useClosedCaptions,
     _playsinline,
     _shouldSetSize,
+    _isNativeControls,
     _videoDimensions
   } = props;
 
@@ -23,7 +24,7 @@ function MediaPlayer(props) {
         : _media?.ogg
           ? <audio src={_media.ogg} type='audio/ogg' style={{ width: '100%', height: '100%' }} />
           : <video
-            aria-hidden='true'
+            aria-hidden={_isNativeControls ? undefined : 'true'}
             preload='none'
             width={_shouldSetSize ? _videoDimensions?.width : undefined}
             height={_shouldSetSize ? _videoDimensions?.height : undefined}
