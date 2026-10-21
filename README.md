@@ -4,7 +4,7 @@
 
 **Media** is a *presentation component* bundled with the [Adapt framework](https://github.com/adaptlearning/adapt_framework). This plugin is an HTML5 media playback component for both audio and video.
 
-The component uses [MediaElement.js (v7.0.7)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.
+The component uses [MediaElement.js (v7.1.0)](http://mediaelementjs.com/), a player with a number of useful features including subtitles and accessible (and CSS-skinnable) controls. [MediaElement.js](https://github.com/johndyer/mediaelement) carries the MIT license compatible with Adapt.
 
 For playing YouTube and Vimeo videos, use the dedicated [YouTube](https://github.com/adaptlearning/adapt-youtube) or [Vimeo](https://github.com/adaptlearning/adapt-vimeo) plugins instead. These formats are no longer supported by the Media plugin.
 
