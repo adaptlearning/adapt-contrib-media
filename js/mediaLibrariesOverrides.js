@@ -74,3 +74,74 @@ Object.assign(window.mejs.MediaElementPlayer.prototype, {
     return mepPrototype.exitFullScreen.call(this, ...args);
   }
 });
+
+/**
+ * Keyboard and screen reader fixes for the captions and speed menus
+ * https://github.com/adaptlearning/adapt-contrib-media/issues/372
+ * https://github.com/adaptlearning/adapt-contrib-media/issues/376
+ * Applied once all features are built, because the speed plugin loads after this file.
+ */
+const { buildfeatures: mepBuildFeatures } = window.mejs.MediaElementPlayer.prototype;
+Object.assign(window.mejs.MediaElementPlayer.prototype, {
+  buildfeatures(...args) {
+    const result = mepBuildFeatures.call(this, ...args);
+    fixCaptionsMenu(this);
+    if (this.speedButton) addMenuKeys(this.speedButton, this.speedSelector);
+    return result;
+  }
+});
+
+function fixCaptionsMenu(player) {
+  const prefix = player.options.classPrefix;
+  const button = player.captionsButton;
+  const menu = button?.querySelector(`.${prefix}captions-selector`);
+  if (!menu) return;
+  const inputs = menu.querySelectorAll('input');
+  // Each track's label points at its <track> element instead of its radio, leaving the radio unnamed
+  inputs.forEach(input => {
+    const label = input.parentNode.querySelector('label');
+    if (label) label.htmlFor = input.id;
+  });
+  const isToggle = button.classList.contains(`${prefix}captions-button-toggle`);
+  if (!isToggle) {
+    addMenuKeys(button, menu);
+    return;
+  }
+  // The button switches captions on and off itself, so its language list is never used
+  menu.setAttribute('aria-hidden', 'true');
+  inputs.forEach(input => input.setAttribute('tabindex', '-1'));
+}
+
+/**
+ * MediaElement opens these menus on hover and focus, but gives their buttons no keys.
+ * Enter, Space and the up and down arrows move focus to the selected option, where the arrows
+ * would otherwise change the volume. Escape closes the menu and returns focus to its button.
+ * @param {HTMLElement} control Element holding both the button and its menu
+ * @param {HTMLElement} menu
+ */
+function addMenuKeys(control, menu) {
+  const button = control.querySelector('button');
+  const close = () => {
+    control.classList.add('is-menu-closed');
+    button.focus();
+  };
+  const open = () => control.classList.remove('is-menu-closed');
+  button.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      close();
+      return;
+    }
+    if (!['Enter', ' ', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    open();
+    (menu.querySelector('input:checked') || menu.querySelector('input'))?.focus();
+  });
+  menu.addEventListener('keydown', event => {
+    if (event.key === 'Escape') close();
+  });
+  control.addEventListener('focusout', event => {
+    if (!control.contains(event.relatedTarget)) open();
+  });
+  control.addEventListener('mouseenter', open);
+}

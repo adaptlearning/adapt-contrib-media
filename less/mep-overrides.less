@@ -51,6 +51,12 @@
   margin-left: 0;
 }
 
+// Escape closes the menu while its button keeps focus (js/mediaLibrariesOverrides.js).
+// Hidden rather than off screen, so that Tab moves on to the next control.
+.mejs__captions-button.is-menu-closed > .mejs__captions-selector {
+  visibility: hidden;
+}
+
 // The radio inputs sit off screen so that only their labels show, which leaves
 // the focused option with no visible focus indicator once the menu is revealed.
 .mejs__captions-selector-list-item:has(:focus-visible),

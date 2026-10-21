@@ -40,6 +40,12 @@
   margin: 0;
 }
 
+// Escape closes the menu while its button keeps focus (js/mediaLibrariesOverrides.js)
+.mejs__speed-button.is-menu-closed > .mejs__speed-selector,
+.mejs-speed-button.is-menu-closed > .mejs-speed-selector {
+  visibility: hidden;
+}
+
 // The radio inputs sit off screen so that only their labels show, which leaves
 // the focused option with no visible focus indicator once the menu is revealed.
 // The outline goes on the list item rather than the label because the label is
