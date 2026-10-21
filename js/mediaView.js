@@ -239,6 +239,8 @@ class MediaView extends ComponentView {
     });
     this.$('[aria-controls]').removeAttr('aria-controls');
     this.$('.mejs__overlay-play').attr('aria-hidden', 'true');
+    // the hidden overlay Play must not take keyboard focus either
+    this.$('.mejs__overlay-button').attr('tabindex', '-1');
   }
 
   setupEventListeners() {
@@ -257,6 +259,9 @@ class MediaView extends ComponentView {
       ended: this.onMediaElementEnded,
       volumechange: this.onMediaVolumeChange
     });
+
+    // the overlay layer, not its button, as a click can end on the layer if the page shifts mid-click
+    this.$('.mejs__overlay-play').on('click', this.onOverlayClick);
 
     // occasionally the mejs code triggers a click of the captions language
     // selector during setup, this slight delay ensures we skip that
@@ -394,11 +399,15 @@ class MediaView extends ComponentView {
     this.mediaElement.pause();
   }
 
+  /**
+   * The overlay Play hides itself once mejs starts playback, which drops focus to <body>
+   * and sends a screen reader back to the top of the page. Move focus to the control bar's
+   * Pause button instead, once the overlay has gone.
+   */
   onOverlayClick() {
-    const player = this.mediaElement;
-    if (!player) return;
-
-    player.play();
+    _.defer(() => {
+      a11y.focus(this.$('.mejs__playpause-button button'), { preventScroll: true });
+    });
   }
 
   onMediaElementClick(event) {
@@ -435,7 +444,7 @@ class MediaView extends ComponentView {
     // must run before the media element and its listeners are torn down below
     this.removeScrubBlocker();
 
-    this.$('.mejs__overlay-button').off('click', this.onOverlayClick);
+    this.$('.mejs__overlay-play').off('click', this.onOverlayClick);
     this.$('.mejs__mediaelement').off('click', this.onMediaElementClick);
     this.$('.mejs__container').off('inview', this.onWidgetInview);
 
